@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ImplementPlatform : MonoBehaviour
+public class PerlinNoiseExample : MonoBehaviour
 {
+    // Inspired by https://gamedev.stackexchange.com/questions/169192/select-unity-prefab-from-enum-choice
     [System.Serializable]
     public class BlockTile
     {
