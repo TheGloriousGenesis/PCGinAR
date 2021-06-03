@@ -13,10 +13,18 @@ MonoBehaviour:
   m_Name: PrefabFactory
   m_EditorClassIdentifier: 
   AllPrefabs:
-  - prefab: {fileID: 39422247044003155, guid: 9ee00c5cd543af24895260825a60da7f, type: 3}
+  - prefab: {fileID: 9065842027772225217, guid: 320e210f418b355408a4af88b154c2db,
+      type: 3}
     blockType: 0
   - prefab: {fileID: 2005357836329218076, guid: 5626ab31af943794da3553b33a437dca,
       type: 3}
     blockType: 1
-  - prefab: {fileID: 723287699466974529, guid: 1db0fabb8b1f9d6478744d91a89435e3, type: 3}
+  - prefab: {fileID: 8984989426873966891, guid: 3eb05938487a32e48a7ccdb6513175a3,
+      type: 3}
     blockType: 2
+  - prefab: {fileID: 5380138374101248371, guid: 060a5784db0e62e4f945e229731594a6,
+      type: 3}
+    blockType: 3
+  - prefab: {fileID: 5560608345248323637, guid: 106f8e4dfc96a954ea6ac35559e66983,
+      type: 3}
+    blockType: 4

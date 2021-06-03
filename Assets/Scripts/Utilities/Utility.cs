@@ -25,7 +25,10 @@ public enum BlockType
 {
     BASICBLOCK,
     GOAL,
-    PLAYER
+    PLAYER,
+    COIN,
+    ENEMY_1,
+    ENEMY_2
 }
 
 [System.Serializable]

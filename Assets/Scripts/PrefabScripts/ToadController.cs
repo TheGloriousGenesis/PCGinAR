@@ -13,10 +13,13 @@ public class ToadController : Singleton<ToadController>
     private Rigidbody _rigidbody;
 
     [SerializeField]
-    private float moveSpeed = 3;
+    private float moveSpeed = 2;
 
     [SerializeField]
-    private float turnSpeed = 5;
+    private float turnSpeed = 3;
+
+    [SerializeField]
+    private float jump = 3;
 
     public bool isGrounded;
 
@@ -39,8 +42,7 @@ public class ToadController : Singleton<ToadController>
     {
         if (isGrounded)
         {
-            _rigidbody.AddForce(2 * new Vector3(0, 2, 0), ForceMode.Impulse);
-            Debug.Log("Current Velocity: " + _rigidbody.velocity.magnitude);
+            _rigidbody.AddForce(jump * new Vector3(0, 2, 0), ForceMode.Impulse);
             isGrounded = false;
         }
     }
@@ -56,12 +58,6 @@ public class ToadController : Singleton<ToadController>
 
     public void Move(Vector2 input)
     {
-        //Vector3 mymovement = new Vector3(input.x * 5f * Time.deltaTime, 0, input.y * 5f * Time.deltaTime);
-        //_rigidbody.MovePosition(transform.position + mymovement);
-
-        //_rigidbody.AddForce(new Vector3(input.x, 0, input.y) * speed , ForceMode.Force);
-
-
         Vector3 dir = Vector3.zero;
 
         dir.x = input.x;

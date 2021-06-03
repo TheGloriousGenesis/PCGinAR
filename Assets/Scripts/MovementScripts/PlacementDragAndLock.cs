@@ -52,6 +52,11 @@ public class PlacementDragAndLock : MonoBehaviour
 
     private Chromosone currentSolution;
 
+    public LayerMask layer;
+
+    [SerializeField]
+    private GameObject player;
+
     void Awake()
     {
         arRaycastManager = GetComponent<ARRaycastManager>();
@@ -65,10 +70,7 @@ public class PlacementDragAndLock : MonoBehaviour
         if (generateButton != null)
         {
             // when some one presses button call method (in brackets)
-            Debug.Log("Enters generateButton Method");
-            Debug.Log("Is placed object null: " + (placedObject == null));
-            generateButton.onClick.AddListener(delegate { CreatePlatform(placedObject.transform.position, placedObject.transform.rotation); });
-            Debug.Log("Finishes generate Button method");
+            generateButton.onClick.AddListener(delegate { CreatePlatform(new Vector3(), Quaternion.identity); });
         }
     }
     private void Lock()
@@ -177,14 +179,16 @@ public class PlacementDragAndLock : MonoBehaviour
         }
     }
 
+    // this might be compute in the fitness helper genetic algorithm
     private GameObject CreatePlatform(Vector3 plane, Quaternion orientation)
     {
         Chromosone chromosone = bga.GenerateChromosome(4);
         currentSolution = chromosone;
 
-        DestroyIfPlatformExists();
-        Debug.Log("Deletion completed");
-        Debug.Log("Is parent platform null after deletion method: " + GameObject.Find("Platform") == null);
+        DestroyPreviousLayout();
+
+        GameObject platform = GameObject.Find("/GAME/Platform");
+        //GameObject player = GameObject.Find("ARPlayer");
 
         Vector3 blockSize = prefabs[BlockType.BASICBLOCK].transform.localScale;
         float count = 0;
@@ -195,45 +199,91 @@ public class PlacementDragAndLock : MonoBehaviour
         foreach (Allele i in position)
         {
             GameObject block1 = Instantiate(prefabs[BlockType.BASICBLOCK], new Vector3(i.blockPositions[0][0], i.blockPositions[0][1], i.blockPositions[0][2]), orientation);
-            block1.transform.parent = GameObject.Find("Platform").transform;
+            block1.transform.parent = platform.transform;
 
             GameObject block2 = Instantiate(prefabs[BlockType.BASICBLOCK], block1.transform.position + i.blockPositions[1], orientation);
-            block2.transform.parent = GameObject.Find("Platform").transform;
+            block2.transform.parent = platform.transform;
 
             GameObject block3 = Instantiate(prefabs[BlockType.BASICBLOCK], block2.transform.position + i.blockPositions[2], orientation);
-            block3.transform.parent = GameObject.Find("Platform").transform;
+            block3.transform.parent = platform.transform;
 
             count = count + blockSize.x;
         }
 
 
         // place object on first brick in lists
-        PlacePlayer(position[0].blockPositions[0], orientation);
+        GameObject player = PlacePlayer(position[0].blockPositions[0], orientation, platform);
+        PlaceGoal(platform, player);
+        // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
+        // parent.transform.position = new Vector3();
 
-        GameObject.Find("Platform").transform.position = new Vector3();
-        GameObject.Find("Platform").transform.localScale = GameObject.Find("Platform").transform.localScale / 6;
-        return GameObject.Find("Platform");
+        // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
+        // have tried to rescale before brick added and that didnt work so think about it
+        //GameObject.Find("/GAME").transform.localScale = GameObject.Find("/GAME").transform.localScale;
+        return platform;
     }
 
-    private void PlacePlayer(Vector3 position, Quaternion rotation)
+    private GameObject PlacePlayer(Vector3 position, Quaternion rotation, GameObject parentObj)
     {
+        player.SetActive(true);
         // for now move player with platform. Later change this so that platform created first. locked. then player placed
-        GameObject player = GameObject.Find("ARPlayer");
         player.transform.position = position + BlockPosition.UP * 10;
-        player.transform.parent = GameObject.Find("Platform").transform;
+        // place player within overall GAME object
+        //player.transform.parent = GameObject.Find("/GAME").transform;
+        return player;
     }
 
-    private void DestroyIfPlatformExists()
+    // bricks can be placed on top of each other so much find a way to get a list of all top bricks
+    private void PlaceGoal(GameObject platform, GameObject player)
     {
-        if (placedObject != null)
+        List<Transform> walkableSurface = new List<Transform>();
+
+        foreach (Transform child in platform.transform)
         {
-            Debug.Log("Number of transforms in placedObject: " + placedObject.transform.childCount);
-            foreach (Transform child in placedObject.transform)
+            RaycastHit hit;
+            Debug.DrawRay(child.transform.position, Vector3.up * 10, Color.green, 60);
+            if (!Physics.Raycast(child.transform.position + Vector3.up * 0.5f, Vector3.up, out hit))
+            {
+                walkableSurface.Add(child);
+                //GameObject brick = Instantiate(prefabs[BlockType.COIN], child.position + Vector3.up * 2, Quaternion.identity);
+            }
+            //float currentDistance = Vector3.Distance(player.transform.position, child.transform.position);
+
+            //if (currentDistance > maxDistance)
+            //{
+            //    maxDistance = currentDistance;
+            //    Debug.Log("Distance is: " + currentDistance);
+            //}
+        }
+
+        Debug.Log("Number of items in walkable Surface: " + walkableSurface.Count);
+
+        foreach (Transform child in walkableSurface)
+        {
+            GameObject brick = Instantiate(prefabs[BlockType.COIN], child.position + Vector3.up * 2, Quaternion.identity);
+            brick.transform.parent = GameObject.Find("/GAME/Coins").transform;
+        }
+    }
+    private void DestroyPreviousLayout()
+    {
+        GameObject platform = GameObject.Find("/GAME/Platform");
+        if (platform != null)
+        {
+            foreach (Transform child in platform.transform)
             {
                 GameObject.Destroy(child.gameObject);
             }
-            Debug.Log("Number of transforms in placedObject after deletions: " + placedObject.transform.childCount);
         }
+
+        GameObject coins = GameObject.Find("/GAME/Coins");
+        if (coins != null)
+        {
+            foreach (Transform child in platform.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
 
     }
 

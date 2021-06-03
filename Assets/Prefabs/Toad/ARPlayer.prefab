@@ -118,6 +118,16 @@ PrefabInstance:
       propertyPath: minSpeedBeforeTorque
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: 2119377606292121302, guid: 1db0fabb8b1f9d6478744d91a89435e3,
+        type: 3}
+      propertyPath: turnSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530109241467373530, guid: 1db0fabb8b1f9d6478744d91a89435e3,
+        type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1db0fabb8b1f9d6478744d91a89435e3, type: 3}
 --- !u!4 &8554792086778802892 stripped
