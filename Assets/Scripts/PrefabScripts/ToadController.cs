@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RestClient.Core.Singletons;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ToadController : Singleton<ToadController>
@@ -29,6 +30,10 @@ public class ToadController : Singleton<ToadController>
     [SerializeField]
     private Transform cameraTransform;
 
+    public int numOfCoins = 0;
+
+    [SerializeField]
+    public Text text;
     public enum Direction
     {
         Idle,
@@ -52,7 +57,17 @@ public class ToadController : Singleton<ToadController>
         isGrounded = true;
     }
 
-    void OnCollisionEnter(Collision other) { isGrounded = true; }
+    void OnCollisionEnter(Collision col) { 
+        isGrounded = true;
+        var hit = col.gameObject;
+
+        if (hit.tag == "Coin")
+        {
+            numOfCoins++;
+            Destroy(hit);
+            text.text = "Coin counter: " + numOfCoins.ToString();
+        }
+    }
 
     void OnCollisionExit(Collision other) { isGrounded = false; }
 

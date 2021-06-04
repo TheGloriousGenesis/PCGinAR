@@ -220,7 +220,7 @@ public class PlacementDragAndLock : MonoBehaviour
         // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
         // have tried to rescale before brick added and that didnt work so think about it
         //GameObject.Find("/GAME").transform.localScale = GameObject.Find("/GAME").transform.localScale;
-        return platform;
+        return GameObject.Find("/GAME"); ;
     }
 
     private GameObject PlacePlayer(Vector3 position, Quaternion rotation, GameObject parentObj)
@@ -237,6 +237,8 @@ public class PlacementDragAndLock : MonoBehaviour
     private void PlaceGoal(GameObject platform, GameObject player)
     {
         List<Transform> walkableSurface = new List<Transform>();
+        float maxDistance = 0f;
+        Transform farthestBrick = gameObject.AddComponent<Transform>();
 
         foreach (Transform child in platform.transform)
         {
@@ -245,24 +247,29 @@ public class PlacementDragAndLock : MonoBehaviour
             if (!Physics.Raycast(child.transform.position + Vector3.up * 0.5f, Vector3.up, out hit))
             {
                 walkableSurface.Add(child);
-                //GameObject brick = Instantiate(prefabs[BlockType.COIN], child.position + Vector3.up * 2, Quaternion.identity);
             }
-            //float currentDistance = Vector3.Distance(player.transform.position, child.transform.position);
-
-            //if (currentDistance > maxDistance)
-            //{
-            //    maxDistance = currentDistance;
-            //    Debug.Log("Distance is: " + currentDistance);
-            //}
         }
 
         Debug.Log("Number of items in walkable Surface: " + walkableSurface.Count);
 
         foreach (Transform child in walkableSurface)
         {
-            GameObject brick = Instantiate(prefabs[BlockType.COIN], child.position + Vector3.up * 2, Quaternion.identity);
-            brick.transform.parent = GameObject.Find("/GAME/Coins").transform;
+            float currentDistance = Vector3.Distance(player.transform.position, child.transform.position);
+
+            if (currentDistance > maxDistance)
+            {
+                maxDistance = currentDistance;
+                farthestBrick = child;
+                
+                Debug.Log("Distance is: " + currentDistance);
+            }
+
+            GameObject coin = Instantiate(prefabs[BlockType.COIN], child.position + Vector3.up * 2, Quaternion.identity);
+            coin.transform.parent = GameObject.Find("/GAME/Coins").transform;
         }
+
+        GameObject goal = Instantiate(prefabs[BlockType.GOAL], farthestBrick.transform.position + Vector3.up * 2, Quaternion.identity);
+        goal.transform.parent = GameObject.Find("/GAME").transform;
     }
     private void DestroyPreviousLayout()
     {
@@ -271,16 +278,16 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             foreach (Transform child in platform.transform)
             {
-                GameObject.Destroy(child.gameObject);
+                Destroy(child.gameObject);
             }
         }
 
         GameObject coins = GameObject.Find("/GAME/Coins");
         if (coins != null)
         {
-            foreach (Transform child in platform.transform)
+            foreach (Transform child in coins.transform)
             {
-                GameObject.Destroy(child.gameObject);
+                Destroy(child.gameObject);
             }
         }
 
