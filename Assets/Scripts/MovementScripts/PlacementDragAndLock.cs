@@ -12,9 +12,6 @@ using System;
 public class PlacementDragAndLock : MonoBehaviour
 {
     [SerializeField]
-    private GameObject placedPrefab;
-
-    [SerializeField]
     private Button lockButton;
 
     [SerializeField]
@@ -24,7 +21,10 @@ public class PlacementDragAndLock : MonoBehaviour
     private Camera arCamera;
 
     [SerializeField]
-    private float defaultRotation = 0;
+    private float defaultRotation = 180;
+
+    [SerializeField]
+    private GameObject player;
 
     private GameObject placedObject;
 
@@ -37,7 +37,7 @@ public class PlacementDragAndLock : MonoBehaviour
     // know if we touching screen
     private bool onTouchHold = false;
 
-    // kknow what objects we touching
+    // know what objects we touching
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     private BasicGeneticAlgorithm bga = new BasicGeneticAlgorithm();
@@ -52,10 +52,7 @@ public class PlacementDragAndLock : MonoBehaviour
 
     private Chromosone currentSolution;
 
-    public LayerMask layer;
-
-    [SerializeField]
-    private GameObject player;
+    private List<Vector3> walkableSurface;
 
     void Awake()
     {
@@ -70,9 +67,18 @@ public class PlacementDragAndLock : MonoBehaviour
         if (generateButton != null)
         {
             // when some one presses button call method (in brackets)
-            generateButton.onClick.AddListener(delegate { CreatePlatform(new Vector3(), Quaternion.identity); });
+            generateButton.onClick.AddListener(delegate {
+                CreateGame(new Vector3(), Quaternion.identity);
+            });
         }
     }
+
+    private void OnDestroy()
+    {
+        generateButton.onClick.RemoveAllListeners();
+        lockButton.onClick.RemoveAllListeners();
+    }
+
     private void Lock()
     {
         isLocked = !isLocked;
@@ -93,7 +99,7 @@ public class PlacementDragAndLock : MonoBehaviour
                 RaycastHit hitObject;
                 if (Physics.Raycast(ray, out hitObject))
                 {
-                    if (placedPrefab != null)
+                    if (placedObject != null)
                     {
                         onTouchHold = isLocked ? false : true;
                     }
@@ -122,12 +128,12 @@ public class PlacementDragAndLock : MonoBehaviour
                 if (defaultRotation > 0)
                 {
                     // changes rotation to camera
-                    placedObject = CreatePlatform(hitPose.position, Quaternion.identity);
+                    placedObject = CreateGame(hitPose.position, Quaternion.identity);
                     placedObject.transform.Rotate(Vector3.up, defaultRotation);
                 }
                 else
                 {
-                    placedObject = CreatePlatform(hitPose.position, hitPose.rotation);
+                    placedObject = CreateGame(hitPose.position, hitPose.rotation);
                 }
             }
             else
@@ -179,19 +185,39 @@ public class PlacementDragAndLock : MonoBehaviour
         }
     }
 
-    // this might be compute in the fitness helper genetic algorithm
-    private GameObject CreatePlatform(Vector3 plane, Quaternion orientation)
+    private GameObject CreateGame(Vector3 plane, Quaternion orientation)
+    {
+        ResetGameArea();
+        GameObject platform = PlacePlatform(orientation);
+        walkableSurface = ObtainWalkableSurface(platform).ToList();
+        player = PlacePlayer(walkableSurface[0], orientation);
+        PlaceGoal();
+        PlaceCoins();
+        return ConfigureGameSpace(plane);
+    }
+
+    private GameObject ConfigureGameSpace(Vector3 plane)
+    {
+        GameObject game = GameObject.Find("/GAME");
+
+        // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
+        game.transform.position = plane;
+
+        // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
+        // have tried to rescale before brick added and that didnt work so think about it
+        //GameObject.Find("/GAME").transform.localScale = GameObject.Find("/GAME").transform.localScale;
+        return game;
+    }
+    // this might be compute in the fitness helper genetic algorithm. Also think about normalising with respect to plane touched for AR
+
+    private GameObject PlacePlatform(Quaternion orientation)
     {
         Chromosone chromosone = bga.GenerateChromosome(4);
         currentSolution = chromosone;
 
-        DestroyPreviousLayout();
-
         GameObject platform = GameObject.Find("/GAME/Platform");
-        //GameObject player = GameObject.Find("ARPlayer");
 
         Vector3 blockSize = prefabs[BlockType.BASICBLOCK].transform.localScale;
-        float count = 0;
 
         List<Gene> genes = chromosone.genes;
         List<Allele> position = genes.Select(x => x.allele).ToList();
@@ -206,92 +232,120 @@ public class PlacementDragAndLock : MonoBehaviour
 
             GameObject block3 = Instantiate(prefabs[BlockType.BASICBLOCK], block2.transform.position + i.blockPositions[2], orientation);
             block3.transform.parent = platform.transform;
-
-            count = count + blockSize.x;
         }
 
-
-        // place object on first brick in lists
-        GameObject player = PlacePlayer(position[0].blockPositions[0], orientation, platform);
-        PlaceGoal(platform, player);
-        // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
-        // parent.transform.position = new Vector3();
-
-        // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
-        // have tried to rescale before brick added and that didnt work so think about it
-        //GameObject.Find("/GAME").transform.localScale = GameObject.Find("/GAME").transform.localScale;
-        return GameObject.Find("/GAME"); ;
+        return platform;
     }
 
-    private GameObject PlacePlayer(Vector3 position, Quaternion rotation, GameObject parentObj)
+    private GameObject PlacePlayer(Vector3 position, Quaternion rotation)
     {
         player.SetActive(true);
-        // for now move player with platform. Later change this so that platform created first. locked. then player placed
         player.transform.position = position + BlockPosition.UP * 10;
-        // place player within overall GAME object
-        //player.transform.parent = GameObject.Find("/GAME").transform;
+        player.transform.localScale = new Vector3(1, 1, 1);
+        //remove this tile from walkable surface
+        walkableSurface.Remove(position);
         return player;
     }
 
     // bricks can be placed on top of each other so much find a way to get a list of all top bricks
-    private void PlaceGoal(GameObject platform, GameObject player)
+    private void PlaceGoal()
     {
-        List<Transform> walkableSurface = new List<Transform>();
         float maxDistance = 0f;
-        Transform farthestBrick = gameObject.AddComponent<Transform>();
+        Vector3 farthestBrick = new Vector3();
 
-        foreach (Transform child in platform.transform)
+        foreach (Vector3 child in walkableSurface)
         {
-            RaycastHit hit;
-            Debug.DrawRay(child.transform.position, Vector3.up * 10, Color.green, 60);
-            if (!Physics.Raycast(child.transform.position + Vector3.up * 0.5f, Vector3.up, out hit))
-            {
-                walkableSurface.Add(child);
-            }
-        }
+            float currentDistance = Vector3.Distance(player.transform.position, child);
 
-        Debug.Log("Number of items in walkable Surface: " + walkableSurface.Count);
-
-        foreach (Transform child in walkableSurface)
-        {
-            float currentDistance = Vector3.Distance(player.transform.position, child.transform.position);
-
+            //Debug.Log("Current Distance: " + currentDistance);
             if (currentDistance > maxDistance)
             {
                 maxDistance = currentDistance;
                 farthestBrick = child;
                 
-                Debug.Log("Distance is: " + currentDistance);
+                //Debug.Log("Distance is: " + currentDistance);
             }
+        }
+        
+        GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], farthestBrick + Vector3.up * 2, Quaternion.identity);
+        goal_.transform.parent = GameObject.Find("/GAME").transform;
+        //remove this tile from walkable surface
+        walkableSurface.Remove(farthestBrick);
+    }
 
-            GameObject coin = Instantiate(prefabs[BlockType.COIN], child.position + Vector3.up * 2, Quaternion.identity);
+    private void PlaceCoins()
+    {
+        foreach(Vector3 i in walkableSurface)
+        {
+            GameObject coin = Instantiate(prefabs[BlockType.COIN], i + Vector3.up * 2, Quaternion.identity);
             coin.transform.parent = GameObject.Find("/GAME/Coins").transform;
         }
-
-        GameObject goal = Instantiate(prefabs[BlockType.GOAL], farthestBrick.transform.position + Vector3.up * 2, Quaternion.identity);
-        goal.transform.parent = GameObject.Find("/GAME").transform;
     }
-    private void DestroyPreviousLayout()
+    
+    private void ResetGameArea()
     {
-        GameObject platform = GameObject.Find("/GAME/Platform");
+        GameObject[] platform = GameObject.FindGameObjectsWithTag("Brick");
         if (platform != null)
         {
-            foreach (Transform child in platform.transform)
+            for (int i = platform.Length - 1; i>=0; i--)
             {
-                Destroy(child.gameObject);
+                SafeDestory(platform[i].gameObject);
             }
         }
 
-        GameObject coins = GameObject.Find("/GAME/Coins");
+        GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
         if (coins != null)
         {
-            foreach (Transform child in coins.transform)
+            for (int i = coins.Length - 1; i >= 0; i--)
             {
-                Destroy(child.gameObject);
+                SafeDestory(coins[i].gameObject);
             }
         }
 
+        GameObject[] goal = GameObject.FindGameObjectsWithTag("Goal");
+        if (goal != null)
+        {
+            for (int i = goal.Length - 1; i >= 0; i--)
+            {
+                SafeDestory(goal[i].gameObject);
+            }
+        }
 
+        // Instead of deleting reset position of pole and player at origin
+        if (player != null)
+        {
+            player.transform.position = Vector3.up * 10;
+            player.SetActive(false);
+        }
+
+    }
+
+    // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
+    public static void SafeDestory(GameObject obj)
+    {
+        obj.transform.parent = null;
+        obj.name = "$disposed";
+        UnityEngine.Object.Destroy(obj);
+        obj.SetActive(false);
+    }
+
+    private HashSet<Vector3> ObtainWalkableSurface(GameObject platform)
+    {
+        HashSet<Vector3> surface = new HashSet<Vector3>();
+        foreach (Transform child in platform.transform)
+        {
+            RaycastHit hit;
+
+            if (!Physics.Raycast(child.transform.position, Vector3.up * 1.5f, out hit))
+            {
+                //Debug.DrawRay(child.transform.position, Vector3.up * 10, Color.green, 25);
+                surface.Add(child.transform.position);
+            } else
+            {
+                //Debug.Log("Child: " + child.transform.position + " Hit: " + hit.transform.gameObject.name + " at position: " + hit.transform.position);
+            }
+        }
+        return surface;
     }
 
     //private void GetCameraAlignment(ARRaycastHit _planeHit, out Quaternion orientation)

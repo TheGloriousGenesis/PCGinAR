@@ -5,6 +5,7 @@ using RestClient.Core.Singletons;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class ToadController : Singleton<ToadController>
 {
     // Influenced by https://github.com/whl33886/GravityCar/blob/master/Assets/CarTest/CarController.cs
@@ -14,13 +15,13 @@ public class ToadController : Singleton<ToadController>
     private Rigidbody _rigidbody;
 
     [SerializeField]
-    private float moveSpeed = 2;
+    private float moveSpeed = 0.1f;
 
     [SerializeField]
     private float turnSpeed = 3;
 
     [SerializeField]
-    private float jump = 3;
+    private float jump = 0.1f;
 
     public bool isGrounded;
 

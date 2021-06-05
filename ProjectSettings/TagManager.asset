@@ -7,6 +7,7 @@ TagManager:
   - BrickBreak
   - Brick
   - Coin
+  - Goal
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Platform
   - Player
   - Coin
-  - 
+  - Goal
   - 
   - 
   - 
