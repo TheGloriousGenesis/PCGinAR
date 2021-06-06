@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 8984989426873966891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 8554792086778802892}
   m_Father: {fileID: 0}
@@ -467,6 +467,33 @@ PrefabInstance:
         type: 3}
       propertyPath: turnSpeed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2119377606292121302, guid: 1db0fabb8b1f9d6478744d91a89435e3,
+        type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 2673622830390794182, guid: 60381462928260f46a9d199953b098ea,
+        type: 3}
+    - target: {fileID: 2119377606292121302, guid: 1db0fabb8b1f9d6478744d91a89435e3,
+        type: 3}
+      propertyPath: text
+      value: 
+      objectReference: {fileID: 6204321409127563872, guid: 769e482e45d4d0241b03353436f17c1a,
+        type: 3}
+    - target: {fileID: 2119377606292121302, guid: 1db0fabb8b1f9d6478744d91a89435e3,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2119377606292121302, guid: 1db0fabb8b1f9d6478744d91a89435e3,
+        type: 3}
+      propertyPath: jump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2119377606292121302, guid: 1db0fabb8b1f9d6478744d91a89435e3,
+        type: 3}
+      propertyPath: fallingThreshold
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 5530109241467373530, guid: 1db0fabb8b1f9d6478744d91a89435e3,
         type: 3}

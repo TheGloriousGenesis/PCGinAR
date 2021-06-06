@@ -18,6 +18,16 @@ public static class Utility
             return (T)formatter.Deserialize(ms);
         }
     }
+
+    // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
+    public static void SafeDestory(GameObject obj)
+    {
+        obj.transform.parent = null;
+        obj.name = "$disposed";
+        UnityEngine.Object.Destroy(obj);
+        obj.SetActive(false);
+    }
+
 }
 
 [System.Serializable]

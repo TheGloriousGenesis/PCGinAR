@@ -23,10 +23,10 @@ public class PlacementDragAndLock : MonoBehaviour
     [SerializeField]
     private float defaultRotation = 180;
 
-    [SerializeField]
-    private GameObject player;
-
     private GameObject placedObject;
+
+    [SerializeField]
+    private Text playerStats;
 
     private Vector2 touchPosition = default;
 
@@ -187,11 +187,12 @@ public class PlacementDragAndLock : MonoBehaviour
 
     private GameObject CreateGame(Vector3 plane, Quaternion orientation)
     {
+        playerStats.text = "Coin counter: 0";
         ResetGameArea();
         GameObject platform = PlacePlatform(orientation);
         walkableSurface = ObtainWalkableSurface(platform).ToList();
-        player = PlacePlayer(walkableSurface[0], orientation);
-        PlaceGoal();
+        GameObject player = PlacePlayer(walkableSurface[0], orientation);
+        PlaceGoal(player);
         PlaceCoins();
         return ConfigureGameSpace(plane);
     }
@@ -202,6 +203,7 @@ public class PlacementDragAndLock : MonoBehaviour
 
         // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
         game.transform.position = plane;
+        game.transform.rotation = Quaternion.Inverse(game.transform.rotation);
 
         // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
         // have tried to rescale before brick added and that didnt work so think about it
@@ -239,16 +241,15 @@ public class PlacementDragAndLock : MonoBehaviour
 
     private GameObject PlacePlayer(Vector3 position, Quaternion rotation)
     {
-        player.SetActive(true);
-        player.transform.position = position + BlockPosition.UP * 10;
-        player.transform.localScale = new Vector3(1, 1, 1);
-        //remove this tile from walkable surface
+        GameObject game = GameObject.Find("/GAME");
+        GameObject player = Instantiate(prefabs[BlockType.PLAYER], position + BlockPosition.UP * 10, rotation);
+        player.transform.parent = game.transform;
         walkableSurface.Remove(position);
         return player;
     }
 
     // bricks can be placed on top of each other so much find a way to get a list of all top bricks
-    private void PlaceGoal()
+    private void PlaceGoal(GameObject player)
     {
         float maxDistance = 0f;
         Vector3 farthestBrick = new Vector3();
@@ -289,7 +290,7 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             for (int i = platform.Length - 1; i>=0; i--)
             {
-                SafeDestory(platform[i].gameObject);
+                Utility.SafeDestory(platform[i].gameObject);
             }
         }
 
@@ -298,7 +299,7 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             for (int i = coins.Length - 1; i >= 0; i--)
             {
-                SafeDestory(coins[i].gameObject);
+                Utility.SafeDestory(coins[i].gameObject);
             }
         }
 
@@ -307,26 +308,19 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             for (int i = goal.Length - 1; i >= 0; i--)
             {
-                SafeDestory(goal[i].gameObject);
+                Utility.SafeDestory(goal[i].gameObject);
             }
         }
 
-        // Instead of deleting reset position of pole and player at origin
+        GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
         if (player != null)
         {
-            player.transform.position = Vector3.up * 10;
-            player.SetActive(false);
+            for (int i = player.Length - 1; i >= 0; i--)
+            {
+                Utility.SafeDestory(player[i].gameObject);
+            }
         }
 
-    }
-
-    // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
-    public static void SafeDestory(GameObject obj)
-    {
-        obj.transform.parent = null;
-        obj.name = "$disposed";
-        UnityEngine.Object.Destroy(obj);
-        obj.SetActive(false);
     }
 
     private HashSet<Vector3> ObtainWalkableSurface(GameObject platform)
@@ -336,7 +330,7 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             RaycastHit hit;
 
-            if (!Physics.Raycast(child.transform.position, Vector3.up * 1.5f, out hit))
+            if (!Physics.Raycast(child.transform.position, Vector3.up * 1.5f, out hit, 2))
             {
                 //Debug.DrawRay(child.transform.position, Vector3.up * 10, Color.green, 25);
                 surface.Add(child.transform.position);

@@ -31,18 +31,24 @@ public class ToadController : Singleton<ToadController>
     [SerializeField]
     private Transform cameraTransform;
 
+    //[SerializeField]
+    private Text text;
+
+    //[HideInInspector]
+    public bool falling = false;
+
+    public float fallingThreshold = -9f;
+
     public int numOfCoins = 0;
 
-    [SerializeField]
-    public Text text;
-    public enum Direction
-    {
-        Idle,
-        MoveForward,
-        MoveBackward,
-        TurnLeft,
-        TurnRight
-    }
+    //public enum Direction
+    //{
+    //    Idle,
+    //    MoveForward,
+    //    MoveBackward,
+    //    TurnLeft,
+    //    TurnRight
+    //}
 
     public void Jump(bool isJumping)
     {
@@ -105,8 +111,38 @@ public class ToadController : Singleton<ToadController>
         //}
     }
 
+
+    public void Update()
+    {
+        CheckIfPlayerHasFallen();
+    }
+
+    public void CheckIfPlayerHasFallen()
+    {
+        if (_rigidbody.velocity.y  < fallingThreshold)
+        {
+            falling = true;
+        } else
+        {
+            falling = false;
+        }
+
+        if (falling)
+        {
+            numOfCoins -= 100;
+            text.text = "Coin counter: " + numOfCoins.ToString();
+            Utility.SafeDestory(gameObject.transform.parent.gameObject);
+        }
+    }
+
+    public void Start()
+    {
+        text = GameObject.Find("PlayerStatCanvas").GetComponent<Text>();
+    }
+
     //private void Awake()
     //{
+
     //    controller = GetComponent<CharacterController>();
     //    anim = GetComponent<Animator>();
     //    playerInput = GetComponent<PlayerInputController>();
