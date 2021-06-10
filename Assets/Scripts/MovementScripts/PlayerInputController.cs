@@ -20,7 +20,6 @@ public class PlayerInputController : MonoBehaviour
         controls.Player.Jump.canceled += context => ToadController.Instance.Jump(false);
     }
 
-
     private void OnEnable()
     {
         controls.Enable();

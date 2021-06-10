@@ -39,20 +39,11 @@ public class PlacementDragAndLock : MonoBehaviour
 
     // know what objects we touching
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-
-    private BasicGeneticAlgorithm bga = new BasicGeneticAlgorithm();
-
-    public PrefabFactory prefabs;
-
-    public BlockTile[] blockTiles;
+  
 
     private float initialDistance;
 
     private Vector3 initialScale;
-
-    private Chromosone currentSolution;
-
-    private List<Vector3> walkableSurface;
 
     void Awake()
     {
@@ -189,11 +180,13 @@ public class PlacementDragAndLock : MonoBehaviour
     {
         playerStats.text = "Coin counter: 0";
         ResetGameArea();
-        GameObject platform = PlacePlatform(orientation);
-        walkableSurface = ObtainWalkableSurface(platform).ToList();
-        GameObject player = PlacePlayer(walkableSurface[0], orientation);
-        PlaceGoal(player);
-        PlaceCoins();
+
+        PlatformGenerator platform = GameObject.FindObjectOfType(typeof(PlatformGenerator)) as PlatformGenerator;
+        platform.CreatePlatform(plane, orientation);
+
+        CoinGenerator coins = GameObject.FindObjectOfType(typeof(CoinGenerator)) as CoinGenerator;
+        coins.PlaceCoins();
+
         return ConfigureGameSpace(plane);
     }
 
@@ -210,79 +203,7 @@ public class PlacementDragAndLock : MonoBehaviour
         //GameObject.Find("/GAME").transform.localScale = GameObject.Find("/GAME").transform.localScale;
         return game;
     }
-    // this might be compute in the fitness helper genetic algorithm. Also think about normalising with respect to plane touched for AR
 
-    private GameObject PlacePlatform(Quaternion orientation)
-    {
-        Chromosone chromosone = bga.GenerateChromosome(4);
-        currentSolution = chromosone;
-
-        GameObject platform = GameObject.Find("/GAME/Platform");
-
-        Vector3 blockSize = prefabs[BlockType.BASICBLOCK].transform.localScale;
-
-        List<Gene> genes = chromosone.genes;
-        List<Allele> position = genes.Select(x => x.allele).ToList();
-
-        foreach (Allele i in position)
-        {
-            GameObject block1 = Instantiate(prefabs[BlockType.BASICBLOCK], new Vector3(i.blockPositions[0][0], i.blockPositions[0][1], i.blockPositions[0][2]), orientation);
-            block1.transform.parent = platform.transform;
-
-            GameObject block2 = Instantiate(prefabs[BlockType.BASICBLOCK], block1.transform.position + i.blockPositions[1], orientation);
-            block2.transform.parent = platform.transform;
-
-            GameObject block3 = Instantiate(prefabs[BlockType.BASICBLOCK], block2.transform.position + i.blockPositions[2], orientation);
-            block3.transform.parent = platform.transform;
-        }
-
-        return platform;
-    }
-
-    private GameObject PlacePlayer(Vector3 position, Quaternion rotation)
-    {
-        GameObject game = GameObject.Find("/GAME");
-        GameObject player = Instantiate(prefabs[BlockType.PLAYER], position + BlockPosition.UP * 10, rotation);
-        player.transform.parent = game.transform;
-        walkableSurface.Remove(position);
-        return player;
-    }
-
-    // bricks can be placed on top of each other so much find a way to get a list of all top bricks
-    private void PlaceGoal(GameObject player)
-    {
-        float maxDistance = 0f;
-        Vector3 farthestBrick = new Vector3();
-
-        foreach (Vector3 child in walkableSurface)
-        {
-            float currentDistance = Vector3.Distance(player.transform.position, child);
-
-            //Debug.Log("Current Distance: " + currentDistance);
-            if (currentDistance > maxDistance)
-            {
-                maxDistance = currentDistance;
-                farthestBrick = child;
-                
-                //Debug.Log("Distance is: " + currentDistance);
-            }
-        }
-        
-        GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], farthestBrick + Vector3.up * 2, Quaternion.identity);
-        goal_.transform.parent = GameObject.Find("/GAME").transform;
-        //remove this tile from walkable surface
-        walkableSurface.Remove(farthestBrick);
-    }
-
-    private void PlaceCoins()
-    {
-        foreach(Vector3 i in walkableSurface)
-        {
-            GameObject coin = Instantiate(prefabs[BlockType.COIN], i + Vector3.up * 2, Quaternion.identity);
-            coin.transform.parent = GameObject.Find("/GAME/Coins").transform;
-        }
-    }
-    
     private void ResetGameArea()
     {
         GameObject[] platform = GameObject.FindGameObjectsWithTag("Brick");
@@ -322,31 +243,4 @@ public class PlacementDragAndLock : MonoBehaviour
         }
 
     }
-
-    private HashSet<Vector3> ObtainWalkableSurface(GameObject platform)
-    {
-        HashSet<Vector3> surface = new HashSet<Vector3>();
-        foreach (Transform child in platform.transform)
-        {
-            RaycastHit hit;
-
-            if (!Physics.Raycast(child.transform.position, Vector3.up * 1.5f, out hit, 2))
-            {
-                //Debug.DrawRay(child.transform.position, Vector3.up * 10, Color.green, 25);
-                surface.Add(child.transform.position);
-            } else
-            {
-                //Debug.Log("Child: " + child.transform.position + " Hit: " + hit.transform.gameObject.name + " at position: " + hit.transform.position);
-            }
-        }
-        return surface;
-    }
-
-    //private void GetCameraAlignment(ARRaycastHit _planeHit, out Quaternion orientation)
-    //{
-    //    TrackableId planeHit_ID = _planeHit.trackableId;
-    //    ARPlane planeHit = _arPlaneManager.GetPlane(planeHit_ID);
-    //    Vector3 planeNormal = planeHit.normal;
-    //    orientation = Quaternion.FromToRotation(Vector3.up, planeNormal);
-    //}
 }

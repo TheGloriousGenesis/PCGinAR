@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1219214198019540377}
+  - component: {fileID: 838143977033198511}
+  - component: {fileID: 6423633642488969906}
+  - component: {fileID: 4442858387966545856}
   m_Layer: 11
   m_Name: ARCoin
   m_TagString: Coin
@@ -31,19 +34,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2708467356925066484
+--- !u!65 &838143977033198511
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9060540776695789149}
+  m_GameObject: {fileID: 5380138374101248371}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.03, y: 0.97, z: 0.38}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &6423633642488969906
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5380138374101248371}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: f49e2fdd06cf68d448a06e7cfe3d2f6e, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4442858387966545856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5380138374101248371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713d7b4c4282fca4ea6a1bc8b87bf9b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8538273366196104093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,14 +165,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 847674774719671808, guid: 7d1aa6c7286837f46a58384280a00f9b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7d1aa6c7286837f46a58384280a00f9b, type: 3}
---- !u!1 &9060540776695789149 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 847674774726958528, guid: 7d1aa6c7286837f46a58384280a00f9b,
-    type: 3}
-  m_PrefabInstance: {fileID: 8538273366196104093}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9060540776695687805 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 847674774727377376, guid: 7d1aa6c7286837f46a58384280a00f9b,

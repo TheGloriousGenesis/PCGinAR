@@ -7,6 +7,8 @@ using System.IO;
 [System.Serializable]
 public static class Utility
 {
+    public static List<Vector3> walkableSurface = new List<Vector3>();
+    public static Vector3 currentAgentPosition = new Vector3();
     public static T DeepClone<T>(this T obj)
     {
         using (var ms = new MemoryStream())
@@ -38,7 +40,8 @@ public enum BlockType
     PLAYER,
     COIN,
     ENEMY_1,
-    ENEMY_2
+    ENEMY_2,
+    AGENT
 }
 
 [System.Serializable]

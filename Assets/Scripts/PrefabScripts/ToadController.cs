@@ -11,44 +11,38 @@ public class ToadController : Singleton<ToadController>
     // Influenced by https://github.com/whl33886/GravityCar/blob/master/Assets/CarTest/CarController.cs
     // Influenced by https://www.youtube.com/watch?v=k2bpIXzwcWA&list=RDCMUCHM37DnT_QGJT5Zyl4EmqcA&start_radio=1&t=1107s
 
-    [SerializeField]
     private Rigidbody _rigidbody;
 
     [SerializeField]
-    private float moveSpeed = 0.1f;
+    private float moveSpeed = 1f;
 
     [SerializeField]
     private float turnSpeed = 3;
 
     [SerializeField]
-    private float jump = 0.1f;
+    private float jump = 3f;
 
     public bool isGrounded;
 
-    [SerializeField]
     private Animator anim;
 
     [SerializeField]
     private Transform cameraTransform;
 
-    //[SerializeField]
     private Text text;
 
-    //[HideInInspector]
     public bool falling = false;
 
     public float fallingThreshold = -9f;
 
     public int numOfCoins = 0;
 
-    //public enum Direction
-    //{
-    //    Idle,
-    //    MoveForward,
-    //    MoveBackward,
-    //    TurnLeft,
-    //    TurnRight
-    //}
+    void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        text = GameObject.Find("PlayerStatCanvas").GetComponent<Text>();
+    }
 
     public void Jump(bool isJumping)
     {
@@ -66,14 +60,6 @@ public class ToadController : Singleton<ToadController>
 
     void OnCollisionEnter(Collision col) { 
         isGrounded = true;
-        var hit = col.gameObject;
-
-        if (hit.tag == "Coin")
-        {
-            numOfCoins++;
-            Destroy(hit);
-            text.text = "Coin counter: " + numOfCoins.ToString();
-        }
     }
 
     void OnCollisionExit(Collision other) { isGrounded = false; }
@@ -97,24 +83,18 @@ public class ToadController : Singleton<ToadController>
             );
         }
 
-        _rigidbody.velocity = targetDirection.normalized * moveSpeed;     //normalized prevents char moving faster than it should with diagonal input
-
-        //    move = move.x * cameraTransform.right + move.z * cameraTransform.forward;
-        //    move.y = 0f;
-        //    _rigidbody.MovePosition(move * Time.deltaTime * playerSpeed);
-
-        //if (input != Vectowr2.zero)
-        //{
-        //    float targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.z;
-        //    Quaternion rotation = Quaternion.Euler(0, targetAngle, 0);
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime);
-        //}
+        //normalized prevents char moving faster than it should with diagonal input
+        _rigidbody.velocity = targetDirection.normalized * moveSpeed;     
     }
 
 
     public void Update()
     {
-        CheckIfPlayerHasFallen();
+        if (this.gameObject.activeSelf)
+        {
+            CheckIfPlayerHasFallen();
+        }
+        text.text = "Coin counter: " + numOfCoins.ToString();
     }
 
     public void CheckIfPlayerHasFallen()
@@ -131,59 +111,8 @@ public class ToadController : Singleton<ToadController>
         {
             numOfCoins -= 100;
             text.text = "Coin counter: " + numOfCoins.ToString();
-            Utility.SafeDestory(gameObject.transform.parent.gameObject);
+            Utility.SafeDestory(this.gameObject);
         }
     }
-
-    public void Start()
-    {
-        text = GameObject.Find("PlayerStatCanvas").GetComponent<Text>();
-    }
-
-    //private void Awake()
-    //{
-
-    //    controller = GetComponent<CharacterController>();
-    //    anim = GetComponent<Animator>();
-    //    playerInput = GetComponent<PlayerInputController>();
-    //    cameraTransform = Camera.main.transform;
-    //}
-
-    //void Update()
-    //{
-    //    groundedPlayer = controller.isGrounded;
-    //    if (groundedPlayer && playerVelocity.y < 0)
-    //    {
-    //        playerVelocity.y = 0f;
-    //    }
-
-    //    Vector2 input = PlayerInputController.actions["Move"].ReadValue<Vector2>();
-    //    Vector3 move = new Vector3(input.x, 0, input.y);
-
-    //    move = move.x * cameraTransform.right + move.z * cameraTransform.forward;
-    //    move.y = 0f;
-    //    controller.Move(move * Time.deltaTime * playerSpeed);
-
-    //    // Changes the height position of the player..
-    //    if (playerInput.actions["Jump"].triggered && groundedPlayer)
-    //    {
-    //        // anim.Play("Jump")
-    //        playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-    //    }
-
-    //    playerVelocity.y += gravityValue * Time.deltaTime;
-    //    controller.Move(playerVelocity * Time.deltaTime);
-
-    //    // Set blending animation when player is moving.
-    //    //anim.SetFloat("Blend", input.sqrMagnitude, animationBlendDamp, Time.deltaTime);
-
-    //    // Rotate the player depending on their input and camera direction
-    //    if (input != Vector2.zero)
-    //    {
-    //        float targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.z;
-    //        Quaternion rotation = Quaternion.Euler(0, targetAngle, 0);
-    //        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime);
-    //    }
-    //}
 }
 
