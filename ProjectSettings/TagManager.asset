@@ -8,6 +8,8 @@ TagManager:
   - Brick
   - Coin
   - Goal
+  - GoalPost
+  - Agent
   layers:
   - Default
   - TransparentFX

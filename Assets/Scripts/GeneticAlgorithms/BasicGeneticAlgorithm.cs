@@ -86,28 +86,29 @@ namespace BasicGeneticAlgorithmNS
     [System.Serializable]
     public class BasicGeneticAlgorithm
     {
-        public bool[,,] blockMatrix = new bool[Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH];
+        //public bool[,,] blockMatrix = new bool[Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH];
 
-        public List<Chromosone> GenerateGenotype(int maxPlatformLength, int populationSize)
+        public List<Chromosone> GenerateGenotype()
         {
             // A Genotype is the population in computation space
-            List<Chromosone> genotypes = new List<Chromosone>();
-            for (int i=0; i < populationSize; i++)
+            List<Chromosone> genotype = new List<Chromosone>();
+            for (int i=0; i < Constants.POPULATION_SIZE; i++)
             {
-                genotypes.Add(GenerateChromosome(maxPlatformLength));
+                genotype.Add(GenerateChromosome());
             }
 
-            return genotypes;
+            return genotype;
         }
 
-        public Chromosone GenerateChromosome(int maxPlatformLength)
+        public Chromosone GenerateChromosome()
         {
             // a genotype is a solution to the level. feed in number of blocks and restrictions to generate possible level
             List<Gene> genes = new List<Gene>();
             
-            for (int i=0; i < 10; i++)
+            // todo: check how many genes in chromosone good fit
+            for (int i=0; i < Constants.CHROMOSONE_LENGTH; i++)
             {
-                genes.Add(GenerateGene(maxPlatformLength));
+                genes.Add(GenerateGene());
             }
 
             Chromosone chromosone = new Chromosone();
@@ -115,35 +116,37 @@ namespace BasicGeneticAlgorithmNS
             return chromosone;
         }
 
-        public Gene GenerateGene(int maxPlatformLength)
+        public Gene GenerateGene()
         {
-            return new Gene(GenerateAllele(maxPlatformLength));
+            return new Gene(GenerateAllele());
         }
 
         // Generates a 3 cubed structure as a single gene
-        public Allele GenerateAllele(int maxPlatformLength)
+        public Allele GenerateAllele()
         {
-            // inclusive 
-            List<int> cubeNumbers = Enumerable.Range(0, 5).ToList();
+            List<Vector3> cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
+                BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
 
-            Vector3 centerBlock = GenerateCenterBlockPosition(maxPlatformLength);
+            Vector3 centerBlock = GenerateCenterBlockPosition();
 
             List<Vector3> positions = new List<Vector3>();
 
+            positions.Add(centerBlock);
             for (int i = 0; i < 2; i++)
             {
                 // inclusive
-                int choosePosition = Random.Range(0, cubeNumbers.Count - 1);
-                positions.Add(GenerateRelativePosition(choosePosition));
-                cubeNumbers.Remove(choosePosition);
+                int choosePosition = Random.Range(0, cubeNumbers.Count);
+                positions.Add(cubeNumbers[choosePosition] + centerBlock);
+                cubeNumbers.Remove(cubeNumbers[choosePosition]);
             }
-
             
-            return new Allele(centerBlock, positions);
+            return new Allele(positions);
         }
 
-        private Vector3 GenerateCenterBlockPosition(int maxPlatformLength)
+        private Vector3 GenerateCenterBlockPosition()
         {
+            // good for condensing the size of the space
+            int maxPlatformLength = Constants.MAX_PLATFORM_DIMENSION / 2;
             int xPos = Random.Range(0, maxPlatformLength);
             int yPos = Random.Range(0, maxPlatformLength);
             int zPos = Random.Range(0, maxPlatformLength);
@@ -219,7 +222,7 @@ namespace BasicGeneticAlgorithmNS
             {
                 List<Gene> genes = chromosome.genes;
                 int rv = Random.Range(0, chromosome.genes.Count - 1);
-                genes[rv] = GenerateGene(Constants.MAX_PLATFORM_LENGTH);
+                genes[rv] = GenerateGene();
                 chromosome.genes = genes;
             }
             return chromosome;
@@ -245,7 +248,7 @@ namespace BasicGeneticAlgorithmNS
         //input chromosone output double for Func
         public List<Chromosone> Run(Func<Chromosone, double> fitness)
         {
-            List<Chromosone> testPopulation = GenerateGenotype(Constants.MAX_PLATFORM_LENGTH, Constants.POPULATION_SIZE);
+            List<Chromosone> testPopulation = GenerateGenotype();
             List<Chromosone> runPopulation = new List<Chromosone>();
 
             double[] fitnesses = new double[Constants.POPULATION_SIZE];

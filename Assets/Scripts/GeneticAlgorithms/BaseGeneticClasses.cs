@@ -12,12 +12,10 @@ namespace BaseGeneticClass
         //public Vector3 centerBlock { get; set; }
 
         [SerializeField]
-        public List<Vector3> blockPositions { get; set; }
+        public List<Vector3> blockPositions = new List<Vector3>();
 
-        public Allele(Vector3 centerPosition, List<Vector3> positions)
+        public Allele(List<Vector3> positions)
         {
-            blockPositions = new List<Vector3>();
-            blockPositions.Add(centerPosition);
             blockPositions.AddRange(positions);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public static class Utility
@@ -29,7 +30,27 @@ public static class Utility
         UnityEngine.Object.Destroy(obj);
         obj.SetActive(false);
     }
+}
 
+[System.Serializable]
+public static class BlockUIExtensions
+{
+    // checks to see if position is over ui/ gameobject
+    public static bool IsPointOverUIObject(this Vector2 pos)
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return false;
+        }
+
+        PointerEventData eventPostiion = new PointerEventData(EventSystem.current);
+        eventPostiion.position = new Vector2(pos.x, pos.y);
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventPostiion, results);
+
+        return results.Count > 0;
+    }
 }
 
 [System.Serializable]

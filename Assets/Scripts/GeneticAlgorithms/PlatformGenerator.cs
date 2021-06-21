@@ -4,6 +4,7 @@ using BasicGeneticAlgorithmNS;
 using BaseGeneticClass;
 using System.Linq;
 using System;
+using UnityEngine.AI;
 
 public class PlatformGenerator : MonoBehaviour
 {
@@ -13,32 +14,35 @@ public class PlatformGenerator : MonoBehaviour
 
     private BasicGeneticAlgorithm bga = new BasicGeneticAlgorithm();
 
-    public void CreatePlatform(Vector3 plane, Quaternion orientation)
+    public NavMeshSurface[] surfaces;
+
+    public void CreatePlatform(Quaternion orientation)
     {
         PlacePlatform(orientation);
         ObtainWalkableSurface();
-        PlaceGoal(PlacePlayer(Utility.walkableSurface[0], orientation));
+        PlaceGoal(Utility.walkableSurface[0], orientation);
+        PlacePlayer(orientation);
     }
 
     private void PlacePlatform(Quaternion orientation)
     {
-        Chromosone chromosone = bga.GenerateChromosome(4);
+        Chromosone chromosone = bga.GenerateChromosome();
 
         Vector3 blockSize = prefabs[BlockType.BASICBLOCK].transform.localScale;
 
         List<Gene> genes = chromosone.genes;
-        List<Allele> position = genes.Select(x => x.allele).ToList();
+        List<Vector3> position = genes.SelectMany(x => x.allele.blockPositions).ToList();
 
-        foreach (Allele i in position)
+        foreach (Vector3 i in position)
         {
-            GameObject block1 = Instantiate(prefabs[BlockType.BASICBLOCK], new Vector3(i.blockPositions[0][0], i.blockPositions[0][1], i.blockPositions[0][2]), orientation);
+            GameObject block1 = Instantiate(prefabs[BlockType.BASICBLOCK], i, orientation);
             block1.transform.parent = this.transform;
+        }
 
-            GameObject block2 = Instantiate(prefabs[BlockType.BASICBLOCK], block1.transform.position + i.blockPositions[1], orientation);
-            block2.transform.parent = this.transform;
-
-            GameObject block3 = Instantiate(prefabs[BlockType.BASICBLOCK], block2.transform.position + i.blockPositions[2], orientation);
-            block3.transform.parent = this.transform;
+        Debug.Log("surfaces to bake: " + surfaces.Length);
+        for (int i = 0; i < surfaces.Length; i++)
+        {
+            surfaces[i].BuildNavMesh();
         }
     }
 
@@ -56,36 +60,44 @@ public class PlatformGenerator : MonoBehaviour
             }
         }
         Utility.walkableSurface = surface.ToList();
+        Debug.Log("Walkable tiles: " + Utility.walkableSurface.Count);
     }
 
-    private GameObject PlacePlayer(Vector3 position, Quaternion rotation)
+    private GameObject PlacePlayer(Quaternion rotation)
     {
-        GameObject player = Instantiate(prefabs[BlockType.AGENT], position + BlockPosition.UP * 8, rotation);
-        player.transform.parent = this.transform.parent;
-        Utility.walkableSurface.Remove(position);
-        Utility.currentAgentPosition = position;
-        return player;
-    }
-
-    private void PlaceGoal(GameObject player)
-    {
+        GameObject goal = GameObject.FindGameObjectWithTag("GoalPost");
         float maxDistance = 0f;
         Vector3 farthestBrick = new Vector3();
 
         foreach (Vector3 child in Utility.walkableSurface)
         {
-            float currentDistance = Vector3.Distance(player.transform.position, child);
+            //Debug.DrawRay(goal.transform.position, child, Color.white, 20);
 
-            //Debug.Log("Current Distance: " + currentDistance);
+            float currentDistance = Vector3.Distance(goal.transform.position, child);
+
             if (currentDistance > maxDistance)
             {
                 maxDistance = currentDistance;
                 farthestBrick = child;
             }
         }
+        Utility.currentAgentPosition = farthestBrick;
 
-        GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], farthestBrick + Vector3.up * 2, Quaternion.identity);
-        goal_.transform.parent = this.transform.parent;
+        //Debug.DrawRay(goal.transform.position, farthestBrick, Color.green, 30);
+
+        GameObject player = Instantiate(prefabs[BlockType.AGENT], farthestBrick + BlockPosition.UP * 2, rotation);
+        player.transform.parent = this.transform.parent;
+
         Utility.walkableSurface.Remove(farthestBrick);
+
+        return player;
+    }
+
+    private void PlaceGoal(Vector3 position, Quaternion rotation)
+    {
+        Utility.walkableSurface.Remove(position);
+
+        GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], position + Vector3.up * 2, rotation);
+        goal_.transform.parent = this.transform.parent;
     }
 }

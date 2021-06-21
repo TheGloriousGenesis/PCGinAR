@@ -9,26 +9,25 @@ public class ARAgent : Agent
 {
     private Rigidbody rBody;
 
-    public Transform Target;
+    private Transform Target;
 
     private PlayerControls controls;
 
     public float fallingThreshold = -8f;
 
-    public List<Vector3> walkableSurface;
-
     public float forceMultiplier = 10;
 
-    //private ToadController toadController;
+    public List<Vector3> destroyedCoins = new List<Vector3>();
 
     void Awake()
     {
         rBody = GetComponent<Rigidbody>();
         controls = new PlayerControls();
         controls.Enable();
-        // should I also obtain platform in this method?
-        walkableSurface = new List<Vector3>();
-        //toadController = GetComponent<ToadController>();
+        if (Target == null)
+        {
+            Target = GameObject.FindGameObjectWithTag("Goal").transform;
+        }
     }
 
     public override void OnEpisodeBegin()
@@ -39,19 +38,26 @@ public class ARAgent : Agent
         // this sets conditions when agent reaches cube --> episode ends (regenerate platform or move goal)
         // if agent rolls off the platform put back on platform (or should we end episode)
 
+        rBody.velocity = Vector3.zero;
+        this.transform.position = Utility.currentAgentPosition + Vector3.up * 2;
 
-        // should generate platform
-
-
-        // if agent is falling
-        if (rBody.velocity.y < fallingThreshold)
+        destroyedCoins = new List<Vector3>();
+        GameObject[] allCoins = GameObject.FindGameObjectsWithTag("Coin");
+        if (allCoins != null)
         {
-            this.transform.localPosition = Utility.currentAgentPosition;
+            for (int i = allCoins.Length - 1; i >= 0; i--)
+            {
+                Utility.SafeDestory(allCoins[i].gameObject);
+            }
         }
+
+        CoinGenerator coins = GameObject.FindObjectOfType(typeof(CoinGenerator)) as CoinGenerator;
+        coins.PlaceCoins();
 
         // place target farther than player
         // Move the target to a new spot - should have tiles in array from environment
-        Target.localPosition = Utility.walkableSurface[0];
+        //Target.position = Utility.walkableSurface[0] + Vector3.up * 3;
+        //Utility.walkableSurface.Remove(Utility.walkableSurface[0]);
     }
 
     // information to collect to send to brain to make decision
@@ -73,43 +79,13 @@ public class ARAgent : Agent
         // Obtain actions
         var actions = actionBuffers.ContinuousActions;
 
-        Vector3 controlSignal = Vector3.zero;
-
-        // Clamp to remove extreme values
-        for (var i = 0; i < actionBuffers.ContinuousActions.Length; i++)
-        {
-            actions[i] = Mathf.Clamp(actions[i], -1f, 1f);
-        }
+        Vector2 controlSignal = Vector2.zero;
 
         controlSignal.x = actions[0];
-        controlSignal.y = 0;
-        controlSignal.z = actions[2];
+        controlSignal.y = actions[2];
 
-        //var jump = ScaleAction(actions[1], 0, 1);
-
-        // smooth walking add to toad controller
-        rBody.AddForce((controlSignal) * forceMultiplier);
-        rBody.AddForce(new Vector3(0, actions[1] * 0.5f, 0), ForceMode.Impulse);
-
-        //orientation = controlSignal;
-
-        // Rewards
-        float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
-
-        // Reached target
-        if (distanceToTarget < 1.42f)
-        {
-            SetReward(1.0f);
-            EndEpisode();
-        }
-
-        // Maybe also set reward when coin is obtained? 
-
-        // Fell off platform
-        else if (rBody.velocity.y < fallingThreshold)
-        {
-            EndEpisode();
-        }
+        ToadController.Instance.Move(controlSignal);
+        ToadController.Instance.Jump(actions[1]);
     }
 
     // Overwrites input actions with keyboard input
@@ -126,12 +102,34 @@ public class ARAgent : Agent
 
     private void FixedUpdate()
     {
-        
+
+        // Rewards
+        float distanceToTarget = Vector3.Distance(this.transform.position, Target.position);
+
+        //Debug.Log($"distnace to target: {distanceToTarget}");
+
+        // Fell off platform
+        if (rBody.velocity.y < fallingThreshold)
+        {
+            AddReward(-10.0f);
+            EndEpisode();
+        }
     }
 
-    private void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject.tag == "Goal")
+        {
+            Debug.Log("Here in collisions");
+            AddReward(10.0f);
+            Debug.Log($"Episode {CompletedEpisodes}, Reward: {GetCumulativeReward()}");
+            EndEpisode();
+        }
+    }
+
+    public void AddDestoryedCoinToList(Vector3 coins)
+    {
+        destroyedCoins.Add(coins);
     }
 }
  

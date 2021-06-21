@@ -12,16 +12,16 @@ public class CoinBehaviour : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        var agent = collision.gameObject.GetComponent<Agent>();
-        var player = collision.gameObject.GetComponent<ToadController>();
-        if (agent != null)
+        string _tag = collision.gameObject.tag;
+        if (_tag == "Agent")
         {
-            agent.AddReward(0.1f);
+            //ARAgent tmp = collision.gameObject.GetComponent<ARAgent>();
+            //tmp.AddReward(0.1f);
             Destroy(this.gameObject);
         }
-        if (player != null)
+        if (_tag  ==  "Player")
         {
-            player.numOfCoins++;
+            collision.gameObject.GetComponent<ToadController>().numOfCoins++;
             Destroy(this.gameObject);
         }
     }

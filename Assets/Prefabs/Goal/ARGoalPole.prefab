@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7588575823082920724}
+  - component: {fileID: 7796049398886398880}
+  - component: {fileID: 1764159061707646602}
   m_Layer: 12
   m_Name: ARGoalPole
   m_TagString: Goal
@@ -24,20 +26,20 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7588575823082920725}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 3, z: 1}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 2, y: 4, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 8777427154650049190}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &3650857618434022386
+--- !u!54 &7796049398886398880
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251860959593295900}
+  m_GameObject: {fileID: 7588575823082920725}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -47,6 +49,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!65 &1764159061707646602
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7588575823082920725}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.48, y: 8.71, z: 1.59}
+  m_Center: {x: 0, y: 4.25, z: 0}
 --- !u!1001 &7588575823276933120
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147,12 +162,22 @@ PrefabInstance:
     - target: {fileID: 1986492353007437256, guid: 5626ab31af943794da3553b33a437dca,
         type: 3}
       propertyPath: m_Size.y
-      value: 8.61
+      value: 8.71
       objectReference: {fileID: 0}
     - target: {fileID: 1986492353007437256, guid: 5626ab31af943794da3553b33a437dca,
         type: 3}
       propertyPath: m_Center.y
-      value: 4.15
+      value: 4.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1986492353007437256, guid: 5626ab31af943794da3553b33a437dca,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 1986492353007437256, guid: 5626ab31af943794da3553b33a437dca,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2005357836329218076, guid: 5626ab31af943794da3553b33a437dca,
         type: 3}
@@ -179,6 +204,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 4683935203616688347, guid: 5626ab31af943794da3553b33a437dca,
+        type: 3}
+      propertyPath: m_TagString
+      value: GoalPost
+      objectReference: {fileID: 0}
     - target: {fileID: 4740554274667390395, guid: 5626ab31af943794da3553b33a437dca,
         type: 3}
       propertyPath: m_Layer
@@ -204,14 +234,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3108350408982263521, guid: 5626ab31af943794da3553b33a437dca, type: 3}
+    - {fileID: 1986492353007437256, guid: 5626ab31af943794da3553b33a437dca, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5626ab31af943794da3553b33a437dca, type: 3}
---- !u!1 &8251860959593295900 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2005357836329218076, guid: 5626ab31af943794da3553b33a437dca,
-    type: 3}
-  m_PrefabInstance: {fileID: 7588575823276933120}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8777427154650049190 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1197859641447590566, guid: 5626ab31af943794da3553b33a437dca,

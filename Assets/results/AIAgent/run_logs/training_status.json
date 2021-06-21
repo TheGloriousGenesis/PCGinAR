@@ -1,0 +1,23 @@
+{
+    "ARAgent": {
+        "checkpoints": [
+            {
+                "steps": 35608,
+                "file_path": "results\\AIAgent\\ARAgent\\ARAgent-35608.onnx",
+                "reward": 3.3999999364217124,
+                "creation_time": 1623537116.537978
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 35608,
+            "file_path": "results\\AIAgent\\ARAgent.onnx",
+            "reward": 3.3999999364217124,
+            "creation_time": 1623537116.537978
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.25.0",
+        "torch_version": "1.8.1"
+    }
+}

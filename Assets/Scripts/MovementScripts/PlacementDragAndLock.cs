@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using BasicGeneticAlgorithmNS;
@@ -47,6 +48,8 @@ public class PlacementDragAndLock : MonoBehaviour
 
     void Awake()
     {
+        EnhancedTouchSupport.Enable();
+
         arRaycastManager = GetComponent<ARRaycastManager>();
 
         if (lockButton != null)
@@ -78,15 +81,22 @@ public class PlacementDragAndLock : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0)
+        var activeTouches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
+
+        // if user touches the screen
+        if (activeTouches.Count > 0)
         {
-            Touch touch = Input.GetTouch(0);
+            // Obtain first touch point
+            var touch = activeTouches[0];
 
-            touchPosition = touch.position;
+            bool isOverUI = touch.screenPosition.IsPointOverUIObject();
 
-            if (touch.phase == TouchPhase.Began)
+            if (isOverUI) return;
+
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
             {
-                Ray ray = arCamera.ScreenPointToRay(touch.position);
+                // convert screen ray to action ray
+                Ray ray = arCamera.ScreenPointToRay(touch.screenPosition);
                 RaycastHit hitObject;
                 if (Physics.Raycast(ray, out hitObject))
                 {
@@ -97,15 +107,15 @@ public class PlacementDragAndLock : MonoBehaviour
                 }
             }
 
-            if (touch.phase == TouchPhase.Ended)
+            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
             {
                 onTouchHold = false;
             }
+
+            MoveGameObject();
+
+            PinchAndZoom();
         }
-
-        MoveGameObject();
-
-        PinchAndZoom();
     }
 
     private void MoveGameObject()
@@ -176,13 +186,13 @@ public class PlacementDragAndLock : MonoBehaviour
         }
     }
 
-    private GameObject CreateGame(Vector3 plane, Quaternion orientation)
+    public GameObject CreateGame(Vector3 plane, Quaternion orientation)
     {
         playerStats.text = "Coin counter: 0";
         ResetGameArea();
 
         PlatformGenerator platform = GameObject.FindObjectOfType(typeof(PlatformGenerator)) as PlatformGenerator;
-        platform.CreatePlatform(plane, orientation);
+        platform.CreatePlatform(orientation);
 
         CoinGenerator coins = GameObject.FindObjectOfType(typeof(CoinGenerator)) as CoinGenerator;
         coins.PlaceCoins();
@@ -195,8 +205,8 @@ public class PlacementDragAndLock : MonoBehaviour
         GameObject game = GameObject.Find("/GAME");
 
         // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
-        game.transform.position = plane;
-        game.transform.rotation = Quaternion.Inverse(game.transform.rotation);
+        //game.transform.position = plane;
+        //game.transform.rotation = Quaternion.Inverse(game.transform.rotation);
 
         // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
         // have tried to rescale before brick added and that didnt work so think about it
@@ -224,13 +234,11 @@ public class PlacementDragAndLock : MonoBehaviour
             }
         }
 
-        GameObject[] goal = GameObject.FindGameObjectsWithTag("Goal");
+        GameObject goal = GameObject.FindGameObjectWithTag("Goal");
+
         if (goal != null)
         {
-            for (int i = goal.Length - 1; i >= 0; i--)
-            {
-                Utility.SafeDestory(goal[i].gameObject);
-            }
+            Utility.SafeDestory(goal);
         }
 
         GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
@@ -240,6 +248,12 @@ public class PlacementDragAndLock : MonoBehaviour
             {
                 Utility.SafeDestory(player[i].gameObject);
             }
+        }
+
+        GameObject agent = GameObject.FindGameObjectWithTag("Agent");
+        if (agent != null)
+        {
+            Utility.SafeDestory(agent.gameObject);
         }
 
     }

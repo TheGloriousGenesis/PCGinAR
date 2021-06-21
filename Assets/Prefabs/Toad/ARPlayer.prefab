@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8984989426873966891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 2557892311713622275}
   m_Father: {fileID: 0}
@@ -96,17 +96,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e6b2753eb78ed4da57f01cb7f6b0a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 4726953990239154548}
-  moveSpeed: 3
+  moveSpeed: 10
   turnSpeed: 3
-  jump: 3
+  jump: 1.5
   isGrounded: 0
-  anim: {fileID: 2273998590006084949}
   cameraTransform: {fileID: 2673622830390794182, guid: 60381462928260f46a9d199953b098ea,
     type: 3}
   falling: 0
   fallingThreshold: -9
   numOfCoins: 0
+  maxIncline: 45
 --- !u!1001 &2987812715994562658
 PrefabInstance:
   m_ObjectHideFlags: 0
