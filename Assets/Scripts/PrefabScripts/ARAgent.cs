@@ -7,6 +7,8 @@ using Unity.MLAgents.Actuators;
 
 public class ARAgent : Agent
 {
+    private GenerateGame game;
+
     private Rigidbody rBody;
 
     private Transform Target;
@@ -19,6 +21,10 @@ public class ARAgent : Agent
 
     public List<Vector3> destroyedCoins = new List<Vector3>();
 
+    public System.Random rand = new System.Random();
+
+    private bool goalReached = false;
+
     void Awake()
     {
         rBody = GetComponent<Rigidbody>();
@@ -28,36 +34,39 @@ public class ARAgent : Agent
         {
             Target = GameObject.FindGameObjectWithTag("Goal").transform;
         }
+        if (game == null)
+        {
+            game = GameObject.FindObjectOfType(typeof(GenerateGame)) as GenerateGame;
+        }
     }
 
     public override void OnEpisodeBegin()
     {
         // used to set up an environment for new episode
-        // usually initialised in a random manner so agent can solve task in variety of conditions
 
         // this sets conditions when agent reaches cube --> episode ends (regenerate platform or move goal)
         // if agent rolls off the platform put back on platform (or should we end episode)
 
         rBody.velocity = Vector3.zero;
-        this.transform.position = Utility.currentAgentPosition + Vector3.up * 2;
 
-        destroyedCoins = new List<Vector3>();
-        GameObject[] allCoins = GameObject.FindGameObjectsWithTag("Coin");
-        if (allCoins != null)
-        {
-            for (int i = allCoins.Length - 1; i >= 0; i--)
-            {
-                Utility.SafeDestory(allCoins[i].gameObject);
-            }
-        }
+        // Destory coins and reset game map so we can update it with new positions
+        game.DestoryCoins();
+        game.ResetGamePlacement();
 
-        CoinGenerator coins = GameObject.FindObjectOfType(typeof(CoinGenerator)) as CoinGenerator;
-        coins.PlaceCoins();
+        // randomly find position for player and place. Update gameplacement map on where player is
+        List<Vector3> pos = new List<Vector3>(Utility.gamePlacement.Keys);
+        int indexPlayer = rand.Next(pos.Count);
+        this.transform.position = pos[indexPlayer] + BlockPosition.UP * 2;
+        Utility.gamePlacement[pos[indexPlayer]] = BlockType.PLAYER;
 
-        // place target farther than player
-        // Move the target to a new spot - should have tiles in array from environment
-        //Target.position = Utility.walkableSurface[0] + Vector3.up * 3;
-        //Utility.walkableSurface.Remove(Utility.walkableSurface[0]);
+        //remove player position and then place goal. Update gameplacement map on where goal is
+        pos.RemoveAt(indexPlayer);
+        int indexGoal = rand.Next(pos.Count);
+        this.Target.position = pos[indexGoal] + BlockPosition.UP * 2;
+        Utility.gamePlacement[pos[indexGoal]] = BlockType.GOAL;
+
+        // place coins where player and goal are not
+        game.PlaceCoins();
     }
 
     // information to collect to send to brain to make decision
@@ -102,12 +111,6 @@ public class ARAgent : Agent
 
     private void FixedUpdate()
     {
-
-        // Rewards
-        float distanceToTarget = Vector3.Distance(this.transform.position, Target.position);
-
-        //Debug.Log($"distnace to target: {distanceToTarget}");
-
         // Fell off platform
         if (rBody.velocity.y < fallingThreshold)
         {
@@ -120,7 +123,7 @@ public class ARAgent : Agent
     {
         if (collision.gameObject.tag == "Goal")
         {
-            Debug.Log("Here in collisions");
+            goalReached = true;
             AddReward(10.0f);
             Debug.Log($"Episode {CompletedEpisodes}, Reward: {GetCumulativeReward()}");
             EndEpisode();

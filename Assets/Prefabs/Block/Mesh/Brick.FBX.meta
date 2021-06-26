@@ -40,7 +40,7 @@ ModelImporter:
       name: BlockBrickMat00
     second: {fileID: 2100000, guid: 8cea04b1f4bff3742a55773bb98b91b0, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1

@@ -24,10 +24,10 @@ public class PlacementDragAndLock : MonoBehaviour
     [SerializeField]
     private float defaultRotation = 180;
 
-    private GameObject placedObject;
-
     [SerializeField]
-    private Text playerStats;
+    private GenerateGame game;
+
+    private GameObject placedObject;
 
     private Vector2 touchPosition = default;
 
@@ -62,7 +62,7 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             // when some one presses button call method (in brackets)
             generateButton.onClick.AddListener(delegate {
-                CreateGame(new Vector3(), Quaternion.identity);
+                game.CreateGame(Constants.playerType);
             });
         }
     }
@@ -129,12 +129,12 @@ public class PlacementDragAndLock : MonoBehaviour
                 if (defaultRotation > 0)
                 {
                     // changes rotation to camera
-                    placedObject = CreateGame(hitPose.position, Quaternion.identity);
+                    placedObject = game.CreateGame(hitPose.position, Quaternion.identity, Constants.playerType);
                     placedObject.transform.Rotate(Vector3.up, defaultRotation);
                 }
                 else
                 {
-                    placedObject = CreateGame(hitPose.position, hitPose.rotation);
+                    placedObject = game.CreateGame(hitPose.position, hitPose.rotation, Constants.playerType);
                 }
             }
             else
@@ -184,77 +184,5 @@ public class PlacementDragAndLock : MonoBehaviour
             }
 
         }
-    }
-
-    public GameObject CreateGame(Vector3 plane, Quaternion orientation)
-    {
-        playerStats.text = "Coin counter: 0";
-        ResetGameArea();
-
-        PlatformGenerator platform = GameObject.FindObjectOfType(typeof(PlatformGenerator)) as PlatformGenerator;
-        platform.CreatePlatform(orientation);
-
-        CoinGenerator coins = GameObject.FindObjectOfType(typeof(CoinGenerator)) as CoinGenerator;
-        coins.PlaceCoins();
-
-        return ConfigureGameSpace(plane);
-    }
-
-    private GameObject ConfigureGameSpace(Vector3 plane)
-    {
-        GameObject game = GameObject.Find("/GAME");
-
-        // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
-        //game.transform.position = plane;
-        //game.transform.rotation = Quaternion.Inverse(game.transform.rotation);
-
-        // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
-        // have tried to rescale before brick added and that didnt work so think about it
-        //GameObject.Find("/GAME").transform.localScale = GameObject.Find("/GAME").transform.localScale;
-        return game;
-    }
-
-    private void ResetGameArea()
-    {
-        GameObject[] platform = GameObject.FindGameObjectsWithTag("Brick");
-        if (platform != null)
-        {
-            for (int i = platform.Length - 1; i>=0; i--)
-            {
-                Utility.SafeDestory(platform[i].gameObject);
-            }
-        }
-
-        GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
-        if (coins != null)
-        {
-            for (int i = coins.Length - 1; i >= 0; i--)
-            {
-                Utility.SafeDestory(coins[i].gameObject);
-            }
-        }
-
-        GameObject goal = GameObject.FindGameObjectWithTag("Goal");
-
-        if (goal != null)
-        {
-            Utility.SafeDestory(goal);
-        }
-
-        GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
-        if (player != null)
-        {
-            for (int i = player.Length - 1; i >= 0; i--)
-            {
-                Utility.SafeDestory(player[i].gameObject);
-            }
-        }
-
-        GameObject agent = GameObject.FindGameObjectWithTag("Agent");
-        if (agent != null)
-        {
-            Utility.SafeDestory(agent.gameObject);
-        }
-
     }
 }

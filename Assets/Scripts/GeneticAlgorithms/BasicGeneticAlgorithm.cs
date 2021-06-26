@@ -87,7 +87,6 @@ namespace BasicGeneticAlgorithmNS
     public class BasicGeneticAlgorithm
     {
         //public bool[,,] blockMatrix = new bool[Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH];
-
         public List<Chromosone> GenerateGenotype()
         {
             // A Genotype is the population in computation space
@@ -102,9 +101,10 @@ namespace BasicGeneticAlgorithmNS
 
         public Chromosone GenerateChromosome()
         {
+            Random.seed = Constants.SEED;
             // a genotype is a solution to the level. feed in number of blocks and restrictions to generate possible level
             List<Gene> genes = new List<Gene>();
-            
+
             // todo: check how many genes in chromosone good fit
             for (int i=0; i < Constants.CHROMOSONE_LENGTH; i++)
             {

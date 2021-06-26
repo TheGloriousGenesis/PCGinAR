@@ -8,20 +8,23 @@ using UnityEngine.AI;
 
 public class PlatformGenerator : MonoBehaviour
 {
+
+    #region Platform assets
     public PrefabFactory prefabs;
 
     public BlockTile[] blockTiles;
+    #endregion
 
     private BasicGeneticAlgorithm bga = new BasicGeneticAlgorithm();
 
-    public NavMeshSurface[] surfaces;
+    //public NavMeshSurface surface;
 
     public void CreatePlatform(Quaternion orientation)
     {
         PlacePlatform(orientation);
         ObtainWalkableSurface();
-        PlaceGoal(Utility.walkableSurface[0], orientation);
-        PlacePlayer(orientation);
+        // get the first key in the dictionary to place goal
+        PlaceGoal(Utility.gamePlacement.ElementAt(0).Key, orientation);
     }
 
     private void PlacePlatform(Quaternion orientation)
@@ -31,7 +34,8 @@ public class PlatformGenerator : MonoBehaviour
         Vector3 blockSize = prefabs[BlockType.BASICBLOCK].transform.localScale;
 
         List<Gene> genes = chromosone.genes;
-        List<Vector3> position = genes.SelectMany(x => x.allele.blockPositions).ToList();
+        // select unique from list 
+        List<Vector3> position = genes.SelectMany(x => x.allele.blockPositions).Distinct().ToList();
 
         foreach (Vector3 i in position)
         {
@@ -39,11 +43,7 @@ public class PlatformGenerator : MonoBehaviour
             block1.transform.parent = this.transform;
         }
 
-        Debug.Log("surfaces to bake: " + surfaces.Length);
-        for (int i = 0; i < surfaces.Length; i++)
-        {
-            surfaces[i].BuildNavMesh();
-        }
+        //surface.BuildNavMesh();
     }
 
     private void ObtainWalkableSurface()
@@ -59,17 +59,17 @@ public class PlatformGenerator : MonoBehaviour
                 surface.Add(child.transform.position);
             }
         }
-        Utility.walkableSurface = surface.ToList();
-        Debug.Log("Walkable tiles: " + Utility.walkableSurface.Count);
+
+        Utility.gamePlacement = surface.ToDictionary(x => x, x => BlockType.NONE);
     }
 
-    private GameObject PlacePlayer(Quaternion rotation)
+    public GameObject PlacePlayer(Quaternion rotation, BlockType playerType)
     {
         GameObject goal = GameObject.FindGameObjectWithTag("GoalPost");
         float maxDistance = 0f;
         Vector3 farthestBrick = new Vector3();
 
-        foreach (Vector3 child in Utility.walkableSurface)
+        foreach (Vector3 child in Utility.gamePlacement.Keys)
         {
             //Debug.DrawRay(goal.transform.position, child, Color.white, 20);
 
@@ -81,21 +81,38 @@ public class PlatformGenerator : MonoBehaviour
                 farthestBrick = child;
             }
         }
-        Utility.currentAgentPosition = farthestBrick;
 
         //Debug.DrawRay(goal.transform.position, farthestBrick, Color.green, 30);
 
-        GameObject player = Instantiate(prefabs[BlockType.AGENT], farthestBrick + BlockPosition.UP * 2, rotation);
+        GameObject player;
+        if (playerType == BlockType.AGENT)
+        {
+            player = GameObject.FindGameObjectWithTag("Agent");
+            if (player == null)
+            {
+                player = Instantiate(prefabs[BlockType.PLAYER], farthestBrick + BlockPosition.UP * 2, rotation);
+            } else
+            {
+                player.gameObject.transform.position = farthestBrick + BlockPosition.UP * 2;
+                player.gameObject.transform.rotation = rotation;
+            }
+
+        }
+        else
+        {
+            player = Instantiate(prefabs[BlockType.AGENT], farthestBrick + BlockPosition.UP * 2, rotation);
+        }
+
         player.transform.parent = this.transform.parent;
 
-        Utility.walkableSurface.Remove(farthestBrick);
+        Utility.gamePlacement[farthestBrick] = BlockType.PLAYER;
 
         return player;
     }
 
     private void PlaceGoal(Vector3 position, Quaternion rotation)
     {
-        Utility.walkableSurface.Remove(position);
+        Utility.gamePlacement[position] = BlockType.GOAL;
 
         GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], position + Vector3.up * 2, rotation);
         goal_.transform.parent = this.transform.parent;

@@ -13,7 +13,7 @@ public static class Constants
     public const double MUTATION_PROBABILITY = 0.2; //1/n where n is length of genome
     public const int ITERATION = 1;
     public const int POPULATION_SIZE = 30;
+    public const BlockType playerType = BlockType.AGENT;
 
-
-
+    public const int SEED = 123;
 }

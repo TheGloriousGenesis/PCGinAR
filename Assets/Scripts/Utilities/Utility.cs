@@ -9,7 +9,9 @@ using UnityEngine.EventSystems;
 public static class Utility
 {
     public static List<Vector3> walkableSurface = new List<Vector3>();
-    public static Vector3 currentAgentPosition = new Vector3();
+
+    public static Dictionary<Vector3, BlockType> gamePlacement = new Dictionary<Vector3, BlockType>();
+    //public static Vector3 currentAgentPosition = new Vector3();
     public static T DeepClone<T>(this T obj)
     {
         using (var ms = new MemoryStream())
@@ -29,6 +31,39 @@ public static class Utility
         obj.name = "$disposed";
         UnityEngine.Object.Destroy(obj);
         obj.SetActive(false);
+    }
+
+    public static List<Vector3> GetKeyFromValue(Dictionary<Vector3, BlockType> dic, BlockType value)
+    {
+        List<Vector3> allPositions = new List<Vector3>();
+
+        foreach(KeyValuePair<Vector3, BlockType> i in dic)
+        {
+            if (i.Value == value)
+            {
+                allPositions.Add(i.Key);
+            }
+        }
+
+        return allPositions;
+    }
+
+    public static void ReplaceValueInMap(Dictionary<Vector3, BlockType> dic, BlockType replace, BlockType value)
+    {
+        List<Vector3> replacableKeys = new List<Vector3>();
+
+        foreach(KeyValuePair<Vector3, BlockType> i in dic)
+        {
+            if (i.Value == replace)
+            {
+                replacableKeys.Add(i.Key);
+            }
+        }
+        
+        foreach(Vector3 i in replacableKeys)
+        {
+            dic[i] = value;
+        }
     }
 }
 
@@ -62,7 +97,8 @@ public enum BlockType
     COIN,
     ENEMY_1,
     ENEMY_2,
-    AGENT
+    AGENT,
+    NONE
 }
 
 [System.Serializable]
