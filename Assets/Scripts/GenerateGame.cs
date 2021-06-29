@@ -15,11 +15,10 @@ public class GenerateGame : MonoBehaviour
     [SerializeField]
     private CoinGenerator coins;
 
-    private void Start()
-    {
-        CreateGame(Constants.playerType);
-    }
-
+    //public void Start()
+    //{
+    //    CreateGame(Constants.playerType);
+    //}
     public GameObject CreateGame(BlockType playerType)
     {
         return CreateGame(new Vector3(), Quaternion.identity, playerType);

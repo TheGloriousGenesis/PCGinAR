@@ -101,7 +101,7 @@ namespace BasicGeneticAlgorithmNS
 
         public Chromosone GenerateChromosome()
         {
-            Random.seed = Constants.SEED;
+            //Random.seed = Constants.SEED;
             // a genotype is a solution to the level. feed in number of blocks and restrictions to generate possible level
             List<Gene> genes = new List<Gene>();
 

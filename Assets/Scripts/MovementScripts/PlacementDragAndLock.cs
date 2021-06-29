@@ -7,6 +7,7 @@ using BasicGeneticAlgorithmNS;
 using BaseGeneticClass;
 using System.Linq;
 using System;
+using eDmitriyAssets.NavmeshLinksGenerator;
 
 
 [RequireComponent(typeof(ARRaycastManager))]
@@ -25,7 +26,8 @@ public class PlacementDragAndLock : MonoBehaviour
     private float defaultRotation = 180;
 
     [SerializeField]
-    private GenerateGame game;
+    //private GenerateGame game;
+    private NavMeshLinks_AutoPlacer game;
 
     private GameObject placedObject;
 
@@ -62,7 +64,7 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             // when some one presses button call method (in brackets)
             generateButton.onClick.AddListener(delegate {
-                game.CreateGame(Constants.playerType);
+                game.PlaceGame();
             });
         }
     }
@@ -129,12 +131,12 @@ public class PlacementDragAndLock : MonoBehaviour
                 if (defaultRotation > 0)
                 {
                     // changes rotation to camera
-                    placedObject = game.CreateGame(hitPose.position, Quaternion.identity, Constants.playerType);
+                    placedObject = game.PlaceGame(hitPose.position, Quaternion.identity, Constants.playerType);
                     placedObject.transform.Rotate(Vector3.up, defaultRotation);
                 }
                 else
                 {
-                    placedObject = game.CreateGame(hitPose.position, hitPose.rotation, Constants.playerType);
+                    placedObject = game.PlaceGame(hitPose.position, hitPose.rotation, Constants.playerType);
                 }
             }
             else

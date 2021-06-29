@@ -35,15 +35,14 @@ public class ClickToMove : MonoBehaviour
 
         if (elapsed > 1.0f)
         {
-            Debug.Log($"Current position of goal: {target.transform.position}");
             elapsed -= 1.0f;
             bool pathFound = NavMesh.CalculatePath(transform.position, target.transform.position, NavMesh.AllAreas, path);
-            Debug.Log($"is path found: {pathFound}");
+            Debug.Log($"is path found: {pathFound}, status: {path.status}");
         }
 
         for (int i = 0; i < path.corners.Length - 1; i++)
         {
-            Debug.DrawLine(path.corners[i] + Vector3.up, path.corners[i + 1] + Vector3.up, Color.red);
+            Debug.DrawLine(path.corners[i] + Vector3.up, path.corners[i + 1] + Vector3.up, Color.black);
         } 
 
         //if (path != null)

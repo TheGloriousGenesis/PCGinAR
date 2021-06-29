@@ -100,7 +100,7 @@ public class PlatformGenerator : MonoBehaviour
         }
         else
         {
-            player = Instantiate(prefabs[BlockType.AGENT], farthestBrick + BlockPosition.UP * 2, rotation);
+            player = Instantiate(prefabs[BlockType.PLAYER], farthestBrick + BlockPosition.UP * 2, rotation);
         }
 
         player.transform.parent = this.transform.parent;
