@@ -12,10 +12,10 @@ namespace BasicGeneticAlgorithmNS
     public class FitnessHelper
     {
         // assumes chromosome and solution are bitstrings
-        private Chromosone solution;
+        //private Chromosone solution;
         public double Fitness(Chromosone chromosome)
         {
-            int platformValue = Compute(chromosome);
+            float platformValue = chromosome.CalculateFitness();
             // normalise value to be between 0 and 1
             double score = 1.0 / (double)(platformValue + 1);
 
@@ -30,55 +30,55 @@ namespace BasicGeneticAlgorithmNS
         // https://en.wikipedia.org/wiki/Levenshtein_distance
         // https://www.dotnetperls.com/levenshtein
         // dynamic programming
-        private static int Compute(Chromosone s)
-        {
-            // to compute fitness implement agent to see if it can reach end point
-            // or implement a*
-            //int n = s.genes.Count;
-            //int m = t.Length;
-            //var d = new int[n + 1, m + 1];
+        //private static int Compute(Chromosone s)
+        //{
+        //    // to compute fitness implement agent to see if it can reach end point
+        //    // or implement a*
+        //    //int n = s.genes.Count;
+        //    //int m = t.Length;
+        //    //var d = new int[n + 1, m + 1];
 
-            //// Step 1
-            //if (n == 0)
-            //{
-            //    return m;
-            //}
+        //    //// Step 1
+        //    //if (n == 0)
+        //    //{
+        //    //    return m;
+        //    //}
 
-            //if (m == 0)
-            //{
-            //    return n;
-            //}
+        //    //if (m == 0)
+        //    //{
+        //    //    return n;
+        //    //}
 
-            //// Step 2
-            //for (int i = 0; i <= n; ++i)
-            //{
-            //    d[i, 0] = i;
-            //}
-            //for (int j = 0; j <= m; ++j)
-            //{
-            //    d[j, 0] = j;
-            //}
+        //    //// Step 2
+        //    //for (int i = 0; i <= n; ++i)
+        //    //{
+        //    //    d[i, 0] = i;
+        //    //}
+        //    //for (int j = 0; j <= m; ++j)
+        //    //{
+        //    //    d[j, 0] = j;
+        //    //}
 
-            //// Step 3
-            //for (int i = 1; i <= n; i++)
-            //{
-            //    //Step 4
-            //    for (int j = 1; j <= m; j++)
-            //    {
-            //        // Step 5
-            //        int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+        //    //// Step 3
+        //    //for (int i = 1; i <= n; i++)
+        //    //{
+        //    //    //Step 4
+        //    //    for (int j = 1; j <= m; j++)
+        //    //    {
+        //    //        // Step 5
+        //    //        int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
 
-            //        // Step 6
-            //        d[i, j] = Math.Min(
-            //            Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-            //            d[i - 1, j - 1] + cost
-            //        );
-            //    }
-            //}
-            //// Step 7
-            //return d[n, m];
-            return 0;
-        }
+        //    //        // Step 6
+        //    //        d[i, j] = Math.Min(
+        //    //            Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
+        //    //            d[i - 1, j - 1] + cost
+        //    //        );
+        //    //    }
+        //    //}
+        //    //// Step 7
+        //    //return d[n, m];
+        //    return 0;
+        //}
     }
 
 
@@ -86,32 +86,56 @@ namespace BasicGeneticAlgorithmNS
     [System.Serializable]
     public class BasicGeneticAlgorithm
     {
-        //public bool[,,] blockMatrix = new bool[Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH, Constants.MAX_PLATFORM_LENGTH];
-        public List<Chromosone> GenerateGenotype()
+        private int populationSize;
+        private int iteration;
+        private int chromosoneSize;
+        private Func<Chromosone, float> fitnessFunction;
+        private float crossoverProbability;
+        private float mutationProbability;
+        System.Random random;
+        private int elitism;
+        private List<Chromosone> testPopulation { get; set; }
+
+        public BasicGeneticAlgorithm(int pOPULATION_SIZE, int cHROMOSONE_LENGTH, float cROSSOVER_PROBABILITY, System.Random random,
+            Func<Chromosone, float> fitnessFunction, int eLITISM, float mUTATION_PROBABILITY, int iTERATION)
+        {
+            this.populationSize = pOPULATION_SIZE;
+            this.chromosoneSize = cHROMOSONE_LENGTH;
+            this.crossoverProbability = cROSSOVER_PROBABILITY;
+            this.random = random;
+            this.fitnessFunction = fitnessFunction;
+            this.elitism = eLITISM;
+            this.mutationProbability = mUTATION_PROBABILITY;
+            this.iteration = iTERATION;
+            this.fitnessFunction = fitnessFunction;
+            this.testPopulation = GenerateGenotype(pOPULATION_SIZE);
+        }
+
+        public List<Chromosone> GenerateGenotype(int popSize)
         {
             // A Genotype is the population in computation space
             List<Chromosone> genotype = new List<Chromosone>();
-            for (int i=0; i < Constants.POPULATION_SIZE; i++)
+            for (int i=0; i < popSize; i++)
             {
-                genotype.Add(GenerateChromosome());
+                genotype.Add(GenerateChromosome(i));
             }
 
             return genotype;
         }
 
-        public Chromosone GenerateChromosome()
+        public Chromosone GenerateChromosome(int id)
         {
-            //Random.seed = Constants.SEED;
             // a genotype is a solution to the level. feed in number of blocks and restrictions to generate possible level
             List<Gene> genes = new List<Gene>();
 
             // todo: check how many genes in chromosone good fit
-            for (int i=0; i < Constants.CHROMOSONE_LENGTH; i++)
+            for (int i=0; i < chromosoneSize; i++)
             {
                 genes.Add(GenerateGene());
             }
 
             Chromosone chromosone = new Chromosone();
+            chromosone.id_ = id;
             chromosone.genes = genes;
             return chromosone;
         }
@@ -134,8 +158,8 @@ namespace BasicGeneticAlgorithmNS
             positions.Add(centerBlock);
             for (int i = 0; i < 2; i++)
             {
-                // inclusive
-                int choosePosition = Random.Range(0, cubeNumbers.Count);
+                // check if it is inclusive?
+                int choosePosition = random.Next(0, cubeNumbers.Count);
                 positions.Add(cubeNumbers[choosePosition] + centerBlock);
                 cubeNumbers.Remove(cubeNumbers[choosePosition]);
             }
@@ -246,12 +270,12 @@ namespace BasicGeneticAlgorithmNS
         }
         
         //input chromosone output double for Func
-        public List<Chromosone> Run(Func<Chromosone, double> fitness)
+        public List<Chromosone> Run(Func<Chromosone, float> fitness)
         {
-            List<Chromosone> testPopulation = GenerateGenotype();
+            //List<Chromosone> testPopulation = GenerateGenotype();
             List<Chromosone> runPopulation = new List<Chromosone>();
 
-            double[] fitnesses = new double[Constants.POPULATION_SIZE];
+            double[] fitnesses = new double[populationSize];
 
             double sum = 0.0;
 
@@ -261,7 +285,7 @@ namespace BasicGeneticAlgorithmNS
 
             double randDouble = 0.0;
 
-            for (int iter = 0; iter < Constants.ITERATION; iter++)
+            for (int iter = 0; iter < iteration; iter++)
             {
                 runPopulation = new List<Chromosone>();
 
@@ -274,7 +298,9 @@ namespace BasicGeneticAlgorithmNS
                     sum += fitnesses[i];
                 }
 
-                if (iter == Constants.ITERATION - 1) break;
+                Debug.Log($"Sum of fitness at ITERATION - {iter + 1} : {sum}");
+
+                if (iter == iteration - 1) break;
 
                 while (runPopulation.Count < testPopulation.Count)
                 {
@@ -284,15 +310,15 @@ namespace BasicGeneticAlgorithmNS
 
                     // determine if crossover occurs.
                     randDouble = Random.value;
-                    if (randDouble <= Constants.CROSSOVER_PROBABILITY)
+                    if (randDouble <= crossoverProbability)
                     {
                         List<Chromosone> chromosones = Crossover(one, two).ToList();
                         one = chromosones[0];
                         two = chromosones[1];
                     }
 
-                    one = Mutate(one, Constants.MUTATION_PROBABILITY);
-                    two = Mutate(two, Constants.MUTATION_PROBABILITY);
+                    one = Mutate(one, mutationProbability);
+                    two = Mutate(two, mutationProbability);
 
                     runPopulation.Add(one);
                     runPopulation.Add(two);
@@ -306,8 +332,8 @@ namespace BasicGeneticAlgorithmNS
             double[] fitSort = fitnesses.ToArray();
 
             Array.Sort(fitSort, testSort);
-
-            return (List<Chromosone>)testSort.Take(1);
+            Debug.Log("Array length: " + testSort.Length);
+            return testSort.Take(1).ToList();
         }
 
         public int GetRandomWeightedIndex(float[] weights)

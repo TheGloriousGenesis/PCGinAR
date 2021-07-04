@@ -26,7 +26,10 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
 
         public GameObject sphereCast;
 
-        public GenerateGame generateGame;
+        //public GenerateGame generateGame;
+        public GameObject player;
+
+        public GameObject target;
 
         //public GameObject cube;
         public float tileWidth = 5f;
@@ -60,9 +63,6 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
 
 
 
-
-
-
         #region GridGen
 
         public void Generate()
@@ -85,24 +85,22 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
 
         public void Start()
         {
-            PlaceGame();
+            RefreshLinks();
         }
 
-        public void PlaceGame()
+        public void RefreshLinks()
         {
-            generateGame.CreateGame(Constants.playerType);
+            //generateGame.CreateGame(Constants.playerType);
             surface.RemoveData();
             surface.BuildNavMesh();
             Generate();
         }
 
-        public GameObject PlaceGame(Vector3 plane, Quaternion orientation, BlockType playerType)
+        public NavMeshPathStatus containsPath()
         {
-            GameObject game = generateGame.CreateGame(plane, orientation, playerType);
-            surface.RemoveData();
-            surface.BuildNavMesh();
-            Generate();
-            return game;
+            NavMeshPath path = new NavMeshPath();
+            bool pathAvailable = NavMesh.CalculatePath(player.transform.position, target.transform.position, NavMesh.AllAreas, path);
+            return path.status;
         }
 
         public void ClearLinks()
@@ -116,6 +114,12 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
             }
         }
 
+        public void ClearSurfaceData()
+        {
+            surface.RemoveData();
+        }
+
+
         private void PlaceTiles()
         {
             if (edges.Count == 0) return;
@@ -127,7 +131,7 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
                 //Debug.DrawLine(edge.start + Vector3.up * 0.5f, edge.end + Vector3.up * 0.5f, Color.green, 15);
 
                 // Edge length is 0.4 all around apart from a count which are 0.4000001
-                Debug.Log(edge.length);
+                //Debug.Log(edge.length);
                 // this is clamped to 0 because 0.4 is a float and this is casted into int
                 int tilesCountWidth = (int)Mathf.Clamp(edge.length / tileWidth, 0, 10000);
 
@@ -186,18 +190,46 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
             {
                 if (NavMesh.SamplePosition(raycastHit.point, out navMeshHit, 1f, NavMesh.AllAreas))
                 {
+                    NavMeshPath path = new NavMeshPath();
+                    NavMesh.CalculatePath(pos, navMeshHit.position, NavMesh.AllAreas, path);
+
                     //Debug.DrawLine(pos, navMeshHit.position, Color.green, 15);
+                    float dis = Vector3.Distance(pos, navMeshHit.position);
+                    Vector3 calcV3 = (pos - normal * Vector3.forward * 0.02f);
+                    float extremeDrop = calcV3.y - navMeshHit.position.y;
 
-                    if (Vector3.Distance(pos, navMeshHit.position) > 1.1f)
+                    if (path.status != NavMeshPathStatus.PathComplete)
                     {
-                        //added these 2 line to check to make sure there aren't flat horizontal links going through walls
-                        Vector3 calcV3 = (pos - normal * Vector3.forward * 0.02f);
-                        if ((calcV3.y - navMeshHit.position.y) > 1f)
+                        if (dis > 1.1f && (extremeDrop < maxJumpHeight))
                         {
+                            // should check if the y position is within a range. if navMeshHit.position.y < pos.y (angle wise) then
+                            // instantiate onewayLink. Else instantiate two way link
 
+                            //added these 2 line to check to make sure there aren't flat horizontal links going through walls
+                            //Vector3 calcV3 = (pos - normal * Vector3.forward * 0.02f);
+                            //if ((calcV3.y - navMeshHit.position.y) > 1f)
+                            //{
+
+                                //SPAWN NAVMESH LINKS
+                                Transform spawnedTransf = Instantiate(
+                                    linkPrefab.transform,
+                                    //pos - normal * Vector3.forward * 0.02f,
+                                    calcV3,
+                                    normal
+                                ) as Transform;
+
+                                var nmLink = spawnedTransf.GetComponent<NavMeshLink>();
+                                nmLink.startPoint = Vector3.zero;
+                                nmLink.endPoint = nmLink.transform.InverseTransformPoint(navMeshHit.position);
+                                nmLink.UpdateLink();
+
+                                spawnedTransf.SetParent(transform);
+                            //}
+                        } else if (dis > 1.1f && (extremeDrop > maxJumpHeight))
+                        {
                             //SPAWN NAVMESH LINKS
                             Transform spawnedTransf = Instantiate(
-                                linkPrefab.transform,
+                                onewayLinkPrefab.transform,
                                 //pos - normal * Vector3.forward * 0.02f,
                                 calcV3,
                                 normal
@@ -211,6 +243,7 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
                             spawnedTransf.SetParent(transform);
                         }
                     }
+
                 }
             }
 
@@ -232,7 +265,6 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
             //Debug.DrawLine(cheatStartPos, endPos, Color.white, 20);
             //Debug.DrawLine(startPos, endPos, Color.white, 2);
 
-
             NavMeshHit navMeshHit;
             RaycastHit raycastHit = new RaycastHit();
 
@@ -243,76 +275,52 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
 
             //Debug.DrawLine(pos, offSetPosY, Color.white, 20);
 
-            // ray cast to check for walls
-            if (!Physics.Raycast(offSetPosY, ReUsableV3, (maxJumpDist / 2), raycastLayerMask.value))
+            // todo: before there were checks to make sure links were not made in mesh. check to see if this happens in this change:
+            
+            // not sure why we use sphere cast radius and not jumpdistance ==> this is because the radius of the sphere cut after maxJumpDist
+            if (Physics.SphereCast(cheatStartPos, sphereCastRadius, ReUsableV3, out raycastHit, maxJumpDist, raycastLayerMask.value))
             {
-                //Debug.DrawRay(offSetPosY, ReUsableV3, Color.yellow, 15);
-                //Debug.DrawRay(pos, ReUsableV3, Color.yellow, 15);
-                Vector3 ReverseRayCastSpot = (offSetPosY + (ReUsableV3));
-                //now raycast back the other way to make sure we're not raycasting through the inside of a mesh the first time.
-                if (!Physics.Raycast(ReverseRayCastSpot, -ReUsableV3, (maxJumpDist + 1), raycastLayerMask.value))
+                //Debug.DrawRay(cheatStartPos, cheatStartPos + sphereCastRadius * Vector3.up, Color.red, 25);
+                //GameObject go = Instantiate(sphereCast);
+                //go.transform.position = cheatStartPos;
+                //go.transform.localScale = new Vector3(maxJumpDist * 2, maxJumpDist * 2, maxJumpDist * 2);
+
+                Vector3 cheatRaycastHit = LerpByDistance(raycastHit.point, endPos, .2f);
+                // some of these links are going through mesh
+                if (NavMesh.SamplePosition(cheatRaycastHit, out navMeshHit, 1f, NavMesh.AllAreas))
                 {
-                    //Debug.DrawRay(ReverseRayCastSpot, -ReUsableV3, Color.red, 25);
+                    //Debug.Log("Success");
 
-                    //if no walls 1 unit out then check for other colliders using the Cheat offset so as to not detect the edge we are spherecasting from.
-                    if (Physics.SphereCast(cheatStartPos, sphereCastRadius, ReUsableV3, out raycastHit, maxJumpDist, raycastLayerMask.value))
-                                                //if (Physics.Linecast(startPos, endPos, out raycastHit, raycastLayerMask.value, QueryTriggerInteraction.Ignore))
+                    // Do not make links on navmeshes that are already connected so check path from pos to navmeshhit
+                    NavMeshPath path = new NavMeshPath();
+                    NavMesh.CalculatePath(pos, navMeshHit.position, NavMesh.AllAreas, path);
+                    float dis = Vector3.Distance(pos, navMeshHit.position);
+
+                    if (path.status != NavMeshPathStatus.PathComplete && !Physics.Raycast(pos, navMeshHit.position) &&
+                        (dis > 1.1f))
                     {
-                        //Debug.DrawRay(cheatStartPos, cheatStartPos + sphereCastRadius * Vector3.up, Color.red, 25);
-                        //GameObject go = Instantiate(sphereCast);
-                        //go.transform.position = cheatStartPos;
-                        //go.transform.localScale = new Vector3(sphereCastRadius * 2, sphereCastRadius * 2, sphereCastRadius * 2);
+                        //Debug.Log($"Distance from edge to navmesh hit point {Vector3.Distance(pos, navMeshHit.position)}");
+                        //Debug.DrawLine(pos, navMeshHit.position, Color.red, 10);
 
-                        Vector3 cheatRaycastHit = LerpByDistance(raycastHit.point, endPos, .2f);
-                        // some of these links are going through mesh
-                        if (NavMesh.SamplePosition(cheatRaycastHit, out navMeshHit, 1f, NavMesh.AllAreas))
-                        {
-                            //Debug.Log("Success");
+                        //Should be both ways for horizontal links
 
-                            NavMeshPath path = new NavMeshPath();
+                        //SPAWN NAVMESH LINKS
+                        Transform spawnedTransf = Instantiate(
+                            linkPrefab.transform,
+                            pos - normal * Vector3.forward * 0.02f,
+                            normal
+                        ) as Transform;
 
-                            NavMesh.CalculatePath(pos, navMeshHit.position, NavMesh.AllAreas, path);
-                            if (path.status != NavMeshPathStatus.PathComplete && !Physics.Raycast(pos, navMeshHit.position) &&
-                                Vector3.Distance(pos, navMeshHit.position) > 1.1f)
-                            {
-                                //Debug.DrawLine(pos, navMeshHit.position, Color.red, 25);
-                                //SPAWN NAVMESH LINKS
-                                Transform spawnedTransf = Instantiate(
-                                    onewayLinkPrefab.transform,
-                                    pos - normal * Vector3.forward * 0.02f,
-                                    normal
-                                ) as Transform;
+                        var nmLink = spawnedTransf.GetComponent<NavMeshLink>();
+                        nmLink.startPoint = Vector3.zero;
+                        nmLink.endPoint = nmLink.transform.InverseTransformPoint(navMeshHit.position);
+                        nmLink.UpdateLink();
 
-                                var nmLink = spawnedTransf.GetComponent<NavMeshLink>();
-                                nmLink.startPoint = Vector3.zero;
-                                nmLink.endPoint = nmLink.transform.InverseTransformPoint(navMeshHit.position);
-                                nmLink.UpdateLink();
-
-                                spawnedTransf.SetParent(transform);
-                            }
-                            // should check if the y position is within a range. if navMeshHit.position.y < pos.y (angle wise) then
-                            // instantiate onewayLink. Else instantiate two way link
-
-                            //if (Vector3.Distance(pos, navMeshHit.position) > 1.1f)
-                            //{
-                            //    //SPAWN NAVMESH LINKS
-                            //    Transform spawnedTransf = Instantiate(
-                            //        onewayLinkPrefab.transform,
-                            //        pos - normal * Vector3.forward * 0.02f,
-                            //        normal
-                            //    ) as Transform;
-
-                            //    var nmLink = spawnedTransf.GetComponent<NavMeshLink>();
-                            //    nmLink.startPoint = Vector3.zero;
-                            //    nmLink.endPoint = nmLink.transform.InverseTransformPoint(navMeshHit.position);
-                            //    nmLink.UpdateLink();
-
-                            //    spawnedTransf.SetParent(transform);
-                            //}
-                        }
+                        spawnedTransf.SetParent(transform);
                     }
                 }
             }
+
             return result;
         }
 
@@ -328,7 +336,7 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
         #region EdgeGen
 
 
-        float triggerAngle = 0.999f;
+        //float triggerAngle = 0.999f;
 
         private void CalcEdges()
         {
@@ -364,35 +372,6 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
                 {
                     edge.facingNormal = Quaternion.LookRotation(Vector3.Cross(edge.end - edge.start, Vector3.up));
 
-                    //Never gets triggered: NOT SURE WHY
-                    if (edge.startUp.sqrMagnitude > 0)
-                    {
-                        var vect = Vector3.Lerp(edge.endUp, edge.startUp, 0.5f) -
-                                   Vector3.Lerp(edge.end, edge.start, 0.5f);
-                        edge.facingNormal = Quaternion.LookRotation(Vector3.Cross(edge.end - edge.start, vect));
-
-
-                        //FIX FOR NORMALs POINTING DIRECT TO UP/DOWN
-                        if (Mathf.Abs(Vector3.Dot(Vector3.up, (edge.facingNormal * Vector3.forward).normalized)) >
-                            triggerAngle)
-                        {
-                            edge.startUp += new Vector3(0, 0.1f, 0);
-                            vect = Vector3.Lerp(edge.endUp, edge.startUp, 0.5f) -
-                                   Vector3.Lerp(edge.end, edge.start, 0.5f);
-                            edge.facingNormal = Quaternion.LookRotation(Vector3.Cross(edge.end - edge.start, vect));
-                        }
-                    }
-
-                    // I do not know what the difference is between dont align and align
-                    // so i am commenting it out 
-                    //if (dontAllignYAxis)
-                    //{
-                    //    edge.facingNormal = Quaternion.LookRotation(
-                    //        edge.facingNormal * Vector3.forward,
-                    //        Quaternion.LookRotation(edge.end - edge.start) * Vector3.up
-                    //    );
-                    //}
-
                     edge.facingNormalCalculated = true;
 
 
@@ -422,7 +401,6 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
                     || (edge.start == val2 & edge.end == val1)
                 )
                 {
-                    //print("Edges duplicate " + newEdge.start + " " + newEdge.end);
                     edges.Remove(edge);
                     return;
                 }

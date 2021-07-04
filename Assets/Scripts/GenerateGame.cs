@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using BaseGeneticClass;
+using eDmitriyAssets.NavmeshLinksGenerator;
+using UnityEngine.AI;
 
 public class GenerateGame : MonoBehaviour
 {
@@ -15,21 +18,24 @@ public class GenerateGame : MonoBehaviour
     [SerializeField]
     private CoinGenerator coins;
 
-    //public void Start()
-    //{
-    //    CreateGame(Constants.playerType);
-    //}
-    public GameObject CreateGame(BlockType playerType)
+    [SerializeField]
+    private NavMeshLinks_AutoPlacer links_AutoPlacer;
+
+    public GameObject CreateGame(BlockType playerType, Chromosone chromosone)
     {
-        return CreateGame(new Vector3(), Quaternion.identity, playerType);
+        return CreateGame(new Vector3(), Quaternion.identity, playerType, chromosone);
     }
 
-    public GameObject CreateGame(Vector3 plane, Quaternion orientation, BlockType playerType)
+    public GameObject CreateGame(Vector3 plane, Quaternion orientation, BlockType playerType, Chromosone chromosone)
     {
         playerStats.text = "Coin counter: 0";
         ResetGameArea();
 
-        platform.CreatePlatform(orientation);
+        platform.CreatePlatform(orientation, chromosone);
+
+        links_AutoPlacer.RefreshLinks();
+
+        platform.PlaceGoal(Utility.gamePlacement.ElementAt(0).Key, orientation);
         platform.PlacePlayer(orientation, playerType);
         //PlaceCoins();
         return ConfigureGameSpace(plane);
@@ -49,8 +55,10 @@ public class GenerateGame : MonoBehaviour
         return game;
     }
 
-    private void ResetGameArea()
+    public void ResetGameArea()
     {
+        links_AutoPlacer.ClearLinks();
+
         DestoryPlatform();
 
         DestoryCoins();
@@ -59,10 +67,12 @@ public class GenerateGame : MonoBehaviour
 
         DestoryPlayer();
 
-        ResetGamePlacement();
+        ResetGameMap();
+
+        links_AutoPlacer.ClearSurfaceData();
     }
 
-    public void ResetGamePlacement()
+    public void ResetGameMap()
     {
         foreach( var key in Utility.gamePlacement.Keys.ToList())
         {
@@ -82,7 +92,7 @@ public class GenerateGame : MonoBehaviour
         {
             for (int i = platform.Length - 1; i >= 0; i--)
             {
-                Utility.SafeDestory(platform[i].gameObject);
+                Utility.SafeDestoryInEditMode(platform[i].gameObject);
             }
         }
     }
@@ -94,7 +104,7 @@ public class GenerateGame : MonoBehaviour
         {
             for (int i = coins.Length - 1; i >= 0; i--)
             {
-                Utility.SafeDestory(coins[i].gameObject);
+                Utility.SafeDestoryInEditMode(coins[i].gameObject);
             }
         }
         Utility.ReplaceValueInMap(Utility.gamePlacement, BlockType.COIN, BlockType.NONE);
@@ -106,7 +116,7 @@ public class GenerateGame : MonoBehaviour
 
         if (goal != null)
         {
-            Utility.SafeDestory(goal);
+            Utility.SafeDestoryInEditMode(goal);
         }
         Utility.ReplaceValueInMap(Utility.gamePlacement, BlockType.GOAL, BlockType.NONE);
     }
@@ -118,12 +128,16 @@ public class GenerateGame : MonoBehaviour
         {
             for (int i = player.Length - 1; i >= 0; i--)
             {
-                Utility.SafeDestory(player[i].gameObject);
+                Utility.SafeDestoryInEditMode(player[i].gameObject);
             }
         }
         Utility.ReplaceValueInMap(Utility.gamePlacement, BlockType.PLAYER, BlockType.NONE);
     }
 
+    public NavMeshPathStatus PathStatus()
+    {
+        return links_AutoPlacer.containsPath();
+    }
     public void PlaceCoins()
     {
         coins.PlaceCoins();

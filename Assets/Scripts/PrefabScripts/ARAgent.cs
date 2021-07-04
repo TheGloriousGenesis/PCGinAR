@@ -51,7 +51,7 @@ public class ARAgent : Agent
 
         // Destory coins and reset game map so we can update it with new positions
         game.DestoryCoins();
-        game.ResetGamePlacement();
+        game.ResetGameMap();
 
         // randomly find position for player and place. Update gameplacement map on where player is
         List<Vector3> pos = new List<Vector3>(Utility.gamePlacement.Keys);

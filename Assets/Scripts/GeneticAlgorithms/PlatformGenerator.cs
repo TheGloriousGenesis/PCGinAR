@@ -15,22 +15,18 @@ public class PlatformGenerator : MonoBehaviour
     public BlockTile[] blockTiles;
     #endregion
 
-    private BasicGeneticAlgorithm bga = new BasicGeneticAlgorithm();
+    //private BasicGeneticAlgorithm bga = new BasicGeneticAlgorithm();
 
     //public NavMeshSurface surface;
 
-    public void CreatePlatform(Quaternion orientation)
+    public void CreatePlatform(Quaternion orientation, Chromosone chromosone)
     {
-        PlacePlatform(orientation);
+        PlacePlatform(orientation, chromosone);
         ObtainWalkableSurface();
-        // get the first key in the dictionary to place goal
-        PlaceGoal(Utility.gamePlacement.ElementAt(0).Key, orientation);
     }
 
-    private void PlacePlatform(Quaternion orientation)
+    private void PlacePlatform(Quaternion orientation, Chromosone chromosone)
     {
-        Chromosone chromosone = bga.GenerateChromosome();
-
         Vector3 blockSize = prefabs[BlockType.BASICBLOCK].transform.localScale;
 
         List<Gene> genes = chromosone.genes;
@@ -42,8 +38,6 @@ public class PlatformGenerator : MonoBehaviour
             GameObject block1 = Instantiate(prefabs[BlockType.BASICBLOCK], i, orientation);
             block1.transform.parent = this.transform;
         }
-
-        //surface.BuildNavMesh();
     }
 
     private void ObtainWalkableSurface()
@@ -90,17 +84,17 @@ public class PlatformGenerator : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Agent");
             if (player == null)
             {
-                player = Instantiate(prefabs[BlockType.PLAYER], farthestBrick + BlockPosition.UP * 2, rotation);
+                player = Instantiate(prefabs[BlockType.PLAYER], farthestBrick + BlockPosition.UP * 1.1f, rotation);
             } else
             {
-                player.gameObject.transform.position = farthestBrick + BlockPosition.UP * 2;
+                player.gameObject.transform.position = farthestBrick + BlockPosition.UP * 1.1f;
                 player.gameObject.transform.rotation = rotation;
             }
 
         }
         else
         {
-            player = Instantiate(prefabs[BlockType.PLAYER], farthestBrick + BlockPosition.UP * 2, rotation);
+            player = Instantiate(prefabs[BlockType.PLAYER], farthestBrick + BlockPosition.UP, rotation);
         }
 
         player.transform.parent = this.transform.parent;
@@ -110,11 +104,11 @@ public class PlatformGenerator : MonoBehaviour
         return player;
     }
 
-    private void PlaceGoal(Vector3 position, Quaternion rotation)
+    public void PlaceGoal(Vector3 position, Quaternion rotation)
     {
         Utility.gamePlacement[position] = BlockType.GOAL;
 
-        GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], position + Vector3.up * 2, rotation);
+        GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], position + Vector3.up * 1.1f, rotation);
         goal_.transform.parent = this.transform.parent;
     }
 }

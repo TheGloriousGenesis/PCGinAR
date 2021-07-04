@@ -30,7 +30,17 @@ public static class Utility
         obj.transform.parent = null;
         obj.name = "$disposed";
         UnityEngine.Object.Destroy(obj);
+
         obj.SetActive(false);
+    }
+
+    public static void SafeDestoryInEditMode(GameObject obj)
+    {
+        obj.transform.parent = null;
+        obj.name = "$disposed";
+        UnityEngine.Object.DestroyImmediate(obj);
+
+        //obj.SetActive(false);
     }
 
     public static List<Vector3> GetKeyFromValue(Dictionary<Vector3, BlockType> dic, BlockType value)

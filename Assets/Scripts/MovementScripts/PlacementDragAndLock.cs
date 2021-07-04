@@ -64,7 +64,7 @@ public class PlacementDragAndLock : MonoBehaviour
         {
             // when some one presses button call method (in brackets)
             generateButton.onClick.AddListener(delegate {
-                game.PlaceGame();
+                game.RefreshLinks();
             });
         }
     }
@@ -131,12 +131,12 @@ public class PlacementDragAndLock : MonoBehaviour
                 if (defaultRotation > 0)
                 {
                     // changes rotation to camera
-                    placedObject = game.PlaceGame(hitPose.position, Quaternion.identity, Constants.playerType);
+                    //placedObject = game.PlaceGame(hitPose.position, Quaternion.identity, Constants.playerType);
                     placedObject.transform.Rotate(Vector3.up, defaultRotation);
                 }
                 else
                 {
-                    placedObject = game.PlaceGame(hitPose.position, hitPose.rotation, Constants.playerType);
+                    //placedObject = game.PlaceGame(hitPose.position, hitPose.rotation, Constants.playerType);
                 }
             }
             else
