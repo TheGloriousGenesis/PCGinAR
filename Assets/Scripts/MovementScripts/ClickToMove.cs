@@ -30,24 +30,19 @@ public class ClickToMove : MonoBehaviour
                 Debug.DrawRay(ray.origin, ray.direction, Color.green);
             }
         }
-
-        elapsed += Time.deltaTime;
-
-        if (elapsed > 1.0f)
-        {
-            elapsed -= 1.0f;
-            bool pathFound = NavMesh.CalculatePath(transform.position, target.transform.position, NavMesh.AllAreas, path);
-            Debug.Log($"is path found: {pathFound}, status: {path.status}");
-        }
-
-        for (int i = 0; i < path.corners.Length - 1; i++)
-        {
-            Debug.DrawLine(path.corners[i] + Vector3.up, path.corners[i + 1] + Vector3.up, Color.black);
-        } 
-
-        //if (path != null)
-        //{
-        //    m_Agent.SetPath(path);
-        //}
+    
+        // elapsed += Time.deltaTime;
+        //
+        // if (elapsed > 1.0f)
+        // {
+        //     elapsed -= 1.0f;
+        //     bool pathFound = NavMesh.CalculatePath(transform.position, target.transform.position, NavMesh.AllAreas, path);
+        //     Debug.Log($"is path found: {pathFound}, status: {path.status}");
+        // }
+        //
+        // for (int i = 0; i < path.corners.Length - 1; i++)
+        // {
+        //     Debug.DrawLine(path.corners[i] + Vector3.up, path.corners[i + 1] + Vector3.up, Color.black);
+        // }
     }
 }

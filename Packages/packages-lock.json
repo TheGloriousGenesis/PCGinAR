@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.dotbunny.gdx": {
+      "version": "https://github.com/dotBunny/GDX.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "c37059ad7b1eadb2933b382e3a07bec85ae43602"
+    },
     "com.unity.barracuda": {
       "version": "1.3.2-preview",
       "depth": 1,

@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.XR.ARFoundation;
+﻿using UnityEngine.XR.ARFoundation;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 // Obtained via https://github.com/Unity-Technologies/arfoundation-samples/blob/main/Assets/Scripts/BasicLightEstimation.cs
 [RequireComponent(typeof(Light))]

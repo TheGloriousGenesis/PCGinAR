@@ -1,120 +1,51 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 using BaseGeneticClass;
 
 namespace BasicGeneticAlgorithmNS
 {
-    [System.Serializable]
-    public class FitnessHelper
-    {
-        // assumes chromosome and solution are bitstrings
-        //private Chromosone solution;
-        public double Fitness(Chromosone chromosome)
-        {
-            float platformValue = chromosome.CalculateFitness();
-            // normalise value to be between 0 and 1
-            double score = 1.0 / (double)(platformValue + 1);
-
-            return score;
-        }
-
-        //public FitnessHelper(Chromosone targetSolution)
-        //{
-        //    solution = targetSolution;
-        //}
-
-        // https://en.wikipedia.org/wiki/Levenshtein_distance
-        // https://www.dotnetperls.com/levenshtein
-        // dynamic programming
-        //private static int Compute(Chromosone s)
-        //{
-        //    // to compute fitness implement agent to see if it can reach end point
-        //    // or implement a*
-        //    //int n = s.genes.Count;
-        //    //int m = t.Length;
-        //    //var d = new int[n + 1, m + 1];
-
-        //    //// Step 1
-        //    //if (n == 0)
-        //    //{
-        //    //    return m;
-        //    //}
-
-        //    //if (m == 0)
-        //    //{
-        //    //    return n;
-        //    //}
-
-        //    //// Step 2
-        //    //for (int i = 0; i <= n; ++i)
-        //    //{
-        //    //    d[i, 0] = i;
-        //    //}
-        //    //for (int j = 0; j <= m; ++j)
-        //    //{
-        //    //    d[j, 0] = j;
-        //    //}
-
-        //    //// Step 3
-        //    //for (int i = 1; i <= n; i++)
-        //    //{
-        //    //    //Step 4
-        //    //    for (int j = 1; j <= m; j++)
-        //    //    {
-        //    //        // Step 5
-        //    //        int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
-
-        //    //        // Step 6
-        //    //        d[i, j] = Math.Min(
-        //    //            Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-        //    //            d[i - 1, j - 1] + cost
-        //    //        );
-        //    //    }
-        //    //}
-        //    //// Step 7
-        //    //return d[n, m];
-        //    return 0;
-        //}
-    }
-
-
     // TODO: Check that a given chromosone has unique genes that do not overlap in space (maybe use hashset)
     [System.Serializable]
     public class BasicGeneticAlgorithm
     {
-        private int populationSize;
-        private int iteration;
-        private int chromosoneSize;
-        private Func<Chromosone, float> fitnessFunction;
-        private float crossoverProbability;
-        private float mutationProbability;
-        System.Random random;
-        private int elitism;
-        private List<Chromosone> testPopulation { get; set; }
+        private int _populationSize;
+        private int _iteration; // same as number of generations
+        private int _chromosoneSize;
+        private Func<Chromosome, double> _fitnessFunction;
+        private float _crossoverProbability;
+        private float _mutationProbability;
+        System.Random _random;
+        private int _elitism;
+        private int _k;
+        private List<Chromosome> currentPopulation;
+        private List<Chromosome> runPopulation;
 
-        public BasicGeneticAlgorithm(int pOPULATION_SIZE, int cHROMOSONE_LENGTH, float cROSSOVER_PROBABILITY, System.Random random,
-            Func<Chromosone, float> fitnessFunction, int eLITISM, float mUTATION_PROBABILITY, int iTERATION)
+
+        public BasicGeneticAlgorithm(int populationSize, int chromosoneLength, float crossoverProbability, System.Random random,
+            Func<Chromosome, double> fitnessFunction, int elitism, float mutationProbability, int iteration, int k)
         {
-            this.populationSize = pOPULATION_SIZE;
-            this.chromosoneSize = cHROMOSONE_LENGTH;
-            this.crossoverProbability = cROSSOVER_PROBABILITY;
-            this.random = random;
-            this.fitnessFunction = fitnessFunction;
-            this.elitism = eLITISM;
-            this.mutationProbability = mUTATION_PROBABILITY;
-            this.iteration = iTERATION;
-            this.fitnessFunction = fitnessFunction;
-            this.testPopulation = GenerateGenotype(pOPULATION_SIZE);
+            this._populationSize = populationSize;
+            this._chromosoneSize = chromosoneLength;
+            this._crossoverProbability = crossoverProbability;
+            this._random = random;
+            this._fitnessFunction = fitnessFunction;
+            this._elitism = elitism;
+            this._mutationProbability = mutationProbability;
+            this._iteration = iteration;
+            this._fitnessFunction = fitnessFunction;
+            this._k = k;
+            // create initial population
+            this.currentPopulation = GenerateGenotype(populationSize);
+            this.runPopulation = new List<Chromosome>(populationSize);
         }
 
-        public List<Chromosone> GenerateGenotype(int popSize)
+        #region Core genetic infrastucture (DNA) 
+        public List<Chromosome> GenerateGenotype(int popSize)
         {
             // A Genotype is the population in computation space
-            List<Chromosone> genotype = new List<Chromosone>();
+            List<Chromosome> genotype = new List<Chromosome>();
             for (int i=0; i < popSize; i++)
             {
                 genotype.Add(GenerateChromosome(i));
@@ -123,21 +54,21 @@ namespace BasicGeneticAlgorithmNS
             return genotype;
         }
 
-        public Chromosone GenerateChromosome(int id)
+        public Chromosome GenerateChromosome(int id)
         {
             // a genotype is a solution to the level. feed in number of blocks and restrictions to generate possible level
             List<Gene> genes = new List<Gene>();
 
             // todo: check how many genes in chromosone good fit
-            for (int i=0; i < chromosoneSize; i++)
+            for (int i=0; i < _chromosoneSize; i++)
             {
                 genes.Add(GenerateGene());
             }
 
-            Chromosone chromosone = new Chromosone();
-            chromosone.id_ = id;
-            chromosone.genes = genes;
-            return chromosone;
+            Chromosome chromosome = new Chromosome();
+            chromosome.id_ = id;
+            chromosome.genes = genes;
+            return chromosome;
         }
 
         public Gene GenerateGene()
@@ -159,7 +90,7 @@ namespace BasicGeneticAlgorithmNS
             for (int i = 0; i < 2; i++)
             {
                 // check if it is inclusive?
-                int choosePosition = random.Next(0, cubeNumbers.Count);
+                int choosePosition = _random.Next(0, cubeNumbers.Count);
                 positions.Add(cubeNumbers[choosePosition] + centerBlock);
                 cubeNumbers.Remove(cubeNumbers[choosePosition]);
             }
@@ -171,206 +102,140 @@ namespace BasicGeneticAlgorithmNS
         {
             // good for condensing the size of the space
             int maxPlatformLength = Constants.MAX_PLATFORM_DIMENSION / 2;
-            int xPos = Random.Range(0, maxPlatformLength);
-            int yPos = Random.Range(0, maxPlatformLength);
-            int zPos = Random.Range(0, maxPlatformLength);
+            int xPos = _random.Next(0, maxPlatformLength);
+            int yPos = _random.Next(0, maxPlatformLength);
+            int zPos = _random.Next(0, maxPlatformLength);
             return new Vector3(xPos, yPos, zPos);
         }
 
-        private Vector3 GenerateRelativePosition(int choosePosition)
+        #endregion
+        
+        #region Genetic Operators
+        
+        // Tournament Selection
+        public List<Chromosome> Select(List<Chromosome> population)
         {
-            switch (choosePosition)
-            {
-                case 0:
-                    return BlockPosition.UP;
-                case 1:
-                    return BlockPosition.DOWN;
-                case 2:
-                    return BlockPosition.LEFT;
-                case 3:
-                    return BlockPosition.RIGHT;
-                case 4:
-                    return BlockPosition.FRONT;
-                case 5:
-                    return BlockPosition.BACK;
-                default:
-                    return BlockPosition.NONE;
-            }
-        }
-
-        private int[] GetRandomElements(int listLength, int elementsCount)
-        {
-            return Enumerable.Range(0, listLength).OrderBy(x => Guid.NewGuid()).Take(elementsCount).ToArray();
-        }
-        public int[] FindKBiggestNumbersInArray(double[] arr, int k)
-        {
-            var indexes =  arr.Select((val, idx) => (val: val, idx: idx))
-                             .OrderByDescending(p => p.val)
-                             .Take(k)
-                             .Select(p => p.idx);
-            return indexes.ToArray();
-        }
-
-        // Does this need to be unique? or can the select be a duplicate
-        public List<Chromosone> Select(List<Chromosone> population, double[] fitnesses)
-        {
-            // Tournamet selection select best k individuals from the population at random and select the best of out these
-            // to become a parent. Same process repeated for selecting the next parent.
-            List<Chromosone> selections = new List<Chromosone>();
-            if (population.Count() < 4)
+            List<Chromosome> selections = new List<Chromosome>();
+            
+            // ensure that the population has at least k individuals to pick possible parents
+            // if not just return all elements
+            if (population.Count() < _k)
             {
                 return selections;
             }
 
-            List<double> fitList = fitnesses.ToList();
+            List<Chromosome> possibleParents1 = Utility.GetKRandomElements(population, _k, _random);
+            List<Chromosome> possibleParents2 = Utility.GetKRandomElements(population, _k, _random);
 
-            // pick 4 random indices. Then pick out the fitnesses in relation to these indices and
-            // pick the top 4 ENSURE POPULATION HAS MINIMUM 4 ELEMENTS
-            int[] pickRandomIndices = GetRandomElements(fitList.Count, 4);
+            List<Chromosome> topParent1 = Utility.FindNBestFitness_ByChromosome(possibleParents1, 1);
+            List<Chromosome> topParent2 = Utility.FindNBestFitness_ByChromosome(possibleParents2, 1);
+            
+            selections.Add(topParent1[0]);
+            selections.Add(topParent2[0]);
 
-            double[] fitnessSelection = pickRandomIndices.Select(x => fitList[x]).ToArray();
-
-            int[] topIndices = FindKBiggestNumbersInArray(fitnessSelection, 2);
-
-            selections.Add(population[pickRandomIndices[topIndices[0]]]);
-            selections.Add(population[pickRandomIndices[topIndices[1]]]);
-
+            // return 2 parents
             return selections;
         }
 
-        public Chromosone Mutate(Chromosone chromosome, double probability)
+        // Single Point Crossover 
+        public List<Chromosome> Crossover(Chromosome chromosome1, Chromosome chromosome2)
         {
-            // uniform mutation
+            int randomPosition = _random.Next(0, chromosome1.genes.Count);
+            
+            List<Gene> newChromosome1 = chromosome1.genes
+                .GetRange(0, randomPosition)
+                .Concat(chromosome2.genes.GetRange(randomPosition, chromosome2.genes.Count() - randomPosition))
+                .ToList();
+            
+            List<Gene> newChromosome2 = chromosome2.genes
+                .GetRange(0, randomPosition)
+                .Concat(chromosome1.genes.GetRange(randomPosition, chromosome1.genes.Count() - randomPosition))
+                .ToList();
+
+            Chromosome chomesome1 = new Chromosome();
+            chomesome1.genes = newChromosome1;
+            Chromosome chomesome2 = new Chromosome();
+            chomesome2.genes = newChromosome2;
+
+            return new List<Chromosome> { chomesome1, chomesome2 };
+        }
+        
+        // Random Resetting/ Uniform Mutation
+        public Chromosome Mutate(Chromosome chromosome, double probability)
+        {
             // replaces a gene with random new gene.
-            if (Random.value < probability)
+            if (_random.NextDouble() < probability)
             {
                 List<Gene> genes = chromosome.genes;
-                int rv = Random.Range(0, chromosome.genes.Count - 1);
+                int rv = _random.Next(0, chromosome.genes.Count);
+                
                 genes[rv] = GenerateGene();
                 chromosome.genes = genes;
             }
             return chromosome;
         }
 
-        public List<Chromosone> Crossover(Chromosone chromosome1, Chromosone chromosome2)
-        {
-            // Single Point Crossover 
-            int randomPosition = Random.Range(0, chromosome1.genes.Count);
-            List<Gene> newChromosome1 = chromosome1.genes.GetRange(0, randomPosition)
-                .Concat(chromosome2.genes.GetRange(randomPosition, chromosome2.genes.Count())).ToList();
-            List<Gene> newChromosome2 = chromosome2.genes.GetRange(0, randomPosition)
-                .Concat(chromosome1.genes.GetRange(randomPosition, chromosome1.genes.Count())).ToList();
-
-            Chromosone chomesome1 = new Chromosone();
-            chomesome1.genes = newChromosome1;
-            Chromosone chomesome2 = new Chromosone();
-            chomesome2.genes = newChromosome2;
-
-            return new List<Chromosone> { chomesome1, chomesome2 };
-        }
+        #endregion
         
-        //input chromosone output double for Func
-        public List<Chromosone> Run(Func<Chromosone, float> fitness)
+        #region Implementation
+        public List<Chromosome> Run(Func<Chromosome, double> fitness)
         {
-            //List<Chromosone> testPopulation = GenerateGenotype();
-            List<Chromosone> runPopulation = new List<Chromosone>();
-
-            double[] fitnesses = new double[populationSize];
-
-            double sum = 0.0;
-
-            Chromosone one;
-            Chromosone two;
-            List<Chromosone> parents;
+            runPopulation.Clear();
+            
+            Chromosome one;
+            Chromosome two;
+            List<Chromosome> parents;
 
             double randDouble = 0.0;
-
-            for (int iter = 0; iter < iteration; iter++)
+            
+            for (int iter = 0; iter < _iteration; iter++)
             {
-                runPopulation = new List<Chromosone>();
+                runPopulation = new List<Chromosome>();
 
                 // calculate fitness for test population.
-                sum = 0.0;
-                fitnesses = new double[testPopulation.Count];
-                for (int i = 0; i < fitnesses.Length; ++i)
+                for (int i = 0; i < currentPopulation.Count; ++i)
                 {
-                    fitnesses[i] = fitness(testPopulation[i]);
-                    sum += fitnesses[i];
+                    double time = fitness(currentPopulation[i]);
+                    HandleTextFile.WriteToFile("GenerationResults",
+                        $"{currentPopulation[i].id_},{time},{currentPopulation[i].fitness},{iter}");
                 }
+                
+                // for last iteration, population does not need to be generated
+                if (iter == _iteration - 1) break;
 
-                Debug.Log($"Sum of fitness at ITERATION - {iter + 1} : {sum}");
-
-                if (iter == iteration - 1) break;
-
-                while (runPopulation.Count < testPopulation.Count)
+                while (runPopulation.Count < currentPopulation.Count)
                 {
-                    parents = Select(testPopulation, fitnesses);
+                    parents = Select(currentPopulation);
                     one = parents[0];
                     two = parents[1];
 
                     // determine if crossover occurs.
-                    randDouble = Random.value;
-                    if (randDouble <= crossoverProbability)
+                    randDouble = _random.NextDouble();
+                    if (randDouble <= _crossoverProbability)
                     {
-                        List<Chromosone> chromosones = Crossover(one, two).ToList();
-                        one = chromosones[0];
-                        two = chromosones[1];
+                        List<Chromosome> chromosomes = Crossover(one, two);
+                        
+                        one = chromosomes[0];
+                        two = chromosomes[1];
                     }
 
-                    one = Mutate(one, mutationProbability);
-                    two = Mutate(two, mutationProbability);
+                    one = Mutate(one, _mutationProbability);
+                    two = Mutate(two, _mutationProbability);
 
                     runPopulation.Add(one);
                     runPopulation.Add(two);
                 }
 
-                testPopulation = runPopulation;
+                List<Chromosome> tmpList = currentPopulation;
+                currentPopulation = runPopulation;
+                runPopulation = tmpList;
             }
 
-            // find best-fittin chromosones
-            Chromosone[] testSort = testPopulation.ToArray();
-            double[] fitSort = fitnesses.ToArray();
-
-            Array.Sort(fitSort, testSort);
-            Debug.Log("Array length: " + testSort.Length);
-            return testSort.Take(1).ToList();
+            // find best-fitting chromosomes
+            currentPopulation.Sort(Utility.CompareChromosome);
+            return currentPopulation.Take(5).ToList();
         }
-
-        public int GetRandomWeightedIndex(float[] weights)
-        {
-            if (weights == null || weights.Length == 0) return -1;
-
-            float w;
-            float t = 0;
-            int i;
-            for (i = 0; i < weights.Length; i++)
-            {
-                w = weights[i];
-
-                if (float.IsPositiveInfinity(w))
-                {
-                    return i;
-                }
-                else if (w >= 0f && !float.IsNaN(w))
-                {
-                    t += weights[i];
-                }
-            }
-
-            float r = Random.value;
-            float s = 0f;
-
-            for (i = 0; i < weights.Length; i++)
-            {
-                w = weights[i];
-                if (float.IsNaN(w) || w <= 0f) continue;
-
-                s += w / t;
-                if (s >= r) return i;
-            }
-
-            return -1;
-        }
+        #endregion
     }
 
 }

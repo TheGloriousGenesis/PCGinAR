@@ -11,10 +11,10 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: 
+  - name: Link - Both ways
     cost: 1
-  - name: 
-    cost: 1
+  - name: Link - One way
+    cost: 2
   - name: 
     cost: 1
   - name: 

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
@@ -21,23 +20,29 @@ public class GenerateGame : MonoBehaviour
     [SerializeField]
     private NavMeshLinks_AutoPlacer links_AutoPlacer;
 
-    public GameObject CreateGame(BlockType playerType, Chromosone chromosone)
-    {
-        return CreateGame(new Vector3(), Quaternion.identity, playerType, chromosone);
-    }
-
-    public GameObject CreateGame(Vector3 plane, Quaternion orientation, BlockType playerType, Chromosone chromosone)
+    private void Awake()
     {
         playerStats.text = "Coin counter: 0";
+    }
+
+    public GameObject CreateGame(BlockType playerType, Chromosome chromosome)
+    {
+        return CreateGame(new Vector3(), Quaternion.identity, playerType, chromosome);
+    }
+
+    public GameObject CreateGame(Vector3 plane, Quaternion orientation, BlockType playerType, Chromosome chromosome)
+    {
         ResetGameArea();
 
-        platform.CreatePlatform(orientation, chromosone);
+        platform.CreatePlatform(orientation, chromosome);
 
         links_AutoPlacer.RefreshLinks();
 
         platform.PlaceGoal(Utility.gamePlacement.ElementAt(0).Key, orientation);
         platform.PlacePlayer(orientation, playerType);
-        //PlaceCoins();
+        
+        // PlaceCoins();
+        
         return ConfigureGameSpace(plane);
     }
 
@@ -134,7 +139,7 @@ public class GenerateGame : MonoBehaviour
         Utility.ReplaceValueInMap(Utility.gamePlacement, BlockType.PLAYER, BlockType.NONE);
     }
 
-    public NavMeshPathStatus PathStatus()
+    public NavMeshPath PathStatus()
     {
         return links_AutoPlacer.containsPath();
     }

@@ -1,17 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
 using BaseGeneticClass;
-using eDmitriyAssets.NavmeshLinksGenerator;
+using BasicGeneticAlgorithmNS;
+using GDX;
+using UnityEngine;
 using UnityEngine.AI;
-
+using Random = System.Random;
 #if UNITY_EDITOR
-using UnityEditor.SceneManagement;
 using UnityEditor;
 #endif
-
-using BasicGeneticAlgorithmNS;
 
 public class TestImplementation : MonoBehaviour
 {
@@ -28,17 +24,17 @@ public class TestImplementation : MonoBehaviour
 
     [Header("Game Property")]
     [SerializeField] GenerateGame generateGame;
-
-    private System.Random random;
+    
+    private Random random;
     private BasicGeneticAlgorithm ga;
 
     void Run()
     {
-        random = new System.Random(Constants.SEED);
+        random = new Random(Constants.SEED);
         ga = new BasicGeneticAlgorithm(Constants.POPULATION_SIZE, Constants.CHROMOSONE_LENGTH, Constants.CROSSOVER_PROBABILITY,
-            random, FitnessFunction, Constants.ELITISM, Constants.MUTATION_PROBABILITY, Constants.ITERATION);
-        List<Chromosone> finalResult = ga.Run(FitnessFunction);
-        setUpLevel(finalResult[0]);
+            random, FitnessFunction, Constants.ELITISM, Constants.MUTATION_PROBABILITY, Constants.ITERATION, Constants.K);
+        List<Chromosome> finalResult = ga.Run(FitnessFunction);
+        setUpLevel(finalResult[1]);
     }
 
     void Remove()
@@ -46,29 +42,37 @@ public class TestImplementation : MonoBehaviour
         generateGame.ResetGameArea();
     }
 
-    private float FitnessFunction(Chromosone chromosone)
+    private double FitnessFunction(Chromosome chromosome)
     {
-        float score = 0;
-        setUpLevel(chromosone);
-        NavMeshPathStatus status = generateGame.PathStatus();
+      System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
+      float score = 0;
+      timer.Start();
+      setUpLevel(chromosome);
+      timer.Stop();
+      NavMeshPath path = generateGame.PathStatus();
 
-        if (status == NavMeshPathStatus.PathComplete)
-        {
-            score = 1;
-        } else if (status == NavMeshPathStatus.PathPartial)
-        {
-            score = 0.5f;
-        }
-
-        score = (Mathf.Pow(2, score) - 1) / (2 - 1);
-        chromosone.fitness = score;
-        Debug.Log($"CHROMOSONE {chromosone.id_}: SCORE: {score}, STATUS: {status}");
-        return score;
+      if (path.status == NavMeshPathStatus.PathComplete)
+      {
+          score += 1;
+      }
+      if (path.GetTotalDistance() > Constants.MAX_PLATFORM_DIMENSION)
+      {
+          score += 1;
+      }
+      else
+      {
+          score -= 0.5f;
+      }
+      
+      score = (Mathf.Pow(2, score) - 1) / (2 - 1);
+      chromosome.fitness = score;
+      
+      return timer.Elapsed.TotalMilliseconds;
     }
 
-    private void setUpLevel(Chromosone chromosone)
+    private void setUpLevel(Chromosome chromosome)
     {
-        generateGame.CreateGame(Constants.playerType, chromosone);
+        generateGame.CreateGame(Constants.playerType, chromosome);
     }
 
 #if UNITY_EDITOR

@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Linq;
+using BaseGeneticClass;
 using UnityEngine.EventSystems;
 
 [System.Serializable]
@@ -34,12 +35,32 @@ public static class Utility
         obj.SetActive(false);
     }
 
+    // public static int[] GetRandomElements(int listLength, int elementsCount, System.Random random)
+    // {
+    //     return Enumerable.Range(0, listLength).OrderBy(x => random.Next())
+    //         .Take(elementsCount).ToArray();
+    // }
+
+    public static List<T> GetKRandomElements<T>(List<T> list, int k, System.Random random)
+    {
+        return list.OrderBy(x => random.Next()).Take(k).ToList();
+    }
+    
+    public static List<Chromosome> FindNBestFitness_ByChromosome(List<Chromosome> list, int n)
+    {
+        list.Sort(CompareChromosome);
+        if (n == 1)
+        {
+            return new List<Chromosome>(){list[0]};
+        }
+        return list.Take(n) as List<Chromosome>;
+    }
+    
     public static void SafeDestoryInEditMode(GameObject obj)
     {
         obj.transform.parent = null;
         obj.name = "$disposed";
         UnityEngine.Object.DestroyImmediate(obj);
-
         //obj.SetActive(false);
     }
 
@@ -75,6 +96,53 @@ public static class Utility
             dic[i] = value;
         }
     }
+    
+    public static int CompareChromosome(Chromosome a, Chromosome b)
+    {
+        if (a.fitness > b.fitness) {
+            return -1;
+        } else if (a.fitness < b.fitness) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    //public static int GetRandomWeightedIndex(double[] weights)
+    //{
+    //    if (weights == null || weights.Length == 0) return -1;
+
+    //    double w;
+    //    double t = 0;
+    //    int i;
+    //    for (i = 0; i < weights.Length; i++)
+    //    {
+    //        w = weights[i];
+
+    //        if (double.IsPositiveInfinity(w))
+    //        {
+    //            return i;
+    //        }
+    //        else if (w >= 0f && !double.IsNaN(w))
+    //        {
+    //            t += weights[i];
+    //        }
+    //    }
+
+    //    double r = random.NextDouble();
+    //    double s = 0f;
+
+    //    for (i = 0; i < weights.Length; i++)
+    //    {
+    //        w = weights[i];
+    //        if (double.IsNaN(w) || w <= 0f) continue;
+
+    //        s += w / t;
+    //        if (s >= r) return i;
+    //    }
+
+    //    return -1;
+    //}
 }
 
 [System.Serializable]

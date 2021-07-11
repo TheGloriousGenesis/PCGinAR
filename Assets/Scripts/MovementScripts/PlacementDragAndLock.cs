@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
+using BaseGeneticClass;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
-using BasicGeneticAlgorithmNS;
-using BaseGeneticClass;
-using System.Linq;
-using System;
-using eDmitriyAssets.NavmeshLinksGenerator;
-
+using UnityEngine.XR.ARSubsystems;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 [RequireComponent(typeof(ARRaycastManager))]
 public class PlacementDragAndLock : MonoBehaviour
@@ -26,11 +24,11 @@ public class PlacementDragAndLock : MonoBehaviour
     private float defaultRotation = 180;
 
     [SerializeField]
-    //private GenerateGame game;
-    private NavMeshLinks_AutoPlacer game;
-
     private GameObject placedObject;
 
+    [SerializeField]
+    private GenerateGame game;
+    
     private Vector2 touchPosition = default;
 
     private ARRaycastManager arRaycastManager;
@@ -42,8 +40,7 @@ public class PlacementDragAndLock : MonoBehaviour
 
     // know what objects we touching
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-  
-
+    
     private float initialDistance;
 
     private Vector3 initialScale;
@@ -63,8 +60,9 @@ public class PlacementDragAndLock : MonoBehaviour
         if (generateButton != null)
         {
             // when some one presses button call method (in brackets)
-            generateButton.onClick.AddListener(delegate {
-                game.RefreshLinks();
+            generateButton.onClick.AddListener(delegate
+            {
+                game.CreateGame(Constants.playerType, new Chromosome());
             });
         }
     }
@@ -83,7 +81,7 @@ public class PlacementDragAndLock : MonoBehaviour
 
     void Update()
     {
-        var activeTouches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
+        var activeTouches = Touch.activeTouches;
 
         // if user touches the screen
         if (activeTouches.Count > 0)
@@ -95,7 +93,7 @@ public class PlacementDragAndLock : MonoBehaviour
 
             if (isOverUI) return;
 
-            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began)
             {
                 // convert screen ray to action ray
                 Ray ray = arCamera.ScreenPointToRay(touch.screenPosition);
@@ -109,7 +107,7 @@ public class PlacementDragAndLock : MonoBehaviour
                 }
             }
 
-            if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended)
+            if (touch.phase == TouchPhase.Ended)
             {
                 onTouchHold = false;
             }
@@ -122,7 +120,7 @@ public class PlacementDragAndLock : MonoBehaviour
 
     private void MoveGameObject()
     {
-        if (arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+        if (arRaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose hitPose = hits[0].pose;
 
@@ -160,13 +158,13 @@ public class PlacementDragAndLock : MonoBehaviour
             var touchZero = Input.GetTouch(0);
             var touchOne = Input.GetTouch(1);
 
-            if (touchZero.phase == TouchPhase.Ended || touchZero.phase == TouchPhase.Canceled ||
-                touchOne.phase == TouchPhase.Ended || touchOne.phase == TouchPhase.Canceled)
+            if (touchZero.phase == UnityEngine.TouchPhase.Ended || touchZero.phase == UnityEngine.TouchPhase.Canceled ||
+                touchOne.phase == UnityEngine.TouchPhase.Ended || touchOne.phase == UnityEngine.TouchPhase.Canceled)
             {
                 return;
             }
 
-            if (touchZero.phase == TouchPhase.Began || touchOne.phase == TouchPhase.Began)
+            if (touchZero.phase == UnityEngine.TouchPhase.Began || touchOne.phase == UnityEngine.TouchPhase.Began)
             {
                 initialDistance = Vector2.Distance(touchZero.position, touchOne.position);
                 initialScale = placedObject.transform.localScale;

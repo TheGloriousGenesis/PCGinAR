@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,21 +37,21 @@ namespace BaseGeneticClass
     }
 
     [Serializable]
-    public class Chromosone
+    public class Chromosome
     {
         public int id_ { get; set; }
         public List<Gene> genes { get; set; }
 
-        private Func<Chromosone, float> fitnessFunction;
+        private Func<Chromosome, float> fitnessFunction;
 
         public float fitness { get; set; }
 
-        public Chromosone(List<Gene> g)
+        public Chromosome(List<Gene> g)
         {
             genes = g;
         }
 
-        public Chromosone()
+        public Chromosome()
         {
         }
 
@@ -62,16 +61,17 @@ namespace BaseGeneticClass
             return fitness;
         }
 
-        public Chromosone DeepCopy()
+        public Chromosome DeepCopy()
         {
-            Chromosone chromosone = (Chromosone)this.MemberwiseClone();
+            Chromosome chromosome = (Chromosome)this.MemberwiseClone();
             List<Gene> _genes = new List<Gene>();
             foreach (Gene i in genes)
             {
                 _genes.Add(new Gene(i.allele));
             }
-            chromosone.genes = _genes;
-            return chromosone;
+            chromosome.genes = _genes;
+            return chromosome;
         }
     }
+
 }

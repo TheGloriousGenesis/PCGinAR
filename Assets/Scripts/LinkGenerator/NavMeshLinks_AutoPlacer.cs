@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.AI;
@@ -26,12 +25,6 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
 
         public GameObject sphereCast;
 
-        //public GenerateGame generateGame;
-        public GameObject player;
-
-        public GameObject target;
-
-        //public GameObject cube;
         public float tileWidth = 5f;
 
         [Header("OffMeshLinks")]
@@ -90,17 +83,18 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
 
         public void RefreshLinks()
         {
-            //generateGame.CreateGame(Constants.playerType);
             surface.RemoveData();
             surface.BuildNavMesh();
             Generate();
         }
 
-        public NavMeshPathStatus containsPath()
+        public NavMeshPath containsPath()
         {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject target = GameObject.FindGameObjectWithTag("Goal");
             NavMeshPath path = new NavMeshPath();
-            bool pathAvailable = NavMesh.CalculatePath(player.transform.position, target.transform.position, NavMesh.AllAreas, path);
-            return path.status;
+            NavMesh.CalculatePath(player.transform.position, target.transform.position, NavMesh.AllAreas, path);
+            return path;
         }
 
         public void ClearLinks()
@@ -118,7 +112,6 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
         {
             surface.RemoveData();
         }
-
 
         private void PlaceTiles()
         {
@@ -289,7 +282,6 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
                 // some of these links are going through mesh
                 if (NavMesh.SamplePosition(cheatRaycastHit, out navMeshHit, 1f, NavMesh.AllAreas))
                 {
-                    //Debug.Log("Success");
 
                     // Do not make links on navmeshes that are already connected so check path from pos to navmeshhit
                     NavMeshPath path = new NavMeshPath();
@@ -373,8 +365,7 @@ namespace eDmitriyAssets.NavmeshLinksGenerator
                     edge.facingNormal = Quaternion.LookRotation(Vector3.Cross(edge.end - edge.start, Vector3.up));
 
                     edge.facingNormalCalculated = true;
-
-
+                    
                 }
 
                 if (invertFacingNormal) edge.facingNormal = Quaternion.Euler(Vector3.up * 180) * edge.facingNormal;

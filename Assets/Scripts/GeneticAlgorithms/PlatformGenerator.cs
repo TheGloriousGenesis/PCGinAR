@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using BasicGeneticAlgorithmNS;
 using BaseGeneticClass;
 using System.Linq;
-using System;
-using UnityEngine.AI;
 
 public class PlatformGenerator : MonoBehaviour
 {
@@ -19,17 +16,15 @@ public class PlatformGenerator : MonoBehaviour
 
     //public NavMeshSurface surface;
 
-    public void CreatePlatform(Quaternion orientation, Chromosone chromosone)
+    public void CreatePlatform(Quaternion orientation, Chromosome chromosome)
     {
-        PlacePlatform(orientation, chromosone);
+        PlacePlatform(orientation, chromosome);
         ObtainWalkableSurface();
     }
 
-    private void PlacePlatform(Quaternion orientation, Chromosone chromosone)
+    private void PlacePlatform(Quaternion orientation, Chromosome chromosome)
     {
-        Vector3 blockSize = prefabs[BlockType.BASICBLOCK].transform.localScale;
-
-        List<Gene> genes = chromosone.genes;
+        List<Gene> genes = chromosome.genes;
         // select unique from list 
         List<Vector3> position = genes.SelectMany(x => x.allele.blockPositions).Distinct().ToList();
 
@@ -106,6 +101,7 @@ public class PlatformGenerator : MonoBehaviour
 
     public void PlaceGoal(Vector3 position, Quaternion rotation)
     {
+        // populate position in game map
         Utility.gamePlacement[position] = BlockType.GOAL;
 
         GameObject goal_ = Instantiate(prefabs[BlockType.GOAL], position + Vector3.up * 1.1f, rotation);
