@@ -79,6 +79,8 @@
             <e p="PlayerControls.cs" t="Include" />
             <e p="PlayerInputController.cs" t="Include" />
           </e>
+          <e p="Node.cs" t="Include" />
+          <e p="Path3D.cs" t="Include" />
           <e p="PrefabScripts" t="Include">
             <e p="ARAgent.cs" t="Include" />
             <e p="BrickBehaviour.cs" t="Include" />

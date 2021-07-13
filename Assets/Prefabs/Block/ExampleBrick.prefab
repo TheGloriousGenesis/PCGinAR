@@ -122,6 +122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1894953474422079055}
+  - component: {fileID: 6690143418854473304}
   m_Layer: 0
   m_Name: ExampleBrick
   m_TagString: Brick
@@ -146,6 +147,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6690143418854473304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894953474422366831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9658012d080f9a643875324d042ab6ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionData: {x: 0, y: 0, z: 0}
+  neighbours: []
 --- !u!1 &7572244095318882079
 GameObject:
   m_ObjectHideFlags: 0
