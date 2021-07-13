@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System.IO;
+﻿using System.IO;
+using UnityEngine;
 
 public static class HandleTextFile
 {
@@ -28,8 +27,7 @@ public static class HandleTextFile
         // //Print the text from the file
         // Debug.Log(asset.text);
     // }
-
-    [MenuItem("Tools/Read file")]
+    
     static void ReadString()
     {
         string path = "Assets/GenerationResults/test.txt";

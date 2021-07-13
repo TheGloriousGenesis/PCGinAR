@@ -72,7 +72,7 @@ public class GenerateGame : MonoBehaviour
 
         DestoryPlayer();
 
-        ResetGameMap();
+        DestoryGamePlacement();
 
         links_AutoPlacer.ClearSurfaceData();
     }

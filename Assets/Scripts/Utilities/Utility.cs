@@ -1,15 +1,18 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using BaseGeneticClass;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
+using Random = System.Random;
 
-[System.Serializable]
+[Serializable]
 public static class Utility
 {
-    public static List<Vector3> walkableSurface = new List<Vector3>();
+    // public static List<Vector3> walkableSurface = new List<Vector3>();
 
     public static Dictionary<Vector3, BlockType> gamePlacement = new Dictionary<Vector3, BlockType>();
     //public static Vector3 currentAgentPosition = new Vector3();
@@ -30,7 +33,7 @@ public static class Utility
     {
         obj.transform.parent = null;
         obj.name = "$disposed";
-        UnityEngine.Object.Destroy(obj);
+        Object.Destroy(obj);
 
         obj.SetActive(false);
     }
@@ -41,7 +44,7 @@ public static class Utility
     //         .Take(elementsCount).ToArray();
     // }
 
-    public static List<T> GetKRandomElements<T>(List<T> list, int k, System.Random random)
+    public static List<T> GetKRandomElements<T>(List<T> list, int k, Random random)
     {
         return list.OrderBy(x => random.Next()).Take(k).ToList();
     }
@@ -60,7 +63,7 @@ public static class Utility
     {
         obj.transform.parent = null;
         obj.name = "$disposed";
-        UnityEngine.Object.DestroyImmediate(obj);
+        Object.DestroyImmediate(obj);
         //obj.SetActive(false);
     }
 
@@ -145,7 +148,7 @@ public static class Utility
     //}
 }
 
-[System.Serializable]
+[Serializable]
 public static class BlockUIExtensions
 {
     // checks to see if position is over ui/ gameobject
@@ -166,7 +169,7 @@ public static class BlockUIExtensions
     }
 }
 
-[System.Serializable]
+[Serializable]
 public enum BlockType
 {
     BASICBLOCK,
@@ -179,7 +182,7 @@ public enum BlockType
     NONE
 }
 
-[System.Serializable]
+[Serializable]
 public class BlockTile
 {
     public BlockType blockType;
@@ -187,7 +190,7 @@ public class BlockTile
     public float perlinNoiseHighLimit;
 }
 
-[System.Serializable]
+[Serializable]
 public static class BlockPosition
 {
     public static readonly Vector3 UP = new Vector3(0, Constants.BLOCK_SIZE, 0);
@@ -199,7 +202,7 @@ public static class BlockPosition
     public static readonly Vector3 NONE = new Vector3(0, 0, 0);
 }
 
-[System.Serializable]
+[Serializable]
 public struct SerializeVector3
 {
     public float x;
