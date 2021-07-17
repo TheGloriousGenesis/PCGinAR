@@ -22,55 +22,54 @@ public class StorePath
 }
 public class GraphPrintAllPaths {
 
-	private List<StorePath> allPaths = new List<StorePath>();
-	public void print(Node start, Node end, string path, Dictionary<Node, Boolean> visited){
-        String newPath = path +  "->" + start.positionData;
-        visited[start] = true;
-        List<Node> list = start.neighbours;
-        for (int i = 0; i < list.Count ; i++) {
-            Node node = list[i];
-            if(node!=end && visited[node]==false){
-                print(node,end,newPath,visited);
-            }else if(node==end){
-                Debug.Log(newPath + "->" + node.positionData);
-            }
-        }
-        //remove from path
-        visited[start] = false;
-    }
- 
+	private List<string> allPaths = new List<string>();
+	
+	// public void print(Node start, Node end, string path, Dictionary<Node, Boolean> visited){
+ //        String newPath = path +  "->" + start.positionData;
+ //        visited[start] = true;
+ //        List<Node> list = start.neighbours;
+ //        for (int i = 0; i < list.Count ; i++) {
+ //            Node node = list[i];
+ //            if(node!=end && visited[node]==false){
+ //                print(node,end,newPath,visited);
+ //            }else if(node==end){
+ //                Debug.Log(newPath + "->" + node.positionData);
+ //            }
+ //        }
+ //        //remove from path
+ //        visited[start] = false;
+ //    }
+ //
 	 public void printAllPaths(List<Node> graph, Node start, Node end){
 		 Dictionary<Node, Boolean> visited = graph.ToDictionary(x => x, x => false);
 		 visited[start] = true;
-		 print(start, end, "", visited);
+		 print(start, end, "", visited, allPaths);
 	 }
- 
-	//  public void print(Node start, Node end, StorePath path, Dictionary<Node, Boolean> visited){
-	// 	 // StorePath newPath = new StorePath(path.current);
-	// 	 path.next = new StorePath(start.positionData);
-	// 	 visited[start] = true;
-	// 	 List<Node> list = start.neighbours;
-	// 	 for (int i = 0; i < list.Count ; i++) {
-	// 		 Node node = list[i];
-	// 		 if(node!=end && visited[node]==false){
-	// 			 print(node,end,path.next,visited);
-	// 		 }else if(node==end){
-	// 			 // StorePath tmp = new StorePath(start.positionData, node.positionData);
-	// 			 allPaths.Add(path);
-	// 		 }
-	// 	 }
-	// 	 //remove from path
-	// 	 visited[start] = false;
-	//  }
- //
-	// public void printAllPaths(List<Node> graph, Node start, Node end){
-	// 	Dictionary<Node, Boolean> visited = graph.ToDictionary(x => x, x => false);
- //        visited[start] = true;
- //        StorePath path = new StorePath(null);
- //        print(start, end, path, visited);
- //    }
 
-	public List<StorePath> GetAllPaths()
+	 public void print(Node start, Node end, string path, Dictionary<Node, Boolean> visited, List<string> allResults)
+	 {
+		 String newPath = path + "->" + start.positionData;
+		 visited[start] = true;
+		 List<Node> list = start.neighbours;
+		 for (int i = 0; i < list.Count; i++)
+		 {
+			 Node node = list[i];
+			 if (node != end && visited[node] == false)
+			 {
+				 print(node, end, newPath, visited, allResults);
+			 }
+			 else if (node == end)
+			 {
+				 allResults.Add(newPath + "->" + node.positionData);
+				 Debug.Log(newPath + "->" + node.positionData);
+			 }
+		 }
+
+		 //remove from path
+		 visited[start] = false;
+	 }
+
+	 public List<string> GetAllPaths()
 	{
 		return allPaths;
 	}
@@ -97,23 +96,28 @@ public class Path3D: MonoBehaviour {
 		Debug.Log("Starting Pathfinding..");
 		// GetWalkable();
 		walkableSurface = Utility.gamePlacement.Keys.ToList();
-		Debug.Log($"Walkable area has been found:  {walkableSurface.Count}");
+
+		if (walkableSurface.Count == 0)
+		{
+			throw new Exception("game map has not been made");
+		}
+		// Debug.Log($"Walkable area has been found:  {walkableSurface.Count}");
 		FindAllNodes();
-		Debug.Log("Nodes in scene found..");
+		// Debug.Log("Nodes in scene found..");
 		CreateAdjacencyMatrix();
-		Debug.Log("Adjacency Matrix created..");
+		// Debug.Log("Adjacency Matrix created..");
 		GraphPrintAllPaths p = new GraphPrintAllPaths();
 		player = nodeMap[Utility.GetKeyFromValue(Utility.gamePlacement, BlockType.PLAYER)[0]];
 		target = nodeMap[Utility.GetKeyFromValue(Utility.gamePlacement, BlockType.GOAL)[0]];
-		Debug.Log($"Start Node position..{player.positionData}");
-		Debug.Log($"End Node position..{target.positionData}");
+		// Debug.Log($"Start Node position..{player.positionData}");
+		// Debug.Log($"End Node position..{target.positionData}");
 		Stopwatch timer = new Stopwatch();
 		timer.Start();
 		p.printAllPaths(allNodesInScene,player,target);
 		timer.Stop();
 		
-		Debug.Log($"Time elapsed: {timer.Elapsed.TotalMilliseconds}");
-		Debug.Log($"Number of paths: {p.GetAllPaths().Count}");
+		// Debug.Log($"Time elapsed: {timer.Elapsed.TotalMilliseconds}");
+		// Debug.Log($"Number of paths: {p.GetAllPaths().Count}");
 	}
 
 	private void ResetPathFinding()
@@ -159,22 +163,27 @@ public class Path3D: MonoBehaviour {
 	neighbours.Clear();
 
 		for (int dx = -2; dx <= 2; dx++) {
-			for (int dy = -2; dy <= 2; dy++) {
+			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -2; dz <= 2; dz++) {
 					Vector3 coord = cell + new Vector3(dx, dy, dz);
 
-					if (!nodeMap.ContainsKey(coord)) {
-						continue;
+					if (nodeMap.ContainsKey(coord)) {
+						Node tmp = nodeMap[coord];
+
+						bool notSelf = !(dx == 0 && dy == 0 && dz == 0);
+						// change this line to fix issue
+						// bool connectivity = Math.Abs(dx) + Math.Abs(dy) + Math.Abs(dz) <= 2;
+						
+						//experiment1 - this changed it hang = too many operations
+						// bool connectivity = true;
+						//experiment2 - works
+						bool connectivity = Math.Abs(dx) + Math.Abs(dy) + Math.Abs(dz) <= 5;
+						if (notSelf && connectivity && tmp.walkable) {
+							neighbours.Add(nodeMap[coord]);
+						}
 					}
 
-					Node tmp = nodeMap[coord];
 
-					bool notSelf = !(dx == 0 && dy == 0 && dz == 0);
-					bool connectivity = Math.Abs(dx) + Math.Abs(dy) + Math.Abs(dz) <= 2;
-
-					if (notSelf && connectivity && tmp.walkable) {
-						neighbours.Add(nodeMap[coord]);
-					}
 				}
 			}
 		}
