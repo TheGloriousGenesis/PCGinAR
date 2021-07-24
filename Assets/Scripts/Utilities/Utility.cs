@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using BaseGeneticClass;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 using Random = System.Random;
@@ -109,6 +111,23 @@ public static class Utility
         } else {
             return 0;
         }
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float GetTotalDistance(this NavMeshPath targetNavMeshPath)
+    {
+        float calculatedLength = 0;
+
+        // The iterator looks ahead one position
+        int count = targetNavMeshPath.corners.Length - 1;
+
+        // Look at points in the NavMeshPath
+        for (int i = 0; i < count; i++)
+        {
+            calculatedLength += Vector3.Distance(targetNavMeshPath.corners[i], targetNavMeshPath.corners[i + 1]);
+        }
+
+        return calculatedLength;
     }
     
     //public static int GetRandomWeightedIndex(double[] weights)

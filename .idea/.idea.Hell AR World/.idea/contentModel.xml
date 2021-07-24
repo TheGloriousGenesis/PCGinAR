@@ -54,19 +54,19 @@
           </e>
         </e>
         <e p="results" t="Include">
-          <e p="GenerationResults.txt" t="Include" />
+          <e p="BasicGeneticImplResults.txt" t="Include" />
         </e>
         <e p="Scripts" t="Include">
+          <e p="AStar.cs" t="Include" />
           <e p="GenerateGame.cs" t="Include" />
           <e p="GeneticAlgorithms" t="Include">
             <e p="BaseGeneticClasses.cs" t="Include" />
-            <e p="BasicGeneticAlgorithm.cs" t="Include" />
             <e p="CoinGenerator.cs" t="Include" />
+            <e p="GeneticAlgorithms.cs" t="Include" />
             <e p="PerlinNoiseExample.cs" t="Include" />
             <e p="PlatformGenerator.cs" t="Include" />
             <e p="TestImplementation.cs" t="Include" />
           </e>
-          <e p="HandleTextFile.cs" t="Include" />
           <e p="LinkGenerator" t="Include">
             <e p="NavMeshLink_TBS.cs" t="Include" />
             <e p="NavMeshLinks_AutoPlacer.cs" t="Include" />
@@ -96,10 +96,12 @@
           <e p="Scripts.asmdef" t="Include" />
           <e p="Utilities" t="Include">
             <e p="Constants.cs" t="Include" />
+            <e p="Logger.cs" t="Include" />
             <e p="Singleton.cs" t="Include" />
             <e p="Utility.cs" t="Include" />
           </e>
         </e>
+        <e p="TestMeshDistanceCal.cs" t="Include" />
         <e p="Tests" t="Include">
           <e p="EditMode" t="Include">
             <e p="EditMode.asmdef" t="Include" />

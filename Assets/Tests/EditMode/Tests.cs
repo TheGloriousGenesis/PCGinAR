@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using BasicGeneticAlgorithmNS;
+using GeneticAlgorithms;
 using BaseGeneticClass;
 using System.Linq;
 
@@ -22,13 +22,15 @@ namespace Tests
         private int testElitism = 3;
         private int testIteration = 3;
         private int testK = 2;
+        private Operators _operators;
 
         [SetUp]
         public void SetUp()
         {
+            _operators = new Operators(testSeed, testK);
             test = new BasicGeneticAlgorithm(
                 testPopSize, testChromosomeLen, testCrossoverProb,
-                testSeed, testFitnessFunction, testElitism, testMutationProb, testIteration, testK);
+                testSeed, testElitism, testMutationProb, testIteration, testK);
         }
 
         [Test]
@@ -44,7 +46,7 @@ namespace Tests
 
             List<Chromosome> population = new List<Chromosome> {pop1, pop2, pop3, pop4};
 
-            List<Chromosome> result = test.Select(population);
+            List<Chromosome> result = _operators.TournamentSelection(population);
 
             Assert.AreEqual(2, result.Count);
         }

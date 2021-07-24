@@ -9,11 +9,13 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 1817e10878e9f124ab006435eff31bda,
+      type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: b1cdc1bf0420c3145b0a5e1b8be10446,
+      type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: c9f256787325cf14abaa8fd431947003,
       type: 2}
     com.unity.xr.arcore.PlayerSettings: {fileID: 11400000, guid: 71d9786581f76de43b758448cfdec633,
-      type: 2}
-    com.unity.xr.arkit.PlayerSettings: {fileID: 11400000, guid: b1cdc1bf0420c3145b0a5e1b8be10446,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 0265335a1b63628498bf3c89a514f17c,
       type: 2}

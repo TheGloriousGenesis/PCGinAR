@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using BaseGeneticClass;
-using BasicGeneticAlgorithmNS;
-using GDX;
+using GeneticAlgorithms;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = System.Random;
@@ -24,6 +23,7 @@ public class TestImplementation : MonoBehaviour
 
     [Header("Game Property")]
     [SerializeField] GenerateGame generateGame;
+    [SerializeField] Path3D multiplePaths;
     
     private Random random;
     private BasicGeneticAlgorithm ga;
@@ -32,7 +32,7 @@ public class TestImplementation : MonoBehaviour
     {
         random = new Random(Constants.SEED);
         ga = new BasicGeneticAlgorithm(Constants.POPULATION_SIZE, Constants.CHROMOSONE_LENGTH, Constants.CROSSOVER_PROBABILITY,
-            random, FitnessFunction, Constants.ELITISM, Constants.MUTATION_PROBABILITY, Constants.ITERATION, Constants.K);
+            random, Constants.ELITISM, Constants.MUTATION_PROBABILITY, Constants.ITERATION, Constants.K);
         List<Chromosome> finalResult = ga.Run(FitnessFunction);
         setUpLevel(finalResult[1]);
     }
@@ -50,11 +50,12 @@ public class TestImplementation : MonoBehaviour
       setUpLevel(chromosome);
       timer.Stop();
       NavMeshPath path = generateGame.PathStatus();
-
+      int numberOfPaths = calculateNumberOfPaths();
       if (path.status == NavMeshPathStatus.PathComplete)
       {
           score += 1;
       }
+      
       if (path.GetTotalDistance() > Constants.MAX_PLATFORM_DIMENSION)
       {
           score += 1;
@@ -63,7 +64,19 @@ public class TestImplementation : MonoBehaviour
       {
           score -= 0.5f;
       }
-      
+
+      if (0 <= numberOfPaths && numberOfPaths <= 5)
+      {
+          score += 2;
+      }
+      else if (6 <= numberOfPaths && numberOfPaths <= 10)
+      {
+          score += 1;
+      }
+      else if (10 <= numberOfPaths && numberOfPaths <= 20)
+      {
+          score += 0.5f;
+      }
       score = (Mathf.Pow(2, score) - 1) / (2 - 1);
       chromosome.fitness = score;
       
@@ -73,6 +86,12 @@ public class TestImplementation : MonoBehaviour
     private void setUpLevel(Chromosome chromosome)
     {
         generateGame.CreateGame(Constants.playerType, chromosome);
+    }
+
+    private int calculateNumberOfPaths()
+    {
+        List<List<Vector3>> allPaths = multiplePaths.FindPaths();
+        return allPaths.Count;
     }
 
 #if UNITY_EDITOR
