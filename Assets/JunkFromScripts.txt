@@ -1,0 +1,144 @@
+in Chromosome file:
+
+    // For possible MAP-Elites implementation
+    // public FeatureDimension featureDescriptor;
+	
+    public Chromosome DeepCopy()
+    {
+        Chromosome chromosome = (Chromosome)this.MemberwiseClone();
+        List<Gene> _genes = new List<Gene>();
+        foreach (Gene i in genes)
+        {
+            _genes.Add(new Gene(i.allele));
+        }
+        chromosome.genes = _genes;
+        return chromosome;
+    }
+	
+In utility file:
+    //public static int GetRandomWeightedIndex(double[] weights)
+    //{
+    //    if (weights == null || weights.Length == 0) return -1;
+
+    //    double w;
+    //    double t = 0;
+    //    int i;
+    //    for (i = 0; i < weights.Length; i++)
+    //    {
+    //        w = weights[i];
+
+    //        if (double.IsPositiveInfinity(w))
+    //        {
+    //            return i;
+    //        }
+    //        else if (w >= 0f && !double.IsNaN(w))
+    //        {
+    //            t += weights[i];
+    //        }
+    //    }
+
+    //    double r = random.NextDouble();
+    //    double s = 0f;
+
+    //    for (i = 0; i < weights.Length; i++)
+    //    {
+    //        w = weights[i];
+    //        if (double.IsNaN(w) || w <= 0f) continue;
+
+    //        s += w / t;
+    //        if (s >= r) return i;
+    //    }
+
+    //    return -1;
+    //}
+	
+	
+in GenerateGame file:
+
+    // private void ResetGameMap()
+    // {
+    //     foreach( var key in Utility.gamePlacement.Keys.ToList())
+    //     {
+    //         Utility.gamePlacement[key] = BlockType.NONE;
+    //     } 
+    // }
+	
+in PlatformGenerator file:
+
+        // public BlockTile[] blockTiles;
+
+in NavMeshLinks_AutoPlacer:
+// namespace eDmitriyAssets.NavmeshLinksGenerator
+
+		variables:
+			//private List< Vector3 > spawnedLinksPositionsList = new List< Vector3 >();
+		
+		in Generate:
+			//spawnedLinksPositionsList.Clear();
+
+		CalcEdges:
+			//Debug.DrawLine(edge.facingNormal * Vector3.forward, Vector3.forward * 10, Color.green, 15);
+
+			//Debug.DrawLine(edge.start + Vector3.up * 0.5f, edge.end + Vector3.up * 0.5f, Color.green, 15);
+			
+		CheckPlacePosHorizontal:
+			//Debug.DrawRay(endPos, Vector3.up, Color.blue, 20);
+            //Debug.DrawLine(cheatStartPos, endPos, Color.white, 20);
+            //Debug.DrawLine(startPos, endPos, Color.white, 2);
+		
+            //Debug.DrawLine(pos, offSetPosY, Color.white, 20);
+
+			//Debug.DrawRay(cheatStartPos, cheatStartPos + sphereCastRadius * Vector3.up, Color.red, 25);
+			//GameObject go = Instantiate(sphereCast);
+			//go.transform.position = cheatStartPos;
+			//go.transform.localScale = new Vector3(maxJumpDist * 2, maxJumpDist * 2, maxJumpDist * 2);
+			
+            //Debug.Log($"Distance from edge to navmesh hit point {Vector3.Distance(pos, navMeshHit.position)}");
+            //Debug.DrawLine(pos, navMeshHit.position, Color.red, 10);
+
+            //Should be both ways for horizontal links		
+			
+		CheckPlacePos:
+            // create line from navmesh downwards
+            //Debug.DrawLine(pos + Vector3.right * 0.2f, endPos, Color.white, 15);
+            //Debug.DrawLine(pos, endPos, Color.white, 15);	
+
+            //Debug.DrawLine(pos, navMeshHit.position, Color.green, 15);
+
+			// should check if the y position is within a range. if navMeshHit.position.y < pos.y (angle wise) then
+			// instantiate onewayLink. Else instantiate two way link
+
+			//added these 2 line to check to make sure there aren't flat horizontal links going through walls
+			//Vector3 calcV3 = (pos - normal * Vector3.forward * 0.02f);
+			//if ((calcV3.y - navMeshHit.position.y) > 1f)
+			//{			
+			
+			//pos - normal * Vector3.forward * 0.02f,
+            //pos - normal * Vector3.forward * 0.02f,
+			
+		PlaceTiles:
+			//Debug.DrawLine(edge.start + Vector3.up * 0.5f, edge.end + Vector3.up * 0.5f, Color.green, 15);
+
+			// Edge length is 0.4 all around apart from a count which are 0.4000001
+			//Debug.Log(edge.length);
+				
+			//if (edge.length > 0.41 && edge.length < 0.5)
+			//{
+			//    Debug.DrawLine(edge.start + Vector3.up * 0.5f, edge.end + Vector3.up * 0.5f, Color.red, 15);
+			//} 
+			//if (tilesCountWidth >= 2)
+			//{
+			//    Debug.DrawLine(edge.start + Vector3.up * 0.5f, edge.end + Vector3.up * 0.5f, Color.green, 15);
+			//}
+
+			//Debug.DrawLine(edge.start + Vector3.right * 0.2f, edge.end, Color.green, 15);
+
+			//Debug.Log($"tilesCountWidth: {tilesCountWidth}");	
+in Path3D:
+		GetNeighbours:
+			// change this line to fix issue
+			// bool connectivity = Math.Abs(dx) + Math.Abs(dy) + Math.Abs(dz) <= 2;
+				
+			//experiment1 - this changed it hang = too many operations
+			// bool connectivity = true;
+			//experiment2 - works

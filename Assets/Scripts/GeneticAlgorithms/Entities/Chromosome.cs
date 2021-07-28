@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using Object = UnityEngine.Object;
+
+namespace GeneticAlgorithms.Entities
+{
+    [Serializable]
+    public class Chromosome: Object
+    {
+        private static int _mCounter;
+        public int ID { get; set; }
+        public List<Gene> Genes { get; set; }
+    
+        public float Fitness { get; set; }
+
+        public Chromosome(List<Gene> g)
+        {
+            Genes = g;
+            ID = Interlocked.Increment(ref _mCounter);
+
+        }
+
+        public static void ResetCounter()
+        {
+            _mCounter = 0;
+        }
+
+        public Chromosome()
+        {
+            ID = Interlocked.Increment(ref _mCounter);
+        }
+    }
+}
