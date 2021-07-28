@@ -1,17 +1,18 @@
 ﻿using System.IO;
 
-namespace LoggerFramework
+namespace Utilities
 {
     public static class Logger
     {
-        private static string corePath = "Assets/results/";
-        private static LogBase logger  = new FileLogger(corePath);
-        public static void Log(LogTarget target, string message)
+        private static readonly string corePath = "Assets/results/RawData/";
+        private static readonly LogBase logger  = new FileLogger(corePath);
+        //put method in here to set up file 
+        public static void Log(LogTarget target, string variation, string message)
         {
             switch (target)
             {
                 case LogTarget.BasicGeneticOutput:
-                    logger.fileName = "BasicGeneticImplResults.txt";
+                    logger.fileName = $"BasicGeneticImplResults_{variation}.txt";
                     logger.Log(message);
                     break;
                 case LogTarget.MapElitesOutput:
@@ -29,7 +30,7 @@ namespace LoggerFramework
     {
         protected readonly object lockObj = new object();
 
-        public string corePath;
+        protected string corePath;
 
         public string fileName;
         public abstract void Log(string message);
@@ -42,7 +43,7 @@ namespace LoggerFramework
         {
             lock (lockObj)
             {
-                using (StreamWriter streamWriter = new StreamWriter(corePath + fileName, true))
+                using (var streamWriter = new StreamWriter(corePath + fileName, true))
                 {
                     streamWriter.WriteLine(message);
                     streamWriter.Close();

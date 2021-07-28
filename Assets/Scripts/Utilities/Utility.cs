@@ -4,236 +4,139 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
-using BaseGeneticClass;
+using Behaviour.Entities;
+using GeneticAlgorithms.Entities;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.EventSystems;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-[Serializable]
-public static class Utility
+namespace Utilities
 {
-    // public static List<Vector3> walkableSurface = new List<Vector3>();
-
-    public static Dictionary<Vector3, BlockType> gamePlacement = new Dictionary<Vector3, BlockType>();
-    //public static Vector3 currentAgentPosition = new Vector3();
-    public static T DeepClone<T>(this T obj)
+    [Serializable]
+    public static class Utility
     {
-        using (var ms = new MemoryStream())
+        public static Dictionary<Vector3, BlockType> GamePlacement = new Dictionary<Vector3, BlockType>();
+        public static T DeepClone<T>(this T obj)
         {
-            var formatter = new BinaryFormatter();
-            formatter.Serialize(ms, obj);
-            ms.Position = 0;
-
-            return (T)formatter.Deserialize(ms);
-        }
-    }
-
-    // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
-    public static void SafeDestory(GameObject obj)
-    {
-        obj.transform.parent = null;
-        obj.name = "$disposed";
-        Object.Destroy(obj);
-
-        obj.SetActive(false);
-    }
-
-    // public static int[] GetRandomElements(int listLength, int elementsCount, System.Random random)
-    // {
-    //     return Enumerable.Range(0, listLength).OrderBy(x => random.Next())
-    //         .Take(elementsCount).ToArray();
-    // }
-
-    public static List<T> GetKRandomElements<T>(List<T> list, int k, Random random)
-    {
-        return list.OrderBy(x => random.Next()).Take(k).ToList();
-    }
-    
-    public static List<Chromosome> FindNBestFitness_ByChromosome(List<Chromosome> list, int n)
-    {
-        list.Sort(CompareChromosome);
-        if (n == 1)
-        {
-            return new List<Chromosome>(){list[0]};
-        }
-        return list.Take(n) as List<Chromosome>;
-    }
-    
-    public static void SafeDestoryInEditMode(GameObject obj)
-    {
-        obj.transform.parent = null;
-        obj.name = "$disposed";
-        Object.DestroyImmediate(obj);
-        //obj.SetActive(false);
-    }
-
-    public static List<Vector3> GetKeyFromValue(Dictionary<Vector3, BlockType> dic, BlockType value)
-    {
-        List<Vector3> allPositions = new List<Vector3>();
-
-        foreach(KeyValuePair<Vector3, BlockType> i in dic)
-        {
-            if (i.Value == value)
+            using (var ms = new MemoryStream())
             {
-                allPositions.Add(i.Key);
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
             }
         }
 
-        return allPositions;
-    }
-
-    public static void ReplaceValueInMap(Dictionary<Vector3, BlockType> dic, BlockType replace, BlockType value)
-    {
-        List<Vector3> replacableKeys = new List<Vector3>();
-
-        foreach(KeyValuePair<Vector3, BlockType> i in dic)
+        // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
+        public static void SafeDestory(GameObject obj)
         {
-            if (i.Value == replace)
-            {
-                replacableKeys.Add(i.Key);
-            }
+            obj.transform.parent = null;
+            obj.name = "$disposed";
+            Object.Destroy(obj);
+
+            obj.SetActive(false);
         }
+
+        public static List<T> GetKRandomElements<T>(List<T> list, int k, Random random)
+        {
+            return list.OrderBy(x => random.Next()).Take(k).ToList();
+        }
+    
+        public static List<Chromosome> FindNBestFitness_ByChromosome(List<Chromosome> list, int n)
+        {
+            list.Sort(CompareChromosome);
+            if (n == 1)
+            {
+                return new List<Chromosome>(){list[0]};
+            }
+            return list.Take(n) as List<Chromosome>;
+        }
+    
+        public static void SafeDestoryInEditMode(GameObject obj)
+        {
+            obj.transform.parent = null;
+            obj.name = "$disposed";
+            Object.DestroyImmediate(obj);
+            //obj.SetActive(false);
+        }
+
+        public static List<Vector3> GetKeyFromValue(Dictionary<Vector3, BlockType> dic, BlockType value)
+        {
+            var allPositions = new List<Vector3>();
+
+            foreach(var i in dic)
+            {
+                if (i.Value == value)
+                {
+                    allPositions.Add(i.Key);
+                }
+            }
+
+            return allPositions;
+        }
+
+        public static void ReplaceValueInMap(Dictionary<Vector3, BlockType> dic, BlockType replace, BlockType value)
+        {
+            var replacableKeys = new List<Vector3>();
+
+            foreach(var i in dic)
+            {
+                if (i.Value == replace)
+                {
+                    replacableKeys.Add(i.Key);
+                }
+            }
         
-        foreach(Vector3 i in replacableKeys)
-        {
-            dic[i] = value;
+            foreach(var i in replacableKeys)
+            {
+                dic[i] = value;
+            }
         }
-    }
     
-    public static int CompareChromosome(Chromosome a, Chromosome b)
-    {
-        if (a.fitness > b.fitness) {
-            return -1;
-        } else if (a.fitness < b.fitness) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float GetTotalDistance(this NavMeshPath targetNavMeshPath)
-    {
-        float calculatedLength = 0;
-
-        // The iterator looks ahead one position
-        int count = targetNavMeshPath.corners.Length - 1;
-
-        // Look at points in the NavMeshPath
-        for (int i = 0; i < count; i++)
+        public static int CompareChromosome(Chromosome a, Chromosome b)
         {
-            calculatedLength += Vector3.Distance(targetNavMeshPath.corners[i], targetNavMeshPath.corners[i + 1]);
-        }
+            if (a.Fitness > b.Fitness) {
+                return -1;
+            }
 
-        return calculatedLength;
-    }
+            return a.Fitness < b.Fitness ? 1 : 0;
+        }
     
-    //public static int GetRandomWeightedIndex(double[] weights)
-    //{
-    //    if (weights == null || weights.Length == 0) return -1;
-
-    //    double w;
-    //    double t = 0;
-    //    int i;
-    //    for (i = 0; i < weights.Length; i++)
-    //    {
-    //        w = weights[i];
-
-    //        if (double.IsPositiveInfinity(w))
-    //        {
-    //            return i;
-    //        }
-    //        else if (w >= 0f && !double.IsNaN(w))
-    //        {
-    //            t += weights[i];
-    //        }
-    //    }
-
-    //    double r = random.NextDouble();
-    //    double s = 0f;
-
-    //    for (i = 0; i < weights.Length; i++)
-    //    {
-    //        w = weights[i];
-    //        if (double.IsNaN(w) || w <= 0f) continue;
-
-    //        s += w / t;
-    //        if (s >= r) return i;
-    //    }
-
-    //    return -1;
-    //}
-}
-
-[Serializable]
-public static class BlockUIExtensions
-{
-    // checks to see if position is over ui/ gameobject
-    public static bool IsPointOverUIObject(this Vector2 pos)
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float GetTotalDistance(this NavMeshPath targetNavMeshPath)
         {
-            return false;
+            float calculatedLength = 0;
+
+            // The iterator looks ahead one position
+            var count = targetNavMeshPath.corners.Length - 1;
+
+            // Look at points in the NavMeshPath
+            for (var i = 0; i < count; i++)
+            {
+                calculatedLength += Vector3.Distance(targetNavMeshPath.corners[i], targetNavMeshPath.corners[i + 1]);
+            }
+
+            return calculatedLength;
+        }
+    
+        public static void SaveToFile(Object obj, string path)
+        {
+            var bf = new BinaryFormatter(); 
+            var file = File.Create(path);
+            bf.Serialize(file, obj);
+            file.Close();
+            Debug.Log($"{obj.name} data saved!");
         }
 
-        PointerEventData eventPostiion = new PointerEventData(EventSystem.current);
-        eventPostiion.position = new Vector2(pos.x, pos.y);
+        public static Object LoadFromFile(string path, Object obj)
+        {
+            var extractFromJson = File.ReadAllText(path);
+            return obj;
+        }
 
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventPostiion, results);
-
-        return results.Count > 0;
     }
+
+
 }
-
-[Serializable]
-public enum BlockType
-{
-    BASICBLOCK,
-    GOAL,
-    PLAYER,
-    COIN,
-    ENEMY_1,
-    ENEMY_2,
-    AGENT,
-    NONE
-}
-
-[Serializable]
-public class BlockTile
-{
-    public BlockType blockType;
-    public float perlinNoiseLowLimit;
-    public float perlinNoiseHighLimit;
-}
-
-[Serializable]
-public static class BlockPosition
-{
-    public static readonly Vector3 UP = new Vector3(0, Constants.BLOCK_SIZE, 0);
-    public static readonly Vector3 DOWN = new Vector3(0, -Constants.BLOCK_SIZE, 0);
-    public static readonly Vector3 LEFT = new Vector3(-Constants.BLOCK_SIZE, 0, 0);
-    public static readonly Vector3 RIGHT = new Vector3(Constants.BLOCK_SIZE, 0, 0);
-    public static readonly Vector3 FRONT = new Vector3(0, 0, Constants.BLOCK_SIZE);
-    public static readonly Vector3 BACK = new Vector3(0, 0, -Constants.BLOCK_SIZE);
-    public static readonly Vector3 NONE = new Vector3(0, 0, 0);
-}
-
-[Serializable]
-public struct SerializeVector3
-{
-    public float x;
-    public float y;
-    public float z;
-
-    public SerializeVector3(float paramX, float paramY, float paramZ)
-    {
-        x = paramX;
-        y = paramY;
-        z = paramZ;
-    }
-}
-
-

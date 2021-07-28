@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using GeneticAlgorithms.Algorithms;
+using GeneticAlgorithms.Entities;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using GeneticAlgorithms;
-using BaseGeneticClass;
-using System.Linq;
+using Utilities;
 
 namespace Tests
 {
@@ -18,16 +15,16 @@ namespace Tests
         private int testChromosomeLen = 6;
         private int testCrossoverProb = 6;
         private float testMutationProb = 0.2f;
-        private System.Random testSeed = new System.Random(123);
+        private Random testSeed = new Random(123);
         private int testElitism = 3;
         private int testIteration = 3;
         private int testK = 2;
-        private Operators _operators;
+        private GeneticOperators _geneticOperators;
 
         [SetUp]
         public void SetUp()
         {
-            _operators = new Operators(testSeed, testK);
+            _geneticOperators = new GeneticOperators(testSeed, testK);
             test = new BasicGeneticAlgorithm(
                 testPopSize, testChromosomeLen, testCrossoverProb,
                 testSeed, testElitism, testMutationProb, testIteration, testK);
@@ -36,17 +33,17 @@ namespace Tests
         [Test]
         public void TestSelectOperator()
         {
-            Chromosome pop1 = new Chromosome {genes = new List<Gene>(), fitness = 0.67f};
+            Chromosome pop1 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.67f};
 
-            Chromosome pop2 = new Chromosome {genes = new List<Gene>(), fitness = 0.34f};
+            Chromosome pop2 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.34f};
 
-            Chromosome pop3 = new Chromosome {genes = new List<Gene>(), fitness = 0.94f};
+            Chromosome pop3 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.94f};
 
-            Chromosome pop4 = new Chromosome {genes = new List<Gene>(), fitness = 0.99f};
+            Chromosome pop4 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.99f};
 
             List<Chromosome> population = new List<Chromosome> {pop1, pop2, pop3, pop4};
 
-            List<Chromosome> result = _operators.TournamentSelection(population);
+            List<Chromosome> result = _geneticOperators.TournamentSelection(population);
 
             Assert.AreEqual(2, result.Count);
         }
@@ -74,13 +71,13 @@ namespace Tests
         [Test]
         public void TestFindNBestFitness_ByChromosome()
         {
-            Chromosome pop1 = new Chromosome {genes = new List<Gene>(), fitness = 0.67f};
+            Chromosome pop1 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.67f};
 
-            Chromosome pop2 = new Chromosome {genes = new List<Gene>(), fitness = 0.34f};
+            Chromosome pop2 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.34f};
 
-            Chromosome pop3 = new Chromosome {genes = new List<Gene>(), fitness = 0.94f};
+            Chromosome pop3 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.94f};
 
-            Chromosome pop4 = new Chromosome {genes = new List<Gene>(), fitness = 0.99f};
+            Chromosome pop4 = new Chromosome {Genes = new List<Gene>(), Fitness = 0.99f};
             
             List<Chromosome> population = new List<Chromosome>() {pop1, pop2, pop3, pop4};
 
@@ -88,7 +85,7 @@ namespace Tests
 
             Assert.AreEqual(1, result.Count);
             
-            Assert.AreEqual(result[0].fitness, pop4.fitness);
+            Assert.AreEqual(result[0].Fitness, pop4.Fitness);
         }
         
     }

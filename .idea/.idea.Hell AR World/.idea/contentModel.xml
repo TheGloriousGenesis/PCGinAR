@@ -8,6 +8,7 @@
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="JunkFromScripts.txt" t="Include" />
         <e p="ml-agents" t="Include">
           <e p="Examples" t="Include">
             <e p="3DBall" t="Include">
@@ -54,50 +55,87 @@
           </e>
         </e>
         <e p="results" t="Include">
-          <e p="BasicGeneticImplResults.txt" t="Include" />
+          <e p="RawData" t="Include">
+            <e p="BasicGeneticImplResults_Ps10_Cl10_Pd10_G25.txt" t="Include" />
+            <e p="BasicGeneticImplResults_Ps20_Cl20_Pd20_G25.txt" t="Include" />
+            <e p="BasicGeneticImplResults_Ps50_Cl50_Pd50_G25.txt" t="Include" />
+          </e>
         </e>
         <e p="Scripts" t="Include">
-          <e p="AStar.cs" t="Include" />
+          <e p="Behaviour" t="Include">
+            <e p="Entities" t="Include">
+              <e p="BlockTile.cs" t="Include" />
+              <e p="PrefabFactory.cs" t="Include" />
+            </e>
+            <e p="Platform" t="Include">
+              <e p="BrickBehaviour.cs" t="Include" />
+              <e p="CoinBehaviour.cs" t="Include" />
+              <e p="LinkGenerator" t="Include">
+                <e p="Entities" t="Include">
+                  <e p="Edge.cs" t="Include" />
+                </e>
+                <e p="NavMeshLinksAutoPlacer.cs" t="Include" />
+                <e p="NavMeshLinkTBS.cs" t="Include" />
+              </e>
+              <e p="RaiseFlag.cs" t="Include" />
+            </e>
+            <e p="Player" t="Include">
+              <e p="AgentLinkMover.cs" t="Include" />
+              <e p="ARAgent.cs" t="Include" />
+              <e p="ClickToMove.cs" t="Include" />
+              <e p="GameManager.cs" t="Include" />
+              <e p="PlayerControls.cs" t="Include" />
+              <e p="PlayerInputController.cs" t="Include" />
+              <e p="RandomWalk.cs" t="Include" />
+              <e p="ToadController.cs" t="Include" />
+            </e>
+          </e>
           <e p="GenerateGame.cs" t="Include" />
           <e p="GeneticAlgorithms" t="Include">
-            <e p="BaseGeneticClasses.cs" t="Include" />
-            <e p="CoinGenerator.cs" t="Include" />
-            <e p="GeneticAlgorithms.cs" t="Include" />
-            <e p="PerlinNoiseExample.cs" t="Include" />
-            <e p="PlatformGenerator.cs" t="Include" />
-            <e p="TestImplementation.cs" t="Include" />
+            <e p="Algorithms" t="Include">
+              <e p="BaseAlgorithm.cs" t="Include" />
+              <e p="BasicGeneticAlgorithm.cs" t="Include" />
+              <e p="MapElites.cs" t="Include" />
+              <e p="PerlinNoiseExample.cs" t="Include" />
+            </e>
+            <e p="Entities" t="Include">
+              <e p="Allele.cs" t="Include" />
+              <e p="Chromosome.cs" t="Include" />
+              <e p="FeatureDimension.cs" t="Include" />
+              <e p="GameData.cs" t="Include" />
+              <e p="Gene.cs" t="Include" />
+              <e p="GeneticOperators.cs" t="Include" />
+            </e>
+            <e p="Generators" t="Include">
+              <e p="CoinGenerator.cs" t="Include" />
+              <e p="PlatformGenerator.cs" t="Include" />
+            </e>
+            <e p="Implementation" t="Include">
+              <e p="GAImplementation.cs" t="Include" />
+            </e>
+            <e p="Parameter" t="Include">
+              <e p="Constants.cs" t="Include" />
+            </e>
           </e>
-          <e p="LinkGenerator" t="Include">
-            <e p="NavMeshLink_TBS.cs" t="Include" />
-            <e p="NavMeshLinks_AutoPlacer.cs" t="Include" />
-          </e>
-          <e p="MovementScripts" t="Include">
-            <e p="AgentLinkMover.cs" t="Include" />
-            <e p="ClickToMove.cs" t="Include" />
-            <e p="GameManager.cs" t="Include" />
-            <e p="PlacementDragAndLock.cs" t="Include" />
-            <e p="PlayerControls.cs" t="Include" />
-            <e p="PlayerInputController.cs" t="Include" />
-          </e>
-          <e p="Node.cs" t="Include" />
-          <e p="Path3D.cs" t="Include" />
-          <e p="PrefabScripts" t="Include">
-            <e p="ARAgent.cs" t="Include" />
-            <e p="BrickBehaviour.cs" t="Include" />
-            <e p="CoinBehaviour.cs" t="Include" />
-            <e p="PrefabFactory.cs" t="Include" />
-            <e p="RaiseFlag.cs" t="Include" />
-            <e p="RandomWalk.cs" t="Include" />
-            <e p="ToadController.cs" t="Include" />
-          </e>
-          <e p="Rendering" t="Include">
-            <e p="LightEstimation.cs" t="Include" />
+          <e p="PathFinding" t="Include">
+            <e p="Entities" t="Include">
+              <e p="GraphPaths.cs" t="Include" />
+              <e p="Node.cs" t="Include" />
+              <e p="StorePath.cs" t="Include" />
+            </e>
+            <e p="PathFinding3D.cs" t="Include" />
           </e>
           <e p="Scripts.asmdef" t="Include" />
+          <e p="UI" t="Include">
+            <e p="BlockUIExtensions.cs" t="Include" />
+            <e p="PlacementDragAndLock.cs" t="Include" />
+          </e>
           <e p="Utilities" t="Include">
-            <e p="Constants.cs" t="Include" />
+            <e p="DesignPatterns" t="Include">
+              <e p="SerializeVector3.cs" t="Include" />
+              <e p="Singleton.cs" t="Include" />
+            </e>
             <e p="Logger.cs" t="Include" />
-            <e p="Singleton.cs" t="Include" />
             <e p="Utility.cs" t="Include" />
           </e>
         </e>
@@ -108,7 +146,7 @@
             <e p="Tests.cs" t="Include" />
           </e>
         </e>
-        <e p="Tests 1" t="Include">
+        <e p="Tests_NavMesh" t="Include">
           <e p="Editor" t="Include">
             <e p="NavMeshComponentsTestsEditmode.asmdef" t="Include" />
             <e p="NavMeshModifierVolumeInPrefabTests.cs" t="Include" />
