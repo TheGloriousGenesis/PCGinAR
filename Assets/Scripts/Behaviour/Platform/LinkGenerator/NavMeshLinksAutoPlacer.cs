@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LinkGenerator.Entities;
+using Behaviour.Platform.LinkGenerator.Entities;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
+using Utilities;
 
 #if UNITY_EDITOR
 
@@ -42,6 +43,7 @@ namespace LinkGenerator
 
         private Mesh _currMesh;
         private readonly List<Edge> _edges = new List<Edge>();
+        private readonly List<Vector3> _edgeVertices = new List<Vector3>();
 
         private float _agentRadius = 2;
 
@@ -258,6 +260,8 @@ namespace LinkGenerator
                 TrisToEdge(_currMesh, i + 2, i);
             }
 
+            Utility.EdgesOfCurrentGame = _edgeVertices;
+
             // here are the open edges of the meshes created from triangulation
             foreach (var edge in _edges)
             {
@@ -277,7 +281,6 @@ namespace LinkGenerator
                 }
 
                 if (invertFacingNormal) edge.facingNormal = Quaternion.Euler(Vector3.up * 180) * edge.facingNormal;
-
             }
         }
 
@@ -297,6 +300,8 @@ namespace LinkGenerator
                 return;
             }
             _edges.Add(newEdge);
+            _edgeVertices.Add(val1);
+            _edgeVertices.Add(val2);
         }
         #endregion
     }

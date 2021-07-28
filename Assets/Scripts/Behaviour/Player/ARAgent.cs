@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Behaviour.Entities;
+using Behaviour.Player;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;

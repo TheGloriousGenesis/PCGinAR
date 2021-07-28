@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace LinkGenerator.Entities
+namespace Behaviour.Platform.LinkGenerator.Entities
 {
     [Serializable]
     public class Edge

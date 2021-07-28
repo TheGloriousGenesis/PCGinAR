@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using Behaviour.Entities;
+using Behaviour.Platform.LinkGenerator.Entities;
 using GeneticAlgorithms.Entities;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,6 +18,9 @@ namespace Utilities
     public static class Utility
     {
         public static Dictionary<Vector3, BlockType> GamePlacement = new Dictionary<Vector3, BlockType>();
+        
+        public static List<Vector3> EdgesOfCurrentGame { get; set; }
+
         public static T DeepClone<T>(this T obj)
         {
             using (var ms = new MemoryStream())

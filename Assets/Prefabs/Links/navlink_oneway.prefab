@@ -50,6 +50,6 @@ MonoBehaviour:
   m_CostModifier: -1
   m_Bidirectional: 0
   m_AutoUpdatePosition: 0
-  m_Area: 0
-  animation_FromStart: JumpDown
-  animation_FromEnd: JumpUp
+  m_Area: 3
+  animationFromStart: JumpDown
+  animationFromEnd: JumpUp

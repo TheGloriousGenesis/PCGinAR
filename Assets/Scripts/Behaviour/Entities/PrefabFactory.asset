@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f60846fffc461e4bae4db0743fc25d2, type: 3}
   m_Name: PrefabFactory
   m_EditorClassIdentifier: 
-  AllPrefabs:
+  allPrefabs:
   - prefab: {fileID: 1894953474422366831, guid: 5ea089b4f398e7a43a1727340f725c28,
       type: 3}
     blockType: 0
@@ -27,6 +27,6 @@ MonoBehaviour:
   - prefab: {fileID: 5560608345248323637, guid: 106f8e4dfc96a954ea6ac35559e66983,
       type: 3}
     blockType: 4
-  - prefab: {fileID: 3023926606183003683, guid: d420ed029afe5dc46a85e33f7dddf30a,
+  - prefab: {fileID: 8984989426873966891, guid: 3eb05938487a32e48a7ccdb6513175a3,
       type: 3}
     blockType: 6

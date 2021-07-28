@@ -5,7 +5,7 @@ namespace GeneticAlgorithms.Parameter
     public static class Constants
     {
         public const float BLOCK_SIZE = 1.0f;
-        public const BlockType PLAYERTYPE = BlockType.AGENT;
+        public const BlockType PLAYERTYPE = BlockType.PLAYER;
 
         public const int MAX_PLATFORM_DIMENSION = 10;
         public const int CHROMOSONE_LENGTH = 10;

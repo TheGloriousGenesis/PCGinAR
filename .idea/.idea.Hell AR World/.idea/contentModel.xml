@@ -61,6 +61,25 @@
             <e p="BasicGeneticImplResults_Ps50_Cl50_Pd50_G25.txt" t="Include" />
           </e>
         </e>
+        <e p="Samples" t="Include">
+          <e p="XR Plugin Management" t="Include">
+            <e p="4.0.1" t="Include">
+              <e p="Example XR Management implementation" t="Include">
+                <e p="Editor" t="Include">
+                  <e p="SampleBuildProcessor.cs" t="Include" />
+                  <e p="SampleMetadata.cs" t="Include" />
+                  <e p="SampleSettingsEditor.cs" t="Include" />
+                  <e p="SampleStandaloneLoaderUI.cs" t="Include" />
+                  <e p="Unity.XR.Management.Samples.Editor.asmdef" t="Include" />
+                </e>
+                <e p="SampleConstants.cs" t="Include" />
+                <e p="SampleLoader.cs" t="Include" />
+                <e p="SampleSettings.cs" t="Include" />
+                <e p="Unity.XR.Management.Samples.asmdef" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
         <e p="Scripts" t="Include">
           <e p="Behaviour" t="Include">
             <e p="Entities" t="Include">
@@ -91,6 +110,10 @@
             </e>
           </e>
           <e p="GenerateGame.cs" t="Include" />
+          <e p="Generators" t="Include">
+            <e p="CoinGenerator.cs" t="Include" />
+            <e p="PlatformGenerator.cs" t="Include" />
+          </e>
           <e p="GeneticAlgorithms" t="Include">
             <e p="Algorithms" t="Include">
               <e p="BaseAlgorithm.cs" t="Include" />
@@ -105,10 +128,6 @@
               <e p="GameData.cs" t="Include" />
               <e p="Gene.cs" t="Include" />
               <e p="GeneticOperators.cs" t="Include" />
-            </e>
-            <e p="Generators" t="Include">
-              <e p="CoinGenerator.cs" t="Include" />
-              <e p="PlatformGenerator.cs" t="Include" />
             </e>
             <e p="Implementation" t="Include">
               <e p="GAImplementation.cs" t="Include" />
@@ -188,6 +207,8 @@
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Scripts.csproj" t="IncludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
+      <e p="Unity.XR.Management.Samples.csproj" t="IncludeRecursive" />
+      <e p="Unity.XR.Management.Samples.Editor.csproj" t="IncludeRecursive" />
     </e>
   </component>
 </project>

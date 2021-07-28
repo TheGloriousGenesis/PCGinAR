@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Behaviour.Entities;
+using Generators;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Generators;
 using LinkGenerator;
@@ -69,6 +70,8 @@ public class GenerateGame : MonoBehaviour
 
         DestoryPlayer();
 
+        DestoryAgent();
+
         DestoryGamePlacement();
 
         linksAutoPlacer.ClearSurfaceData();
@@ -124,6 +127,19 @@ public class GenerateGame : MonoBehaviour
             }
         }
         Utility.ReplaceValueInMap(Utility.GamePlacement, BlockType.PLAYER, BlockType.NONE);
+    }
+    
+    private static void DestoryAgent()
+    {
+        var player = GameObject.FindGameObjectsWithTag("Agent");
+        if (player != null)
+        {
+            for (var i = player.Length - 1; i >= 0; i--)
+            {
+                Utility.SafeDestoryInEditMode(player[i].gameObject);
+            }
+        }
+        Utility.ReplaceValueInMap(Utility.GamePlacement, BlockType.AGENT, BlockType.NONE);
     }
 
     public NavMeshPath PathStatus()

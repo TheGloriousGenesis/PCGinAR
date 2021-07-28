@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Behaviour.Player;
+using UnityEngine;
 
 namespace Behaviour.Platform
 {
