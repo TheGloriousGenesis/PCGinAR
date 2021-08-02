@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Utilities;
+using Random = System.Random;
 
 namespace GeneticAlgorithms.Entities
 {
@@ -42,7 +44,10 @@ namespace GeneticAlgorithms.Entities
         public List<Chromosome> TournamentSelection(List<Chromosome> population)
         {
             List<Chromosome> selections = new List<Chromosome>();
-        
+
+            HashSet<Chromosome> unique = new HashSet<Chromosome>();
+            List<Chromosome> possibleParents1 = new List<Chromosome>();
+            List<Chromosome> possibleParents2 = new List<Chromosome>();
             // ensure that the population has at least k individuals to pick possible parents
             // if not just return all elements
             if (population.Count() < _k)
@@ -50,8 +55,18 @@ namespace GeneticAlgorithms.Entities
                 return selections;
             }
 
-            List<Chromosome> possibleParents1 = Utility.GetKRandomElements(population, _k, _random);
-            List<Chromosome> possibleParents2 = Utility.GetKRandomElements(population, _k, _random);
+            Debug.Log("Select parents");
+            while (unique.Count <= 1)
+            {
+                possibleParents1 = Utility.GetKRandomElements(population, _k, _random);
+                foreach (var chromosome in possibleParents1) unique.Add(chromosome);
+                possibleParents2 = Utility.GetKRandomElements(population, _k, _random);
+                foreach (var chromosome in possibleParents2) unique.Add(chromosome);
+                // if (unique.Count <= 2)
+                // {
+                //     unique.Clear();
+                // }
+            }
 
             List<Chromosome> topParent1 = Utility.FindNBestFitness_ByChromosome(possibleParents1, 1);
             List<Chromosome> topParent2 = Utility.FindNBestFitness_ByChromosome(possibleParents2, 1);

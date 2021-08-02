@@ -43,7 +43,7 @@ namespace PathFinding
 			FindAllNodes();
 			CreateAdjacencyMatrix();
 
-			player = _nodeMap[Utility.GetKeyFromValue(Utility.GamePlacement, BlockType.PLAYER)[0]];
+			player = _nodeMap[Utility.GetKeyFromValue(Utility.GamePlacement, BlockType.AGENT)[0]];
 			target = _nodeMap[Utility.GetKeyFromValue(Utility.GamePlacement, BlockType.GOAL)[0]];
 			var p = new GraphPaths(player, target);
 			var tmp = p.NextShortestPath();

@@ -2,7 +2,6 @@
 using System.Linq;
 using Behaviour.Platform.LinkGenerator.Entities;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 using Utilities;
@@ -12,7 +11,7 @@ using Utilities;
 #endif
 
 
-namespace LinkGenerator
+namespace Behaviour.Platform.LinkGenerator
 {
     public class NavMeshLinksAutoPlacer : MonoBehaviour
     {
@@ -63,10 +62,10 @@ namespace LinkGenerator
 
             PlaceTiles();
 
-
-#if UNITY_EDITOR
-            if (!Application.isPlaying) EditorSceneManager.MarkSceneDirty(gameObject.scene);
-#endif
+//todo: put this back in if you editing game, remove for deploying to mobile
+// #if UNITY_EDITOR
+//             if (!Application.isPlaying) EditorSceneManager.MarkSceneDirty(gameObject.scene);
+// #endif
 
         }
 

@@ -13,7 +13,7 @@ namespace results
     // player can follow A* path and detect number of turns etc jumps
     public class ARAgent : Agent
     {
-        private GenerateGame game;
+        private GenerateGameService _gameService;
 
         private Rigidbody rBody;
 
@@ -42,9 +42,9 @@ namespace results
             {
                 Target = GameObject.FindGameObjectWithTag("Goal").transform;
             }
-            if (game == null)
+            if (_gameService == null)
             {
-                game = FindObjectOfType(typeof(GenerateGame)) as GenerateGame;
+                _gameService = FindObjectOfType(typeof(GenerateGameService)) as GenerateGameService;
             }
         }
 
@@ -58,7 +58,7 @@ namespace results
             rBody.velocity = Vector3.zero;
 
             // Destory coins and reset game map so we can update it with new positions
-            GenerateGame.DestoryCoins();
+            // GenerateGame.DestoryCoins();
             // game.ResetGameMap();
 
             // randomly find position for player and place. Update gameplacement map on where player is
@@ -74,7 +74,7 @@ namespace results
             Utility.GamePlacement[pos[indexGoal]] = BlockType.GOAL;
 
             // place coins where player and goal are not
-            game.PlaceCoins();
+            _gameService.PlaceCoins();
         }
 
         // information to collect to send to brain to make decision

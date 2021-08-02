@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Behaviour.Entities;
 using GeneticAlgorithms.Algorithms;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
 using PathFinding;
+using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Utilities;
+using Debug = UnityEngine.Debug;
 using Random = System.Random;
 
 #if UNITY_EDITOR
@@ -19,38 +23,59 @@ namespace GeneticAlgorithms.Implementation
 {
     public class GaImplementation : MonoBehaviour
     {
-        [Header("Game Property")]
-        [SerializeField] GenerateGame generateGame;
+        [Header("Game Property")] 
+        [SerializeField]
+        private GenerateGameService gameService;
         [FormerlySerializedAs("multiplePaths")] [SerializeField] PathFinding3D multiplePathsFinding;
     
         private Random _random;
         private BasicGeneticAlgorithm _ga;
 
-        private void Run()
+        #region Event subscriptions
+
+        public void OnEnable()
         {
-            _random = new Random(Constants.SEED);
-            _ga = new BasicGeneticAlgorithm(Constants.POPULATION_SIZE, Constants.CHROMOSONE_LENGTH, Constants.CROSSOVER_PROBABILITY,
+            EventManager.OnSendGameStats += SetUpGARun;
+        }
+
+        public void OnDisable()
+        {
+            EventManager.OnSendGameStats -= SetUpGARun;
+        }
+
+        #endregion
+
+        private void Start()
+        {
+            if (_random == null) _random = new Random(Constants.SEED);
+            
+            if (_ga == null) _ga = new BasicGeneticAlgorithm(Constants.POPULATION_SIZE, Constants.CHROMOSONE_LENGTH, Constants.CROSSOVER_PROBABILITY,
                 _random, Constants.ELITISM, Constants.MUTATION_PROBABILITY, Constants.ITERATION, Constants.K);
+        }
+
+        public Chromosome Run()
+        {
             List<Chromosome> finalResult = _ga.Run(FitnessFunction);
-            SetUpLevel(finalResult[1]);
+            return finalResult[1];
         }
 
         private void Remove()
         {
-            generateGame.ResetGameArea();
+            gameService.ResetGame(Utility.SafeDestroyInEditMode);
             _ga = null;
             multiplePathsFinding.ResetPathFinding();
             Chromosome.ResetCounter();
             _random = null;
         }
 
+        #region Fitness Analysis
         private double FitnessFunction(Chromosome chromosome)
         {
             Stopwatch timer = new Stopwatch();
             float score = 0;
 
             timer.Start();
-            SetUpLevel(chromosome);
+            gameService.CreateGameGA(BlockType.AGENT, chromosome);
             timer.Stop();
 
             score += AnalyseAStarPath();
@@ -86,7 +111,7 @@ namespace GeneticAlgorithms.Implementation
 
         private float AnalyseAStarPath()
         {
-            NavMeshPath path = generateGame.PathStatus();
+            NavMeshPath path = GenerateGameService.PathStatus();
             float score = 0;
             // Check completable level
             if (path.status == NavMeshPathStatus.PathComplete)
@@ -104,19 +129,15 @@ namespace GeneticAlgorithms.Implementation
                 score -= 0.5f;
             }
         
-            // Check entropy
-            int numberOfTurns = path.corners.Length;
-            //todo: double check this 
-            // max number of turns is if a turn must be done on each block
-            int maxNumberOfTurns = Utility.GamePlacement.Keys.Count;
-            score += (numberOfTurns/maxNumberOfTurns);
+            // todo: Have removed entropy calculate length in order to replace with ingame stats
+            // // Check entropy
+            // int numberOfTurns = path.corners.Length;
+            // //todo: double check this 
+            // // max number of turns is if a turn must be done on each block
+            // int maxNumberOfTurns = Utility.GamePlacement.Keys.Count;
+            // score += (numberOfTurns/maxNumberOfTurns);
 
             return score;
-        }
-
-        private void SetUpLevel(Chromosome chromosome)
-        {
-            generateGame.CreateGame(Constants.PLAYERTYPE, chromosome);
         }
 
         private int CalculateNumberOfPaths()
@@ -124,6 +145,23 @@ namespace GeneticAlgorithms.Implementation
             List<List<Vector3>> allPaths = multiplePathsFinding.FindPaths();
             return allPaths.Count;
         }
+        
+        #endregion
+
+        #region InGame data for GA
+
+        private void SetUpGARun(GameData gameData)
+        {
+            GameData.SaveGameData(gameData);
+            var chromosome = _ga._currentPopulation.Find(x => x.ID == gameData.chromosomeID);
+            if (!_ga.playedLevels.Contains(chromosome))
+            {
+                _ga.playedLevels.Add(chromosome);
+            }
+            Debug.Log($"Number of uniquely played levels: {_ga.playedLevels.Count}");
+        }
+
+        #endregion
 
 #if UNITY_EDITOR
 

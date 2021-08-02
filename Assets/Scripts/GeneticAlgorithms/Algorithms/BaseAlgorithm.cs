@@ -13,12 +13,12 @@ namespace GeneticAlgorithms.Algorithms
     public abstract class BaseAlgorithm
     {
         protected readonly int PopulationSize;
-        protected readonly int Iteration; // same as number of generations
+        protected int Iteration; // same as number of generations
         protected readonly int ChromosoneLength;
         protected readonly float CrossoverProbability;
         protected readonly float MutationProbability;
         protected readonly Random RandomG;
-        private int Elitism;
+        protected int Elitism;
         protected readonly GeneticOperators GeneticGeneticOperator;
 
         protected BaseAlgorithm(int populationSize, int chromosoneLength, float crossoverProbability, Random randomG, 

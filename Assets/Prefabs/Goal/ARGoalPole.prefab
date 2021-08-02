@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7588575823082920724}
   - component: {fileID: 7796049398886398880}
   - component: {fileID: 1764159061707646602}
+  - component: {fileID: -722831503681731443}
   m_Layer: 12
   m_Name: ARGoalPole
   m_TagString: Goal
@@ -44,7 +45,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 122
@@ -57,11 +58,23 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7588575823082920725}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.48, y: 8.71, z: 1.59}
   m_Center: {x: 0, y: 4.25, z: 0}
+--- !u!114 &-722831503681731443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7588575823082920725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0d3089ebc2fdc4b84ba6462ed8b4a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7588575823276933120
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using Behaviour.Entities;
-using Behaviour.Platform.LinkGenerator.Entities;
 using GeneticAlgorithms.Entities;
 using UnityEngine;
 using UnityEngine.AI;
@@ -34,36 +33,35 @@ namespace Utilities
         }
 
         // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
-        public static void SafeDestory(GameObject obj)
+        public static void SafeDestroyInPlayMode(GameObject obj)
         {
             obj.transform.parent = null;
             obj.name = "$disposed";
             Object.Destroy(obj);
-
             obj.SetActive(false);
         }
 
-        public static List<T> GetKRandomElements<T>(List<T> list, int k, Random random)
+        public static void SafeDestroyInEditMode(GameObject obj)
+        {
+            obj.transform.parent = null;
+            obj.name = "$disposed";
+            Object.DestroyImmediate(obj);
+        }
+
+        public static List<T> GetKRandomElements<T>(IEnumerable<T> list, int k, Random random)
         {
             return list.OrderBy(x => random.Next()).Take(k).ToList();
         }
     
         public static List<Chromosome> FindNBestFitness_ByChromosome(List<Chromosome> list, int n)
         {
+            Debug.Log(list.Count);
             list.Sort(CompareChromosome);
             if (n == 1)
             {
                 return new List<Chromosome>(){list[0]};
             }
             return list.Take(n) as List<Chromosome>;
-        }
-    
-        public static void SafeDestoryInEditMode(GameObject obj)
-        {
-            obj.transform.parent = null;
-            obj.name = "$disposed";
-            Object.DestroyImmediate(obj);
-            //obj.SetActive(false);
         }
 
         public static List<Vector3> GetKeyFromValue(Dictionary<Vector3, BlockType> dic, BlockType value)

@@ -97,17 +97,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e6b2753eb78ed4da57f01cb7f6b0a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 4726953990239154548}
+  agent: {fileID: 4557609895736260463}
+  cameraTransform: {fileID: 2673622830390794182, guid: 60381462928260f46a9d199953b098ea,
+    type: 3}
   moveSpeed: 10
   turnSpeed: 3
   jump: 1.5
   isGrounded: 0
-  cameraTransform: {fileID: 2673622830390794182, guid: 60381462928260f46a9d199953b098ea,
-    type: 3}
   falling: 0
   fallingThreshold: -9
-  numOfCoins: 0
-  edgeDetected: 0
   maxIncline: 45
+  numOfCoins: 0
 --- !u!195 &4557609895736260463
 NavMeshAgent:
   m_ObjectHideFlags: 0
