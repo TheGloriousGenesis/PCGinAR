@@ -12,6 +12,8 @@ namespace UI
         public static event Action<GameData> OnSendGameStats;
         
         public static event Action OnGameStart;
+        
+        public static event Action<bool> OnGameLocked;
         public static event Action OnGameEnd;
         
         public static event Action OnGAStart;
@@ -20,6 +22,11 @@ namespace UI
         private void Awake()
         {
             current = this;
+        }
+
+        public void GameLocked(bool isLocked)
+        {
+            OnGameLocked?.Invoke(isLocked);
         }
 
         public void UpdateGameStats(GameDataEnum field, int value)

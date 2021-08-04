@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Behaviour.Entities;
+﻿using Behaviour.Entities;
 using UnityEngine;
 using Utilities;
 
-namespace GeneticAlgorithms.Generators
+namespace Generators
 {
     public class CoinGenerator : MonoBehaviour
     {
@@ -12,20 +10,14 @@ namespace GeneticAlgorithms.Generators
 
         public void PlaceCoins()
         {
-            PlaceCoins(Utility.GamePlacement);
-        }
+            var surface = Utility.GetGameMap()[BlockType.FREE_TO_WALK];
 
-        private void PlaceCoins(Dictionary<Vector3, BlockType> gamePlacement)
-        {
-            var tmp = gamePlacement.ToList();
-
-            foreach (var i in tmp)
-            {
-                if (i.Value != BlockType.NONE) continue;
-                var coin = Instantiate(prefabs[BlockType.COIN], i.Key + Vector3.up * 2, Quaternion.identity);
-                coin.transform.parent = transform;
-                Utility.GamePlacement[i.Key] = BlockType.COIN;
-            }
+            // foreach (var i in surface)
+            // {
+            //     var coin = Instantiate(prefabs[BlockType.COIN], i + Vector3.up * 2, Quaternion.identity);
+            //     coin.transform.parent = transform;
+            //     Utility.GamePlacement[i.Key] = BlockType.COIN;
+            // }
         }
     }
 }

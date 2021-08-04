@@ -3,7 +3,7 @@
 namespace GeneticAlgorithms.Entities
 {
     [Serializable]
-    public class Gene: Object
+    public class Gene
     {
         public Allele allele;
 

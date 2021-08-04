@@ -16,9 +16,9 @@ namespace GeneticAlgorithms.Algorithms
         private List<Chromosome> _runPopulation;
         public List<Chromosome> playedLevels;
         
-        public BasicGeneticAlgorithm(int populationSize, int chromosoneLength, float crossoverProbability, Random randomG, 
+        public BasicGeneticAlgorithm(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
             int elitism, float mutationProbability, int iteration, int k) : 
-            base(populationSize, chromosoneLength, crossoverProbability, randomG, elitism, mutationProbability, iteration,
+            base(populationSize, chromosomeLength, crossoverProbability, randomG, elitism, mutationProbability, iteration,
                 k)
         {
             _currentPopulation = GenerateGenotype(populationSize);
@@ -31,7 +31,8 @@ namespace GeneticAlgorithms.Algorithms
             // _runPopulation.Clear();
             // playedLevels.Clear();
 
-            var variation = $"Ps{this.PopulationSize}_Cl{this.ChromosoneLength}_Pd{Constants.MAX_PLATFORM_DIMENSION}_" +
+            var variation = $"Ps{this.PopulationSize}_Cl{this.ChromosomeLength}_Pd{Constants.MAX_PLATFORM_DIMENSION_X}." +
+                            $"{Constants.MAX_PLATFORM_DIMENSION_Y}.{Constants.MAX_PLATFORM_DIMENSION_Z}_" +
                             $"G{Iteration}";
             
             
@@ -66,7 +67,6 @@ namespace GeneticAlgorithms.Algorithms
                         _runPopulation.Add(_currentPopulation[i - playedLevels.Count]);
                     } else 
                     {
-                        Debug.Log(("TOr solec"));
                         var parents = GeneticGeneticOperator.TournamentSelection(_currentPopulation);
                         var one = parents[0];
                         var two = parents[1];
@@ -81,8 +81,8 @@ namespace GeneticAlgorithms.Algorithms
                             two = chromosomes[1];
                         }
 
-                        one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateGene);
-                        two = GeneticGeneticOperator.UniformMutation(two, MutationProbability, GenerateGene);
+                        one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateRandomGene);
+                        two = GeneticGeneticOperator.UniformMutation(two, MutationProbability, GenerateRandomGene);
 
                         double fit1 = fitness(one);
                         double fit2 = fitness(two);
@@ -104,9 +104,9 @@ namespace GeneticAlgorithms.Algorithms
                 List<Chromosome> tmpList = _currentPopulation;
                 _currentPopulation = _runPopulation;
                 _runPopulation = tmpList;
-                Debug.Log($"Current pop size: {_currentPopulation.Count}");
+                // Debug.Log($"Current pop size: {_currentPopulation.Count}");
                 Iteration = Iteration - 1;
-                Debug.Log($"Current Generation: {Iteration}");
+                // Debug.Log($"Current Generation: {Iteration}");
             }
 
             Iteration = 5;

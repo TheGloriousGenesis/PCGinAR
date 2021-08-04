@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using Behaviour.Entities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace GeneticAlgorithms.Entities
 {
     [Serializable]
-    public class Allele: Object
+    public class Allele
     {
         //public Vector3 centerBlock { get; set; }
 
         [SerializeField]
-        public List<Vector3> blockPositions = new List<Vector3>();
+        public List<BlockCube> blockPositions = new List<BlockCube>();
 
-        public Allele(List<Vector3> positions)
+        public Allele(List<BlockCube> positions)
         {
             blockPositions.AddRange(positions);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Behaviour.Entities;
 using GeneticAlgorithms.Algorithms;
 using GeneticAlgorithms.Entities;
@@ -10,6 +11,7 @@ using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Playables;
 using UnityEngine.Serialization;
 using Utilities;
 using Debug = UnityEngine.Debug;
@@ -42,10 +44,10 @@ namespace GeneticAlgorithms.Implementation
         {
             EventManager.OnSendGameStats -= SetUpGARun;
         }
-
+        
         #endregion
 
-        private void Start()
+        private void Awake()
         {
             if (_random == null) _random = new Random(Constants.SEED);
             
@@ -79,35 +81,49 @@ namespace GeneticAlgorithms.Implementation
             timer.Stop();
 
             score += AnalyseAStarPath();
-            score += AnalyseMultiPaths();
-
-            score = (score + 0.5f)/(5 + 0.5f);
+            // score += AnalyseMultiPaths();
+            score += CalculateSpaceUsed();
+            score += CalculateFullUseOfChromosome();
+            score += CalculatePercentageOfWalkableSurfaces();
+            score += CalculateNullSpace();
+            //todo change as max score has now changed
+            // (x - min(x)) / (max(x) -min(x) --> https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
+            float max = 5f;
+            float min = -2f;
+            score = (score + min)/(max + min);
       
             chromosome.Fitness = score;
-      
+            
+            gameService.ResetGame(Utility.SafeDestroyInEditMode);
+
             return timer.Elapsed.TotalMilliseconds;
         }
 
-        private float AnalyseMultiPaths()
-        {
-            // Check number of paths
-            float score = 0;
-            int numberOfPaths = CalculateNumberOfPaths();
-            if (1 <= numberOfPaths && numberOfPaths <= 5)
-            {
-                score += 2;
-            }
-            else if (6 <= numberOfPaths && numberOfPaths <= 10)
-            {
-                score += 1;
-            }
-            else if (11 <= numberOfPaths && numberOfPaths <= 20)
-            {
-                score += 0.5f;
-            }
-
-            return score;
-        }
+        // private float AnalyseMultiPaths()
+        // {
+        //     // Check number of paths
+        //     float score = 0;
+        //     int numberOfPaths = CalculateNumberOfPaths();
+        //     if (1 <= numberOfPaths && numberOfPaths <= 5)
+        //     {
+        //         score += 2;
+        //     }
+        //     else if (6 <= numberOfPaths && numberOfPaths <= 10)
+        //     {
+        //         score += 1;
+        //     }
+        //     else if (11 <= numberOfPaths && numberOfPaths <= 20)
+        //     {
+        //         score += 0.5f;
+        //     }
+        //
+        //     return score;
+        // }
+        // private int CalculateNumberOfPaths()
+        // {
+        //     List<List<Vector3>> allPaths = multiplePathsFinding.FindPaths();
+        //     return allPaths.Count;
+        // }
 
         private float AnalyseAStarPath()
         {
@@ -116,34 +132,83 @@ namespace GeneticAlgorithms.Implementation
             // Check completable level
             if (path.status == NavMeshPathStatus.PathComplete)
             {
-                score += 1;
-            }
-        
-            // Check Level usage
-            if (path.GetTotalDistance() > Constants.MAX_PLATFORM_DIMENSION)
-            {
+                Debug.Log("A star hur");
                 score += 1;
             }
             else
             {
-                score -= 0.5f;
+                score -= 10f;
             }
-        
+
             // todo: Have removed entropy calculate length in order to replace with ingame stats
             // // Check entropy
             // int numberOfTurns = path.corners.Length;
             // //todo: double check this 
             // // max number of turns is if a turn must be done on each block
             // int maxNumberOfTurns = Utility.GamePlacement.Keys.Count;
-            // score += (numberOfTurns/maxNumberOfTurns);
+            // score += numberOfTurns/ (float) maxNumberOfTurns;
+
+            return score;
+        }
+        
+        private float CalculateFullUseOfChromosome()
+        {
+            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
+                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
+            
+            float used = numberBricksPlaced / (float) (Constants.CHROMOSONE_LENGTH * 3);
+            
+            return used;
+        }
+        
+        private float CalculateNullSpace()
+        {
+            int numberOfIntentionalNullSpace = Utility.GetGameMap()[BlockType.NONE].Count;
+            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
+                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
+            
+            float used = numberOfIntentionalNullSpace / (float) numberBricksPlaced ;
+            return used;
+        }
+        
+        private float CalculateSpaceUsed()
+        {
+            float score = 0;
+            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
+                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
+
+            float used = (float) numberBricksPlaced / (float) Constants.TOTAL_MAXIMUM_AREA;
+            
+            if (used <= 0.06 && used >= 0.02)
+            {
+                score += 1f;
+            }
+            else
+            {
+                score -= 0.5f;
+            }
 
             return score;
         }
 
-        private int CalculateNumberOfPaths()
+        private float CalculatePercentageOfWalkableSurfaces()
         {
-            List<List<Vector3>> allPaths = multiplePathsFinding.FindPaths();
-            return allPaths.Count;
+            float score = 0;
+            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
+                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
+
+            float used = (float) Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count / (float) numberBricksPlaced;
+            
+            if (used >= 0.6)
+            {
+                score += 1f;
+            }
+            else
+            {
+                score -= 0.5f;
+            }
+
+            return score;
         }
         
         #endregion

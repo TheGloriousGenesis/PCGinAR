@@ -7,22 +7,22 @@ namespace Behaviour.Entities
     [Serializable]
     public enum BlockType
     {
-        BASICBLOCK,
+        BASIC_BLOCK,
         GOAL,
         PLAYER,
         COIN,
         ENEMY_1,
-        ENEMY_2,
         AGENT,
-        NONE
+        NONE,
+        WALKABLE_BLOCK
     }
 
     [Serializable]
-    public class BlockTile
+    public class BlockCube
     {
         public BlockType blockType;
-        public float perlinNoiseLowLimit;
-        public float perlinNoiseHighLimit;
+        // public float perlinNoiseLowLimit;
+        // public float perlinNoiseHighLimit;
     }
 
     [Serializable]

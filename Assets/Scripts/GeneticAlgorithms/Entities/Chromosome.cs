@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Object = UnityEngine.Object;
 
 namespace GeneticAlgorithms.Entities
 {
     [Serializable]
-    public class Chromosome: Object
+    public class Chromosome
     {
         private static int _mCounter;
         public int ID { get; set; }

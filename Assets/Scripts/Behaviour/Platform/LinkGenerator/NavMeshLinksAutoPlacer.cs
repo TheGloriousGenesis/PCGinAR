@@ -78,7 +78,7 @@ namespace Behaviour.Platform.LinkGenerator
         {
             surface.RemoveData();
             surface.BuildNavMesh();
-            Generate();
+            // Generate();
         }
 
         public static NavMeshPath ContainsPath()

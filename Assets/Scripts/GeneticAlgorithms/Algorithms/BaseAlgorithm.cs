@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Behaviour.Entities;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
@@ -14,18 +15,18 @@ namespace GeneticAlgorithms.Algorithms
     {
         protected readonly int PopulationSize;
         protected int Iteration; // same as number of generations
-        protected readonly int ChromosoneLength;
+        protected readonly int ChromosomeLength;
         protected readonly float CrossoverProbability;
         protected readonly float MutationProbability;
         protected readonly Random RandomG;
         protected int Elitism;
         protected readonly GeneticOperators GeneticGeneticOperator;
 
-        protected BaseAlgorithm(int populationSize, int chromosoneLength, float crossoverProbability, Random randomG, 
+        protected BaseAlgorithm(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
             int elitism, float mutationProbability, int iteration, int k)
         {
             this.PopulationSize = populationSize;
-            ChromosoneLength = chromosoneLength;
+            ChromosomeLength = chromosomeLength;
             CrossoverProbability = crossoverProbability;
             RandomG = randomG;
             Elitism = elitism;
@@ -40,7 +41,7 @@ namespace GeneticAlgorithms.Algorithms
         protected List<Chromosome> GenerateGenotype(int popSize)
         {
             // A Genotype is the population in computation space
-            var genotype = new List<Chromosome>();
+            List<Chromosome> genotype = new List<Chromosome>();
             for (var i=0; i < popSize; i++)
             {
                 genotype.Add(GenerateChromosome());
@@ -51,15 +52,15 @@ namespace GeneticAlgorithms.Algorithms
         private Chromosome GenerateChromosome()
         {
             // a genotype is a solution to the level. feed in number of blocks and restrictions to generate possible level
-            var genes = new List<Gene>();
+            List<Gene> genes = new List<Gene>();
 
             // todo: check how many genes in chromosone good fit
-            for (var i=0; i < ChromosoneLength; i++)
+            for (var i=0; i < ChromosomeLength; i++)
             {
                 genes.Add(GenerateGene());
             }
 
-            var chromosome = new Chromosome {Genes = genes};
+            Chromosome chromosome = new Chromosome {Genes = genes};
             return chromosome;
         }
 
@@ -85,17 +86,46 @@ namespace GeneticAlgorithms.Algorithms
                 positions.Add(cubeNumbers[choosePosition] + centerBlock);
                 cubeNumbers.Remove(cubeNumbers[choosePosition]);
             }
-        
-            return new Allele(positions);
+
+            var converted = positions.Select(x => new BlockCube(BlockType.BASIC_BLOCK, x)).ToList();
+            return new Allele(converted);
         }
+        
+        protected Gene GenerateRandomGene()
+        {
+            return new Gene(GenerateRandomAllele());
+        }
+
+        // Generates a 3 cubed structure as a single gene
+        private Allele GenerateRandomAllele()
+        {
+            var cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
+                BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
+
+            Vector3 centerBlock = GenerateCenterBlockPosition();
+
+            var positions = new List<Vector3> {centerBlock};
+
+            for (var i = 0; i < 2; i++)
+            {
+                // check if it is inclusive?
+                var choosePosition = RandomG.Next(0, cubeNumbers.Count);
+                positions.Add(cubeNumbers[choosePosition] + centerBlock);
+                cubeNumbers.Remove(cubeNumbers[choosePosition]);
+            }
+
+            var converted = positions.Select(x => new BlockCube(this.RandomG.Next(0, 2) == 1 ? BlockType.BASIC_BLOCK : BlockType.NONE, x)).ToList();
+            return new Allele(converted);
+        }
+        
 
         private Vector3 GenerateCenterBlockPosition()
         {
+            //todo analyse the changes for this
             // good for condensing the size of the space
-            const int maxPlatformLength = Constants.MAX_PLATFORM_DIMENSION / 2;
-            var xPos = RandomG.Next(0, maxPlatformLength);
-            var yPos = RandomG.Next(0, maxPlatformLength);
-            var zPos = RandomG.Next(0, maxPlatformLength);
+            var xPos = RandomG.Next(0, Constants.MAX_PLATFORM_DIMENSION_X );
+            var yPos = RandomG.Next(0, Constants.MAX_PLATFORM_DIMENSION_Y );
+            var zPos = RandomG.Next(0, Constants.MAX_PLATFORM_DIMENSION_Z );
             return new Vector3(xPos, yPos, zPos);
         }
         #endregion

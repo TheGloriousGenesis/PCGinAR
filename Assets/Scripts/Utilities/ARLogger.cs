@@ -1,15 +1,15 @@
 ﻿using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using GeneticAlgorithms.Entities;
 using UnityEngine;
 
 namespace Utilities
 {
-    public static class Logger
+    public static class ARLogger
     {
         // todo: this does not save on mobile, sort this out!
-        private static readonly string corePath = Path.Combine(Application.persistentDataPath,"Assets/results/RawData/");
-        private static readonly LogBase logger  = new FileLogger(corePath);
+        public static readonly string AppPath = Application.persistentDataPath + "/";
+        public static readonly string InGameDataPath = Application.persistentDataPath + "/gamesave.json";
+        
+        private static readonly LogBase logger  = new FileLogger(AppPath);
         //put method in here to set up file 
         public static void Log(LogTarget target, string variation, string message)
         {
@@ -29,31 +29,6 @@ namespace Utilities
     
         }
 
-        public static void SaveGame(GameData gameData)
-        {
-            string json = JsonUtility.ToJson(gameData);
-            
-            Debug.Log("Saving as JSON: " + json);
-            FileInfo file = new System.IO.FileInfo(corePath + "GameData/gamesave.json");
-            file.Directory?.Create();
-            Debug.Log(file.FullName);
-            File.WriteAllText(file.FullName, json);
-            
-            // BinaryFormatter bf = new BinaryFormatter();
-            // FileStream file = File.Create(corePath + "GameData/gamesave.save");
-            // bf.Serialize(file, gameData);
-            // file.Close();
-            // Debug.Log("Game Saved");
-        }
-        
-        public static void LoadGame(GameData gameData)
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(corePath + "GameData/gamesave.save");
-            bf.Serialize(file, gameData);
-            file.Close();
-            Debug.Log("Game Saved");
-        }
     }
     
     public abstract class LogBase

@@ -123,6 +123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1894953474422079055}
   - component: {fileID: 6690143418854473304}
+  - component: {fileID: -6686840924145646371}
   m_Layer: 0
   m_Name: ExampleBrick
   m_TagString: Brick
@@ -161,6 +162,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionData: {x: 0, y: 0, z: 0}
   neighbours: []
+  walkable: 0
+  usedInPreviousPath: 0
+--- !u!65 &-6686840924145646371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894953474422366831}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.05, y: 1.05, z: 1.05}
+  m_Center: {x: 0, y: 0.52, z: 0}
 --- !u!1 &7572244095318882079
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +227,7 @@ BoxCollider:
   m_GameObject: {fileID: 7572244095318882079}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.05, y: 1.05, z: 1.05}
   m_Center: {x: 0, y: 0.52, z: 0}

@@ -1,4 +1,5 @@
-﻿using GeneticAlgorithms.Entities;
+﻿using System.Collections;
+using GeneticAlgorithms.Entities;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
@@ -78,6 +79,26 @@ namespace Behaviour.Player
         //     }
         //
         // }
+        
+        IEnumerator Start()
+        {
+            agent.updateRotation = false;
+            agent.updatePosition = false;
+            while (true)
+            {
+                NavMeshHit closestHit;
+                if (NavMesh.SamplePosition(this.transform.position, out closestHit, 500, NavMesh.AllAreas))
+                {
+                    transform.position = closestHit.position;
+                }
+                if (agent.isOnNavMesh)
+                {
+                    Debug.Log("Agent is on mesh");
+                    agent.enabled = false;
+                }
+                yield return null;
+            }
+        }
 
         public void FixedUpdate()
         {
@@ -97,6 +118,10 @@ namespace Behaviour.Player
             {
                 CheckIfPlayerHasFallen();
             }
+            // if (_rigidbody.velocity == Vector3.zero)
+            // {
+            //     agent.enabled = true;
+            // }
             // text.text = "Coin counter: " + numOfCoins.ToString();
             
             // NavMeshHit hit;

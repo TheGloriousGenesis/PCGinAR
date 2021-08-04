@@ -16,54 +16,34 @@ namespace Utilities
     [Serializable]
     public static class Utility
     {
-        public static Dictionary<Vector3, BlockType> GamePlacement = new Dictionary<Vector3, BlockType>();
+        private static Dictionary<BlockType, List<Vector3>> GameMap = new Dictionary<BlockType, List<Vector3>>();
         
         public static List<Vector3> EdgesOfCurrentGame { get; set; }
 
-        public static T DeepClone<T>(this T obj)
+        #region GameMap Methods
+        public static Dictionary<BlockType, List<Vector3>> GetGameMap()
         {
-            using (var ms = new MemoryStream())
+            if (GameMap != null)
+                return GameMap;
+            GameMap = new Dictionary<BlockType, List<Vector3>>();
+            foreach (BlockType cube in Enum.GetValues(typeof(BlockType)))
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, obj);
-                ms.Position = 0;
-
-                return (T)formatter.Deserialize(ms);
+                GameMap[cube] = new List<Vector3>();
             }
+
+            return GameMap;
         }
 
-        // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
-        public static void SafeDestroyInPlayMode(GameObject obj)
+        public static void ResetGameMap()
         {
-            obj.transform.parent = null;
-            obj.name = "$disposed";
-            Object.Destroy(obj);
-            obj.SetActive(false);
+            GameMap = new Dictionary<BlockType, List<Vector3>>();
         }
 
-        public static void SafeDestroyInEditMode(GameObject obj)
+        public static void SetGameMap(Dictionary<BlockType, List<Vector3>> dict)
         {
-            obj.transform.parent = null;
-            obj.name = "$disposed";
-            Object.DestroyImmediate(obj);
+            GameMap = dict;
         }
-
-        public static List<T> GetKRandomElements<T>(IEnumerable<T> list, int k, Random random)
-        {
-            return list.OrderBy(x => random.Next()).Take(k).ToList();
-        }
-    
-        public static List<Chromosome> FindNBestFitness_ByChromosome(List<Chromosome> list, int n)
-        {
-            Debug.Log(list.Count);
-            list.Sort(CompareChromosome);
-            if (n == 1)
-            {
-                return new List<Chromosome>(){list[0]};
-            }
-            return list.Take(n) as List<Chromosome>;
-        }
-
+        
         public static List<Vector3> GetKeyFromValue(Dictionary<Vector3, BlockType> dic, BlockType value)
         {
             var allPositions = new List<Vector3>();
@@ -96,7 +76,57 @@ namespace Utilities
                 dic[i] = value;
             }
         }
+
+        #endregion
+        
+        #region Destroy Methods
+        // Inspired from https://forum.unity.com/threads/so-why-is-destroyimmediate-not-recommended.526939/
+        public static void SafeDestroyInPlayMode(GameObject obj)
+        {
+            obj.transform.parent = null;
+            obj.name = "$disposed";
+            Object.Destroy(obj);
+            obj.SetActive(false);
+        }
+
+        public static void SafeDestroyInEditMode(GameObject obj)
+        {
+            obj.transform.parent = null;
+            obj.name = "$disposed";
+            Object.DestroyImmediate(obj);
+        }
+
+        #endregion
+        
+        #region Misc
+        
+        public static T DeepClone<T>(this T obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
+        }
+
+        public static List<T> GetKRandomElements<T>(IEnumerable<T> list, int k, Random random)
+        {
+            return list.OrderBy(x => random.Next()).Take(k).ToList();
+        }
     
+        public static List<Chromosome> FindNBestFitness_ByChromosome(List<Chromosome> list, int n)
+        {
+            list.Sort(CompareChromosome);
+            if (n == 1)
+            {
+                return new List<Chromosome>(){list[0]};
+            }
+            return list.Take(n) as List<Chromosome>;
+        }
+
         public static int CompareChromosome(Chromosome a, Chromosome b)
         {
             if (a.Fitness > b.Fitness) {
@@ -123,6 +153,9 @@ namespace Utilities
             return calculatedLength;
         }
     
+        #endregion
+
+        #region Data capturing
         public static void SaveToFile(Object obj, string path)
         {
             var bf = new BinaryFormatter(); 
@@ -138,6 +171,7 @@ namespace Utilities
             return obj;
         }
 
+        #endregion
     }
 
 

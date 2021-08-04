@@ -34,8 +34,7 @@ namespace PathFinding
 		{
 			ResetPathFinding();
 
-			walkableSurface = Utility.GamePlacement.Keys.ToList();
-			if (walkableSurface.Count == 0)
+			if (Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count == 0)
 			{
 				throw new Exception("game map has not been made");
 			}
@@ -43,8 +42,8 @@ namespace PathFinding
 			FindAllNodes();
 			CreateAdjacencyMatrix();
 
-			player = _nodeMap[Utility.GetKeyFromValue(Utility.GamePlacement, BlockType.AGENT)[0]];
-			target = _nodeMap[Utility.GetKeyFromValue(Utility.GamePlacement, BlockType.GOAL)[0]];
+			player = _nodeMap[Utility.GetGameMap()[BlockType.AGENT][0]];
+			target = _nodeMap[Utility.GetGameMap()[BlockType.GOAL][0]];
 			var p = new GraphPaths(player, target);
 			var tmp = p.NextShortestPath();
 			_allPaths.Add(tmp);
@@ -66,6 +65,9 @@ namespace PathFinding
 		}
 
 		private void FindAllNodes() {
+			walkableSurface.AddRange(Utility.GetGameMap()[BlockType.FREE_TO_WALK]);
+			// walkableSurface.AddRange(Utility.GetGameMap()[BlockType.PLAYER]);
+			// walkableSurface.AddRange(Utility.GetGameMap()[BlockType.GOAL]);
 			foreach (Transform child in platform.transform)
 			{
 				var position = child.position;

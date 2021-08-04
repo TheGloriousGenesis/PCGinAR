@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Behaviour.Entities;
-using Behaviour.Player;
+using GeneticAlgorithms.Parameter;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -8,7 +8,7 @@ using UnityEngine;
 using Utilities;
 using Random = System.Random;
 
-namespace results
+namespace Behaviour.Player
 {
     // player can follow A* path and detect number of turns etc jumps
     public class ARAgent : Agent
@@ -25,13 +25,9 @@ namespace results
 
         public PlayerControls controls;
         
-        public float forceMultiplier = 10;
+        public Random rand = new Random(Constants.SEED);
 
-        public List<Vector3> destroyedCoins = new List<Vector3>();
-
-        public Random rand = new Random();
-
-        private bool goalReached = false;
+        private bool _goalReached = false;
 
         void Awake()
         {
@@ -56,25 +52,15 @@ namespace results
             // if agent rolls off the platform put back on platform (or should we end episode)
 
             rBody.velocity = Vector3.zero;
-
-            // Destory coins and reset game map so we can update it with new positions
-            // GenerateGame.DestoryCoins();
-            // game.ResetGameMap();
-
-            // randomly find position for player and place. Update gameplacement map on where player is
-            List<Vector3> pos = new List<Vector3>(Utility.GamePlacement.Keys);
-            int indexPlayer = rand.Next(pos.Count);
-            this.transform.position = pos[indexPlayer] + BlockPosition.UP * 2;
-            Utility.GamePlacement[pos[indexPlayer]] = BlockType.PLAYER;
-
-            //remove player position and then place goal. Update gameplacement map on where goal is
-            pos.RemoveAt(indexPlayer);
-            int indexGoal = rand.Next(pos.Count);
-            this.Target.position = pos[indexGoal] + BlockPosition.UP * 2;
-            Utility.GamePlacement[pos[indexGoal]] = BlockType.GOAL;
-
-            // place coins where player and goal are not
-            _gameService.PlaceCoins();
+            
+            // think about updating map and positions of the player goal so maybe can place coins
+            Vector3 posPlayer = Utility.GetKRandomElements(Utility.GetGameMap()[BlockType.FREE_TO_WALK], 1, 
+                rand)[0];
+            this.transform.position = posPlayer + BlockPosition.UP * 2;
+            
+            Vector3 posGoal = Utility.GetKRandomElements(Utility.GetGameMap()[BlockType.FREE_TO_WALK], 1, 
+                rand)[0];
+            this.Target.position = posGoal + BlockPosition.UP * 2;
         }
 
         // information to collect to send to brain to make decision
@@ -130,7 +116,7 @@ namespace results
         private void OnCollisionEnter(Collision collision)
         {
             if (!collision.gameObject.CompareTag("Goal")) return;
-            goalReached = true;
+            _goalReached = true;
             AddReward(10.0f);
             Debug.Log($"Episode {CompletedEpisodes}, Reward: {GetCumulativeReward()}");
             EndEpisode();

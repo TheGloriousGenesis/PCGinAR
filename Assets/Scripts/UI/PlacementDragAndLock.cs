@@ -12,6 +12,7 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace UI
 {
+    [RequireComponent(typeof(ARPlaneManager))]
     [RequireComponent(typeof(ARRaycastManager))]
     public class PlacementDragAndLock : MonoBehaviour
     {
@@ -26,6 +27,9 @@ namespace UI
         
         [SerializeField] 
         private GenerateGameService gameService;
+
+        private Chromosome currentGame;
+        
         #endregion
 
         #region UI additions
@@ -48,13 +52,14 @@ namespace UI
         // know if we touching screen to drag object around
         private bool onTouchHold = false;
 
-        private Vector2 touchPosition = default;
         
         #endregion
         
         #region AR variables
         
         private ARRaycastManager arRaycastManager;
+
+        private ARPlaneManager m_ARPlaneManager;
 
         [SerializeField]
         private Camera arCamera;
@@ -64,6 +69,9 @@ namespace UI
         
         [SerializeField]
         private float defaultRotation = 180;
+        
+        private Vector2 touchPosition = default;
+
         #endregion
 
         private float initialDistance;
@@ -73,7 +81,8 @@ namespace UI
         private void Awake()
         {
             arRaycastManager = GetComponent<ARRaycastManager>();
-            
+            m_ARPlaneManager = GetComponent<ARPlaneManager>();
+
             EnhancedTouchSupport.Enable();
             
             if (lockButton != null)
@@ -92,11 +101,7 @@ namespace UI
         {
             if (welcomePanel.activeSelf)
                 return;
-            // if (generateButton.GetComponentInChildren<Text>().text == "Ended")
-            // {
-            //     gameEnded = true;
-            //     
-            // }
+
             var activeTouches = Touch.activeTouches;
             Touch touch;
             // if user touches the screen
@@ -114,27 +119,28 @@ namespace UI
 
             if (isOverUI) return;
 
-            switch (touch.phase)
+            if(Input.touchCount > 0)
             {
-                case TouchPhase.Began:
+                touchPosition = touch.screenPosition;
+
+                if(touch.phase == TouchPhase.Began)
                 {
-                    // convert screen point to action ray
-                    var ray = arCamera.ScreenPointToRay(touch.screenPosition);
+                    Ray ray = arCamera.ScreenPointToRay(touch.screenPosition);
                     RaycastHit hitObject;
-                    if (Physics.Raycast(ray, out hitObject))
+                    if(Physics.Raycast(ray, out hitObject))
                     {
-                        GameObject tmp = hitObject.transform.gameObject;
-                        if (tmp != null)
+                        // allows you to start moving object around
+                        if(placedObject != null)
                         {
-                            // determines if object can be dragged or nah
-                            onTouchHold = !isLocked;
+                            onTouchHold = isLocked ? false : true;
                         }
                     }
-                    break;
                 }
-                case TouchPhase.Ended:
+
+                if(touch.phase == TouchPhase.Ended)
+                {
                     onTouchHold = false;
-                    break;
+                }
             }
             
             MoveGameObject();
@@ -147,14 +153,28 @@ namespace UI
             if (!arRaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon)) return;
             var hitPose = hits[0].pose;
 
-            if (placedPrefab == null)
+            if (placedObject == null && currentGame != null)
             {
+                placedPrefab = gameService.CreateGameInPlay(hitPose.position, hitPose.rotation, 
+                    currentGame );
                 
+                // hide game object until player touches screen
+                placedObject = placedPrefab;
+
+                isGenerated = true;
+                // change generate button to end game 
+                generateButton.GetComponentInChildren<Text>().text = isGenerated ? "End Game" : "Generate";
+            
+                //todo: check if this starts the timer properly
+                EventManager.current.GameStart();
+            } 
+            else if (placedObject == null && currentGame == null)
+            {
                 Debug.Log("Please press Generate button to create your level!");
             }
             else
             {
-                placedObject = placedPrefab;
+                Debug.Log($"onTouchHold value: {onTouchHold}");
                 if (!onTouchHold) return;
                 // moves object around
                 placedObject.transform.position = hitPose.position;
@@ -167,6 +187,15 @@ namespace UI
 
         private void PinchAndZoom()
         {
+            if (placedObject == null && placedPrefab != null)
+            {
+                placedObject = placedPrefab;
+            }
+            if (placedPrefab == null)
+            {
+                Debug.Log("Placed prefab is null (check placed Object) in PNZ method");
+                return;
+            }
             if (Input.touchCount == 2)
             {
                 var touchZero = Input.GetTouch(0);
@@ -182,7 +211,6 @@ namespace UI
                 {
                     initialDistance = Vector2.Distance(touchZero.position, touchOne.position);
                     initialScale = placedObject.transform.localScale;
-
                 }
                 else
                 {
@@ -207,6 +235,16 @@ namespace UI
         {
             isLocked = !isLocked;
             lockButton.GetComponentInChildren<Text>().text = isLocked ? "Locked" : "Unlocked";
+
+            m_ARPlaneManager.enabled = !m_ARPlaneManager.enabled;
+            SetAllPlanesActive(!isLocked);
+            EventManager.current.GameLocked(isLocked);
+        }
+        
+        void SetAllPlanesActive(bool value)
+        {
+            foreach (var plane in m_ARPlaneManager.trackables)
+                plane.gameObject.SetActive(value);
         }
         
         private void Generate()
@@ -220,22 +258,18 @@ namespace UI
             welcomePanel.SetActive(false);
 
             gameService.ResetGame(Utility.SafeDestroyInPlayMode);
-            gameService.ResetGame(Utility.SafeDestroyInEditMode);
 
-            //todo: check orientation in gameplay to see if this affects it. if not, delete parameter of method
             EventManager.current.GAStart();
             Chromosome gameData = _gaImplementation.Run();
             EventManager.current.GAEnd();
-            isGenerated = true;
 
-            placedPrefab = gameService.CreateGameInPlay(new Vector3(), Quaternion.identity, 
-               gameData );
-            
-            //todo: check if this starts the timer properly
-            EventManager.current.GameStart();
+            currentGame = gameData;
 
-            generateButton.GetComponentInChildren<Text>().text = isGenerated ? "End Game" : "Generate";
             inGenerationMode = false;
+            
+            //todo: REMOVE WHEN PLAYING IN MOBILE
+            placedPrefab = gameService.CreateGameInPlay(Vector3.zero, Quaternion.identity, 
+                currentGame );
         }
 
         // private void ShowResults(GameData gameData)

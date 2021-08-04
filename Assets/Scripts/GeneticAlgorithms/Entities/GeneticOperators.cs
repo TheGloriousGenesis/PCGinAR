@@ -55,17 +55,16 @@ namespace GeneticAlgorithms.Entities
                 return selections;
             }
 
-            Debug.Log("Select parents");
-            while (unique.Count <= 1)
+            while (unique.Count <= _k)
             {
                 possibleParents1 = Utility.GetKRandomElements(population, _k, _random);
                 foreach (var chromosome in possibleParents1) unique.Add(chromosome);
                 possibleParents2 = Utility.GetKRandomElements(population, _k, _random);
                 foreach (var chromosome in possibleParents2) unique.Add(chromosome);
-                // if (unique.Count <= 2)
-                // {
-                //     unique.Clear();
-                // }
+                if (unique.Count <= _k)
+                {
+                    unique.Clear();
+                }
             }
 
             List<Chromosome> topParent1 = Utility.FindNBestFitness_ByChromosome(possibleParents1, 1);
@@ -80,15 +79,14 @@ namespace GeneticAlgorithms.Entities
     
         public Chromosome UniformMutation(Chromosome chromosome, double probability, Func<Gene> generateGene)
         {
-            // replaces a gene with random new gene.
-            if (_random.NextDouble() < probability)
+            for(int i=0; i < chromosome.Genes.Count; i++)
             {
-                List<Gene> genes = chromosome.Genes;
-                int rv = _random.Next(0, chromosome.Genes.Count);
+                // replaces a gene with random new gene.
+                if (!(_random.NextDouble() < probability)) continue;
             
-                genes[rv] = generateGene();
-                chromosome.Genes = genes;
+                chromosome.Genes[i] = generateGene();
             }
+
             return chromosome;
         }
     }

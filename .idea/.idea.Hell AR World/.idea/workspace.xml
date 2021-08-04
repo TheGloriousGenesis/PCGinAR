@@ -19,113 +19,52 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a993c359-f12f-441b-95df-183d25883f86" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/Scenes.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene.unity" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene.unity.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/.sample.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleBuildProcessor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleBuildProcessor.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleMetadata.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleMetadata.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleSettingsEditor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleSettingsEditor.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleStandaloneLoaderUI.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/SampleStandaloneLoaderUI.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/Unity.XR.Management.Samples.Editor.asmdef" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Editor/Unity.XR.Management.Samples.Editor.asmdef.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/SampleConstants.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/SampleConstants.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/SampleLoader.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/SampleLoader.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/SampleSettings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/SampleSettings.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Unity.XR.Management.Samples.asmdef" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.7/Example XR Management implementation/Unity.XR.Management.Samples.asmdef.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/GoalBehaviour.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/GoalBehaviour.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/GenerateGameService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/GenerateGameService.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/EventManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/EventManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/Cube Orientation.psd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/Cube Orientation.psd.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/Cube_Orientation.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/Cube_Orientation.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR.psd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR.psd.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR_.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR_.png.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/RawData/BasicGeneticImplResults_Ps10_Cl10_Pd10_G10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/RawData/BasicGeneticImplResults_Ps10_Cl10_Pd10_G10.txt.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/RawData/BasicGeneticImplResults_Ps20_Cl20_Pd20_G10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/RawData/BasicGeneticImplResults_Ps20_Cl20_Pd20_G10.txt.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/RawData/GameData.meta" afterDir="false" />
+    <list default="true" id="a993c359-f12f-441b-95df-183d25883f86" name="Default Changelist" comment="Uncommited files forgotten">
+      <change afterPath="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/EmptyCube.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/EmptyCube.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/GenerateNavLinks.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/GenerateNavLinks.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/TestAccelerometer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/FI2POP.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/FI2POP.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PlaneDetectionController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PlaneDetectionController.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/ExampleBrick.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/ExampleBrick.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal/ARGoalPole.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal/ARGoalPole.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal/Anim/Appear.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal/Anim/Appear.fbx.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal/AnimFlag/Wait.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal/AnimFlag/Wait.fbx.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Toad/ARPlayer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Toad/ARPlayer.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/.sample.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleBuildProcessor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleBuildProcessor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleMetadata.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleMetadata.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleSettingsEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleSettingsEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleStandaloneLoaderUI.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/SampleStandaloneLoaderUI.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/Unity.XR.Management.Samples.Editor.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Editor/Unity.XR.Management.Samples.Editor.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/SampleConstants.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/SampleConstants.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/SampleLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/SampleLoader.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/SampleSettings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/SampleSettings.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Unity.XR.Management.Samples.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/XR Plugin Management/4.0.1/Example XR Management implementation/Unity.XR.Management.Samples.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goomba/Goomba.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goomba/Goomba.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Toad/ExampleAgent.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Toad/ExampleAgent.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockTile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockCube.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockTile.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockCube.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/PrefabFactory.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/PrefabFactory.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/NavMeshLinksAutoPlacer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/NavMeshLinksAutoPlacer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/RaiseFlag.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/RaiseFlag.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ARAgent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ARAgent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/PlayerControls.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/PlayerControls.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ToadController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ToadController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GenerateGame.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GenerateGame.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GenerateGameService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GenerateGameService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generators/CoinGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generators/CoinGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GameData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GameData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/MapElites.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/MapElites.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/PerlinNoiseExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/PerlinNoiseExample.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Allele.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Allele.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Chromosome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Chromosome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/FeatureDimension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/FeatureDimension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Gene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Gene.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GeneticOperators.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GeneticOperators.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Scripts.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Scripts.asmdef" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/BlockUIExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/BlockUIExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/EventManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/EventManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities/ARLogger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities/Logger.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities/ARLogger.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities/ARLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities/ARLogger.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities/Utility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities/Utility.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestMeshDistanceCal.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TestMeshDistanceCal.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,12 +78,15 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/51C9FC2D-1BE0-48CF-A2DD-679DEAA7D4F7/65/0d073f75/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utilities/DesignPatterns/Singleton.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/TestAccelerometer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8691AD70-05ED-4755-A182-8378FF0B52B1/22/7d62e036/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/76DB40A9-3869-4C62-906F-9BBB72DB1A18/84/0672e830/NavMeshAgent.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arcore@4.1.7/Editor/ARCoreBuildProcessor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/GoalBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockTile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockCube.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/007193B7-FA9C-4AD1-BE5B-26DF6A654213/99/a5e52afa/InspectorElement.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Devices/InputDevice.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/526469D5-A48C-43EE-BD9A-F19F8745AFA1/9b/0f9c22f4/Logger.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8462C93B-00B5-4616-9C50-6EB8281FD255/95/e25dfbc6/File.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/PrefabFactory.cs" root0="FORCE_HIGHLIGHTING" />
@@ -160,27 +102,15 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8462C93B-00B5-4616-9C50-6EB8281FD255/b7/d56bc8cf/List`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@0.10.0-preview.7/Runtime/AR/Interactables/GestureTransformationUtility.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E5F87E79-497D-45AB-AFFE-AE0FF46C4D9E/2c/165388b6/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Devices/Sensor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PlaneDetectionController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Unity/Hub/Editor/2019.4.15f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.ugui/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/FI2POP.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/526469D5-A48C-43EE-BD9A-F19F8745AFA1/69/317b5eb0/Application.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/Path3D.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/MovementScripts/PlacementDragAndLock.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/GeneticAlgorithms.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/MapElites.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/LinkGenerator/NavMeshLinks_AutoPlacer.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/LinkGenerator/NavMeshLink_TBS.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/BlockUIExtensions.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/BlockTile.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PrefabScripts/Entities/BlockTile.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/UI/BlockUIExtensions.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/DesignPatterns/Singleton.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/DesignPatterns/SerializeVector3.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Rendering/LightEstimation.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GameObjectScripts/ARAgent.cs" />
         <option value="$PROJECT_DIR$/Assets/results/ARAgent.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockTile.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/BrickBehaviour.cs" />
@@ -197,27 +127,41 @@
         <option value="$PROJECT_DIR$/Assets/NavMeshComponents/Scripts/NavMeshLink.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/NavMeshLinkTbs.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/Entities/Edge.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ARAgent.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UI/EventManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GenerateGame.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/GoalBehaviour.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/NavMeshLinksAutoPlacer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UI/BlockUIExtensions.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/Logger.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GenerateGameService.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ToadController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GameData.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/ARLogger.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/FeatureDimension.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Gene.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Chromosome.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Generators/CoinGenerator.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ARAgent.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/Utility.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ToadController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.cs" />
+        <option value="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackAsync.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/EventManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/PlaneDetectionController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/TestAccelerometer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockCube.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Allele.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/MapElites.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GeneticOperators.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Utilities/ARLogger.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/NavMeshLinksAutoPlacer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GenerateGameService.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/Platform/LinkGenerator/GenerateNavLinks.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/FI2POP.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" />
       </list>
     </option>
   </component>
@@ -237,6 +181,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="XThreadsFramesViewSplitterKey" value="0.53333336" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -250,10 +195,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="13272">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="13272" />
+      <option name="pid" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -319,8 +264,18 @@
       <workItem from="1627736534998" duration="4410000" />
       <workItem from="1627748408602" duration="19823000" />
       <workItem from="1627851544524" duration="2570000" />
-      <workItem from="1627899772247" duration="8929000" />
+      <workItem from="1627899772247" duration="26893000" />
+      <workItem from="1627982503268" duration="45854000" />
+      <workItem from="1628072679357" duration="5422000" />
     </task>
+    <task id="LOCAL-00001" summary="Uncommited files forgotten">
+      <created>1627913468488</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1627913468488</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -343,128 +298,130 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Uncommited files forgotten" />
+    <option name="LAST_COMMIT_MESSAGE" value="Uncommited files forgotten" />
   </component>
   <component name="WindowStateProjectService">
     <state x="534" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1626209575147">
       <screen x="0" y="0" width="1620" height="1040" />
     </state>
     <state x="534" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1620.1040@0.0.1620.1040" timestamp="1626209575147" />
-    <state x="1273" y="1164" key="#xdebugger.evaluate" timestamp="1627908573554">
+    <state x="1273" y="1164" key="#xdebugger.evaluate" timestamp="1628032174270">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
     <state x="329" y="146" key="#xdebugger.evaluate/0.0.1620.1040@0.0.1620.1040" timestamp="1626653713538" />
     <state x="390" y="146" key="#xdebugger.evaluate/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627301580969" />
     <state x="2310" y="146" key="#xdebugger.evaluate/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640089490" />
-    <state x="1273" y="1164" key="#xdebugger.evaluate/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908573554" />
-    <state width="1578" height="194" key="GridCell.Tab.0.bottom" timestamp="1627908312618">
+    <state x="1273" y="1164" key="#xdebugger.evaluate/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628032174270" />
+    <state width="1578" height="291" key="GridCell.Tab.0.bottom" timestamp="1628033705714">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.0.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993419" />
+    <state width="843" height="291" key="GridCell.Tab.0.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435405" />
     <state width="732" height="193" key="GridCell.Tab.0.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627300309892" />
     <state width="912" height="279" key="GridCell.Tab.0.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041433" />
-    <state width="1578" height="194" key="GridCell.Tab.0.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908312618" />
-    <state width="1578" height="194" key="GridCell.Tab.0.center" timestamp="1627908312617">
+    <state width="1578" height="291" key="GridCell.Tab.0.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705714" />
+    <state width="1578" height="291" key="GridCell.Tab.0.center" timestamp="1628033705714">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.0.center/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993419" />
+    <state width="843" height="291" key="GridCell.Tab.0.center/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435405" />
     <state width="732" height="193" key="GridCell.Tab.0.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627300309891" />
     <state width="912" height="279" key="GridCell.Tab.0.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041433" />
-    <state width="1578" height="194" key="GridCell.Tab.0.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908312617" />
-    <state width="1578" height="194" key="GridCell.Tab.0.left" timestamp="1627908312616">
+    <state width="1578" height="291" key="GridCell.Tab.0.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705714" />
+    <state width="1578" height="291" key="GridCell.Tab.0.left" timestamp="1628033705714">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.0.left/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993419" />
+    <state width="843" height="291" key="GridCell.Tab.0.left/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435404" />
     <state width="732" height="193" key="GridCell.Tab.0.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627300309891" />
     <state width="912" height="279" key="GridCell.Tab.0.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041432" />
-    <state width="1578" height="194" key="GridCell.Tab.0.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908312616" />
-    <state width="1578" height="194" key="GridCell.Tab.0.right" timestamp="1627908312617">
+    <state width="1578" height="291" key="GridCell.Tab.0.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705714" />
+    <state width="1578" height="291" key="GridCell.Tab.0.right" timestamp="1628033705714">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.0.right/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993419" />
+    <state width="843" height="291" key="GridCell.Tab.0.right/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435405" />
     <state width="732" height="193" key="GridCell.Tab.0.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627300309891" />
     <state width="912" height="279" key="GridCell.Tab.0.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041433" />
-    <state width="1578" height="194" key="GridCell.Tab.0.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908312617" />
-    <state width="1578" height="194" key="GridCell.Tab.1.bottom" timestamp="1627908445053">
+    <state width="1578" height="291" key="GridCell.Tab.0.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705714" />
+    <state width="1578" height="291" key="GridCell.Tab.1.bottom" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.1.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993420" />
+    <state width="843" height="291" key="GridCell.Tab.1.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435406" />
     <state width="732" height="193" key="GridCell.Tab.1.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627301206653" />
     <state width="912" height="279" key="GridCell.Tab.1.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640043992" />
-    <state width="1578" height="194" key="GridCell.Tab.1.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908445053" />
-    <state width="1578" height="194" key="GridCell.Tab.1.center" timestamp="1627908445053">
+    <state width="1578" height="291" key="GridCell.Tab.1.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.1.center" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.1.center/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993420" />
+    <state width="843" height="291" key="GridCell.Tab.1.center/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435406" />
     <state width="732" height="193" key="GridCell.Tab.1.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627301206652" />
     <state width="912" height="279" key="GridCell.Tab.1.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640043991" />
-    <state width="1578" height="194" key="GridCell.Tab.1.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908445053" />
-    <state width="1578" height="194" key="GridCell.Tab.1.left" timestamp="1627908445052">
+    <state width="1578" height="291" key="GridCell.Tab.1.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.1.left" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.1.left/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993420" />
+    <state width="843" height="291" key="GridCell.Tab.1.left/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435405" />
     <state width="732" height="193" key="GridCell.Tab.1.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627301206652" />
     <state width="912" height="279" key="GridCell.Tab.1.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640043991" />
-    <state width="1578" height="194" key="GridCell.Tab.1.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908445052" />
-    <state width="1578" height="194" key="GridCell.Tab.1.right" timestamp="1627908445053">
+    <state width="1578" height="291" key="GridCell.Tab.1.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.1.right" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.1.right/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993420" />
+    <state width="843" height="291" key="GridCell.Tab.1.right/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435406" />
     <state width="732" height="193" key="GridCell.Tab.1.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627301206653" />
     <state width="912" height="279" key="GridCell.Tab.1.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640043991" />
-    <state width="1578" height="194" key="GridCell.Tab.1.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627908445053" />
-    <state width="1577" height="194" key="GridCell.Tab.2.bottom" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.1.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.2.bottom" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.2.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993421" />
+    <state width="843" height="291" key="GridCell.Tab.2.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435407" />
     <state width="912" height="279" key="GridCell.Tab.2.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041088" />
-    <state width="1577" height="194" key="GridCell.Tab.2.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state width="1577" height="194" key="GridCell.Tab.2.center" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.2.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.2.center" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.2.center/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993421" />
+    <state width="843" height="291" key="GridCell.Tab.2.center/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435407" />
     <state width="912" height="279" key="GridCell.Tab.2.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041088" />
-    <state width="1577" height="194" key="GridCell.Tab.2.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state width="1577" height="194" key="GridCell.Tab.2.left" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.2.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.2.left" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.2.left/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993420" />
+    <state width="843" height="291" key="GridCell.Tab.2.left/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435407" />
     <state width="912" height="279" key="GridCell.Tab.2.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041088" />
-    <state width="1577" height="194" key="GridCell.Tab.2.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state width="1577" height="194" key="GridCell.Tab.2.right" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.2.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.2.right" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.2.right/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993421" />
+    <state width="843" height="291" key="GridCell.Tab.2.right/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435407" />
     <state width="912" height="279" key="GridCell.Tab.2.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041088" />
-    <state width="1577" height="194" key="GridCell.Tab.2.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state width="1577" height="194" key="GridCell.Tab.3.bottom" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.2.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.3.bottom" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.3.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993423" />
+    <state width="843" height="291" key="GridCell.Tab.3.bottom/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435408" />
     <state width="912" height="279" key="GridCell.Tab.3.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041089" />
-    <state width="1577" height="194" key="GridCell.Tab.3.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state width="1577" height="194" key="GridCell.Tab.3.center" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.3.bottom/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.3.center" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.3.center/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993421" />
+    <state width="843" height="291" key="GridCell.Tab.3.center/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435408" />
     <state width="912" height="279" key="GridCell.Tab.3.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041088" />
-    <state width="1577" height="194" key="GridCell.Tab.3.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state width="1577" height="194" key="GridCell.Tab.3.left" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.3.center/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.3.left" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.3.left/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993421" />
+    <state width="843" height="291" key="GridCell.Tab.3.left/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435407" />
     <state width="912" height="279" key="GridCell.Tab.3.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041088" />
-    <state width="1577" height="194" key="GridCell.Tab.3.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state width="1577" height="194" key="GridCell.Tab.3.right" timestamp="1627140252054">
+    <state width="1578" height="291" key="GridCell.Tab.3.left/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state width="1578" height="291" key="GridCell.Tab.3.right" timestamp="1628033705715">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
-    <state width="948" height="169" key="GridCell.Tab.3.right/0.0.1620.1040@0.0.1620.1040" timestamp="1626654993422" />
+    <state width="843" height="291" key="GridCell.Tab.3.right/0.0.1620.1040@0.0.1620.1040" timestamp="1627944435408" />
     <state width="912" height="279" key="GridCell.Tab.3.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626640041088" />
-    <state width="1577" height="194" key="GridCell.Tab.3.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627140252054" />
-    <state x="1227" y="1281" key="RiderGenerateDialog" timestamp="1627769785489">
+    <state width="1578" height="291" key="GridCell.Tab.3.right/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628033705715" />
+    <state x="1227" y="1281" key="RiderGenerateDialog" timestamp="1628091776742">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
     <state x="3014" y="197" key="RiderGenerateDialog/304.1080.1620.1060/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1627494555838" />
-    <state x="1227" y="1281" key="RiderGenerateDialog/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627769785489" />
+    <state x="1227" y="1281" key="RiderGenerateDialog/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628091776742" />
     <state x="626" y="165" key="SettingsEditor" timestamp="1625426239783">
       <screen x="0" y="0" width="1620" height="1040" />
     </state>
@@ -475,8 +432,8 @@
     <state x="79" y="100" width="665" height="846" key="VCS.FileHistoryDialog/0.0.1620.1040@0.0.1620.1040" timestamp="1626211914176" />
     <state x="2014" y="100" width="788" height="846" key="VCS.FileHistoryDialog/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1625664239725" />
     <state x="383" y="1182" width="665" height="863" key="VCS.FileHistoryDialog/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627757340831" />
-    <state x="397" y="1173" width="1433" height="853" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1627169260157">
-      <screen x="304" y="1080" width="1620" height="1060" />
+    <state x="397" y="1173" width="1433" height="853" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1627943973605">
+      <screen x="0" y="0" width="1620" height="1040" />
     </state>
     <state x="397" y="1173" width="1433" height="853" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627169260157" />
     <state x="727" y="250" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1626210177896">
@@ -490,95 +447,19 @@
     <state x="1920" y="0" width="789" height="831" key="dock-window-1/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1627303893659" />
     <state x="2874" y="0" width="972" height="1046" key="dock-window-1/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1626636708160" />
     <state x="298" y="1080" width="821" height="1045" key="dock-window-1/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627051031053" />
-    <state x="428" y="1331" key="run.anything.popup" timestamp="1627595144688">
+    <state x="430" y="1332" key="run.anything.popup" timestamp="1628032741655">
       <screen x="304" y="1080" width="1620" height="1060" />
     </state>
     <state x="122" y="244" key="run.anything.popup/0.0.1620.1040@0.0.1620.1040" timestamp="1626210546271" />
     <state x="2064" y="244" key="run.anything.popup/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@1920.0.1920.1040" timestamp="1625670250336" />
-    <state x="428" y="1331" key="run.anything.popup/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1627595144688" />
+    <state x="430" y="1332" key="run.anything.popup/304.1080.1620.1060/1920.0.1920.1040/0.0.1920.1040@304.1080.1620.1060" timestamp="1628032741655" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs</url>
-          <line>226</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\UI\PlacementDragAndLock.cs" initialLine="226">
-            <startOffsets>
-              <option value="7045" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7091" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs</url>
-          <line>37</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Algorithms\BasicGeneticAlgorithm.cs" initialLine="37">
-            <startOffsets>
-              <option value="1399" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1420" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs</url>
-          <line>55</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Algorithms\BasicGeneticAlgorithm.cs" initialLine="55">
-            <startOffsets>
-              <option value="2173" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2192" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs</url>
-          <line>69</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Algorithms\BasicGeneticAlgorithm.cs" initialLine="69">
-            <startOffsets>
-              <option value="2871" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2948" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GeneticOperators.cs</url>
-          <line>59</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Entities\GeneticOperators.cs" initialLine="59">
-            <startOffsets>
-              <option value="2100" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2101" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GeneticOperators.cs</url>
-          <line>64</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Entities\GeneticOperators.cs" initialLine="64">
-            <startOffsets>
-              <option value="2464" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2489" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="Frame#GeneticAlgorithms.Entities.GeneticOperators.TournamentSelection" memberName="possibleParents1" />
+        <PinnedItemInfo parentTag="Type#GeneticAlgorithms.Entities.Gene" memberName="allele" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

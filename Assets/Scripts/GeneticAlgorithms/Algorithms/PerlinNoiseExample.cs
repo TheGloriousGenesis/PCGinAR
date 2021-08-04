@@ -30,7 +30,7 @@ public class PerlinNoiseExample : MonoBehaviour
     {
         for (int x = 0; x < platformHeight; x++)
         {
-            GameObject newObj = Instantiate(prefabs[BlockType.BASICBLOCK], new Vector3(x, 0, 0), Quaternion.identity);
+            GameObject newObj = Instantiate(prefabs[BlockType.BASIC_BLOCK], new Vector3(x, 0, 0), Quaternion.identity);
             newObj.transform.parent = GameObject.Find("Platform").transform;
         }
     }
@@ -40,7 +40,7 @@ public class PerlinNoiseExample : MonoBehaviour
         int count = 0;
         while (count < platformHeight)
         {
-            GameObject newObj = Instantiate(prefabs[BlockType.BASICBLOCK], startPosition + new Vector3(count, 0, 0), startRotation);
+            GameObject newObj = Instantiate(prefabs[BlockType.BASIC_BLOCK], startPosition + new Vector3(count, 0, 0), startRotation);
             newObj.transform.parent = GameObject.Find("Platform").transform;
         }
     }

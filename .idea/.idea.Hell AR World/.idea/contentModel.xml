@@ -4,6 +4,7 @@
     <e p="C:\Users\bowro\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
     <e p="C:\Users\bowro\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Hell AR World.-761365799.00" t="ExcludeRecursive" />
     <e p="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World" t="IncludeRecursive">
+      <e p="AndroidRuntimePermissions.Runtime.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
@@ -45,6 +46,20 @@
           </e>
         </e>
         <e p="Plugins" t="Include">
+          <e p="AndroidRuntimePermissions" t="Include">
+            <e p="Android" t="Include">
+              <e p="PermissionCallback.cs" t="Include" />
+              <e p="PermissionCallbackAsync.cs" t="Include" />
+              <e p="PermissionCallbackHelper.cs" t="Include" />
+            </e>
+            <e p="AndroidRuntimePermissions.cs" t="Include" />
+            <e p="AndroidRuntimePermissions.Runtime.asmdef" t="Include" />
+            <e p="credits.txt" t="Include" />
+            <e p="Editor" t="Include">
+              <e p="ARPPostProcessBuild.cs" t="Include" />
+            </e>
+            <e p="README.txt" t="Include" />
+          </e>
           <e p="GitHub" t="Include">
             <e p="Editor" t="Include">
               <e p="credits.txt" t="Include" />
@@ -85,7 +100,7 @@
         <e p="Scripts" t="Include">
           <e p="Behaviour" t="Include">
             <e p="Entities" t="Include">
-              <e p="BlockTile.cs" t="Include" />
+              <e p="BlockCube.cs" t="Include" />
               <e p="PrefabFactory.cs" t="Include" />
             </e>
             <e p="Platform" t="Include">
@@ -96,6 +111,7 @@
                 <e p="Entities" t="Include">
                   <e p="Edge.cs" t="Include" />
                 </e>
+                <e p="GenerateNavLinks.cs" t="Include" />
                 <e p="NavMeshLinksAutoPlacer.cs" t="Include" />
                 <e p="NavMeshLinkTBS.cs" t="Include" />
               </e>
@@ -108,6 +124,7 @@
               <e p="PlayerControls.cs" t="Include" />
               <e p="PlayerInputController.cs" t="Include" />
               <e p="RandomWalk.cs" t="Include" />
+              <e p="TestAccelerometer.cs" t="Include" />
               <e p="ToadController.cs" t="Include" />
             </e>
           </e>
@@ -120,6 +137,7 @@
             <e p="Algorithms" t="Include">
               <e p="BaseAlgorithm.cs" t="Include" />
               <e p="BasicGeneticAlgorithm.cs" t="Include" />
+              <e p="FI2POP.cs" t="Include" />
               <e p="MapElites.cs" t="Include" />
               <e p="PerlinNoiseExample.cs" t="Include" />
             </e>
@@ -151,6 +169,7 @@
             <e p="BlockUIExtensions.cs" t="Include" />
             <e p="EventManager.cs" t="Include" />
             <e p="PlacementDragAndLock.cs" t="Include" />
+            <e p="PlaneDetectionController.cs" t="Include" />
             <e p="Sensors.cs" t="Include" />
           </e>
           <e p="Utilities" t="Include">

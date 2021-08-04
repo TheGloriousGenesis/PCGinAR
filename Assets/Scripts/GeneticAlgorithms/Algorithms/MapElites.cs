@@ -16,9 +16,9 @@ namespace GeneticAlgorithms.Algorithms
         private List<Chromosome> _currentPopulation;
         private FeatureDimension[] _featureDimensions;
 
-        public MapElites(int populationSize, int chromosoneLength, float crossoverProbability, Random randomG, 
+        public MapElites(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
             int elitism, float mutationProbability,int iteration, int k, int N) :
-            base(populationSize, chromosoneLength, crossoverProbability, randomG, elitism, 
+            base(populationSize, chromosomeLength, crossoverProbability, randomG, elitism, 
                 mutationProbability, iteration, k)
         {
             _n = N;
@@ -55,7 +55,7 @@ namespace GeneticAlgorithms.Algorithms
                 else
                 {
                     one = _currentPopulation[RandomG.Next()];
-                    one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateGene);
+                    one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateRandomGene);
                 }
                 PlaceInMapElites(one, fitness);
             }

@@ -5,7 +5,7 @@ using Behaviour.Entities;
 using Behaviour.Platform.LinkGenerator;
 using Generators;
 using GeneticAlgorithms.Entities;
-using GeneticAlgorithms.Generators;
+using GeneticAlgorithms.Parameter;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,10 +24,15 @@ public class GenerateGameService : MonoBehaviour
 
     [FormerlySerializedAs("_linksAutoPlacer")] [SerializeField]
     private NavMeshLinksAutoPlacer linksAutoPlacer;
+
+    [SerializeField]
+    private GenerateNavLinks gen;
     
     private GameData _gameData;
     
     private Stopwatch timer = new Stopwatch();
+
+    // private GameObject placedPlayer;
     
     #region Event subscription
 
@@ -36,6 +41,7 @@ public class GenerateGameService : MonoBehaviour
         EventManager.OnUpdateGameStats += UpdateStatus;
         EventManager.OnGameEnd += GameComplete;
         EventManager.OnGameStart += GameStart;
+        // EventManager.OnGameLocked += ActivatePlayer;
     }
     
     private void OnDisable()
@@ -43,13 +49,16 @@ public class GenerateGameService : MonoBehaviour
         EventManager.OnUpdateGameStats -= UpdateStatus;
         EventManager.OnGameEnd -= GameComplete;
         EventManager.OnGameStart -= GameStart;
+        // EventManager.OnGameLocked -= ActivatePlayer;
     }
     #endregion
 
     #region In Play Mode
     public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome)
     {
-        GameObject go = CreateGame(plane, rotation, BlockType.PLAYER, chromosome);
+        Debug.Log("In create game in play object");
+
+        GameObject go = CreateGame(plane, rotation, Constants.PLAYERTYPE, chromosome);
         _gameData = new GameData {chromosomeID = chromosome.ID};
         return go;
     }    
@@ -57,20 +66,36 @@ public class GenerateGameService : MonoBehaviour
     private GameObject CreateGame(Vector3 plane, Quaternion orientation, BlockType playerType, Chromosome chromosome)
     {
         ResetGame(Utility.SafeDestroyInPlayMode);
-        ResetGame(Utility.SafeDestroyInEditMode);
 
         platform.CreatePlatform(orientation, chromosome);
         
+        linksAutoPlacer.RefreshLinks();
+
+        gen.DoGenerateLinks();
+        
         platform.PlaceGoal(orientation);
+        
         platform.PlacePlayer(orientation, playerType);
         
+        
+        
         return ConfigureGameSpace(plane);
-    }    
+    }
+
+    // private void ActivatePlayer(bool islocked)
+    // {
+    //     if (placedPlayer)
+    //     {
+    //         placedPlayer.SetActive(islocked);
+    //     }
+    // }
     
     private GameObject ConfigureGameSpace(Vector3 plane)
     {
         GameObject game = GameObject.Find("/GAME");
+        game.transform.position = Vector3.zero;
 
+        // GameObject platform = GameObject.Find("/GAME/Platform");
         // // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
         // game.transform.position = plane;
         // game.transform.rotation = Quaternion.Inverse(game.transform.rotation);
@@ -78,7 +103,19 @@ public class GenerateGameService : MonoBehaviour
         // // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
         // // have tried to rescale before brick added and that didnt work so think about it
         // game.transform.localScale = game.transform.localScale * 0.5f;
-        linksAutoPlacer.RefreshLinks();
+        // linksAutoPlacer.RefreshLinks();
+        // Vector3 sumVector = new Vector3(0f,0f,0f);
+        //
+        // foreach (Transform child in platform.transform)
+        // {          
+        //     sumVector += child.position;        
+        // }
+        //
+        // Vector3 groupCenter = sumVector / platform.transform.childCount;
+        //
+        // Debug.Log($"Center of render: {groupCenter}");
+        //
+        // game.transform.position = groupCenter * - 1;
 
         return game;
     }
@@ -114,12 +151,9 @@ public class GenerateGameService : MonoBehaviour
     #region Delete methods
     public void ResetGame(Action<GameObject> delFunc)
     {
-        if (linksAutoPlacer == null)
-        {
-            Debug.Log("it is null");
-        }
+        gen.ClearLinks();
         
-        linksAutoPlacer.ClearLinks();
+        // linksAutoPlacer.ClearLinks();
 
         DestroyPlatform(delFunc);
 
@@ -234,6 +268,7 @@ public class GenerateGameService : MonoBehaviour
     
     private void GameStart()
     {
+        
         timer = new Stopwatch();
         timer.Start();
     }
@@ -241,6 +276,11 @@ public class GenerateGameService : MonoBehaviour
     #endregion
     public void PlaceCoins()
     {
-        coins.PlaceCoins();
+        // coins.PlaceCoins();
+    }
+
+    private void OnApplicationQuit()
+    {
+        ResetGame(Utility.SafeDestroyInEditMode);
     }
 }

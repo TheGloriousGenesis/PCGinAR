@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Object = UnityEngine.Object;
 
 namespace GeneticAlgorithms.Entities
 {
     [Serializable]
-    public class FeatureDimension: Object
+    public class FeatureDimension
     {
         public static Dictionary<string, Func<Chromosome, float>> FeatureFunctionMap = 
             new Dictionary<string, Func<Chromosome, float>>()
