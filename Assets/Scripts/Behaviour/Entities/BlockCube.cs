@@ -14,14 +14,20 @@ namespace Behaviour.Entities
         ENEMY_1,
         AGENT,
         NONE,
-        WALKABLE_BLOCK
+        FREE_TO_WALK
     }
 
     [Serializable]
     public class BlockCube
     {
         public BlockType blockType;
-        // public float perlinNoiseLowLimit;
+        public Vector3 position;
+
+        public BlockCube(BlockType blockType, Vector3 position)
+        {
+            this.blockType = blockType;
+            this.position = position;
+        }
         // public float perlinNoiseHighLimit;
     }
 
