@@ -1,5 +1,4 @@
-﻿using Behaviour.Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Behaviour.Platform
 {
@@ -21,7 +20,7 @@ namespace Behaviour.Platform
             }
             if (_tag  ==  "Player")
             {
-                collision.gameObject.GetComponent<ToadController>().numOfCoins++;
+                // collision.gameObject.GetComponent<ToadController>().numOfCoins++;
                 Destroy(this.gameObject);
             }
         }

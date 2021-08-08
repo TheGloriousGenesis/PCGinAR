@@ -4,7 +4,6 @@ using Behaviour.Entities;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
 using UnityEngine;
-using UnityEngine.AI;
 using Utilities;
 using Random = System.Random;
 
@@ -27,22 +26,121 @@ namespace Generators
         {
             List<Gene> genes = chromosome.Genes;
             // select unique from list 
-            List<BlockCube> position = genes.SelectMany(x => x.allele.blockPositions).Distinct().ToList();
-
+            List<Allele> bricks = genes.Select(x => x.allele).ToList();
+            
             List<Vector3> nullSpace = new List<Vector3>();
-            foreach (BlockCube i in position)
+            List<Vector3> fullSpace = new List<Vector3>();
+            
+            foreach (Allele i in bricks)
             {
-                if (i.blockType == BlockType.NONE)
+                if (i.chunkID == 15)
                 {
                     nullSpace.Add(i.position);
-                    continue;
                 }
-                GameObject block1 = Instantiate(prefabs[i.blockType], i.position, orientation);
+                
+                List<Vector3> tmp = GetPosition(i);
+                
+                fullSpace.AddRange(tmp);
+            }
+
+            fullSpace = fullSpace.Distinct().ToList();
+            nullSpace = nullSpace.Distinct().ToList();
+            
+            foreach(Vector3 v in fullSpace)
+            {
+                GameObject block1 = Instantiate(prefabs[BlockType.BASIC_BLOCK], v, orientation);
                 block1.transform.parent = transform;
             }
-            Utility.GetGameMap()[BlockType.BASIC_BLOCK] = position.Where(x => x.blockType == BlockType.BASIC_BLOCK)
-                .Select(x => x.position).ToList();
+
+            Utility.GetGameMap()[BlockType.BASIC_BLOCK] = fullSpace;
             Utility.GetGameMap()[BlockType.NONE] = nullSpace;
+        }
+
+        private List<Vector3> GetPosition(Allele allele)
+        {
+            List<Vector3> cubePosition = new List<Vector3>();
+            switch (allele.chunkID)
+            {
+                case 0:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.UP);
+                    cubePosition.Add(allele.position + BlockPosition.RIGHT);
+                    return cubePosition;
+                case 1:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.UP);
+                    cubePosition.Add(allele.position + BlockPosition.LEFT);
+                    return cubePosition;
+                case 2:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.DOWN);
+                    cubePosition.Add(allele.position + BlockPosition.RIGHT);
+                    return cubePosition;
+                case 3:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.DOWN);
+                    cubePosition.Add(allele.position + BlockPosition.LEFT);
+                    return cubePosition;
+                case 4:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.UP);
+                    cubePosition.Add(allele.position + BlockPosition.FRONT);
+                    return cubePosition;
+                case 5:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.FRONT);
+                    cubePosition.Add(allele.position + BlockPosition.LEFT);
+                    return cubePosition;
+                case 6:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.FRONT);
+                    cubePosition.Add(allele.position + BlockPosition.RIGHT);
+                    return cubePosition;
+                case 7:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.BACK);
+                    cubePosition.Add(allele.position + BlockPosition.DOWN);
+                    return cubePosition;
+                case 8:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.FRONT);
+                    cubePosition.Add(allele.position + BlockPosition.DOWN);
+                    return cubePosition;
+                case 9:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.UP);
+                    cubePosition.Add(allele.position + BlockPosition.BACK);
+                    return cubePosition;
+                case 10:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.RIGHT);
+                    cubePosition.Add(allele.position + BlockPosition.BACK);
+                    return cubePosition;
+                case 11:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.LEFT);
+                    cubePosition.Add(allele.position + BlockPosition.BACK);
+                    return cubePosition;
+                case 12:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.UP);
+                    cubePosition.Add(allele.position + BlockPosition.DOWN);
+                    return cubePosition;
+                case 13:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.LEFT);
+                    cubePosition.Add(allele.position + BlockPosition.RIGHT);
+                    return cubePosition;
+                case 14:
+                    cubePosition.Add(allele.position);
+                    cubePosition.Add(allele.position + BlockPosition.FRONT);
+                    cubePosition.Add(allele.position + BlockPosition.BACK);
+                    return cubePosition;
+                case 15:
+                    return cubePosition;
+            }
+
+            return cubePosition;
         }
 
         private void ObtainWalkableSurface()

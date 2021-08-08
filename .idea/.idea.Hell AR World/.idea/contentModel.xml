@@ -107,14 +107,6 @@
               <e p="BrickBehaviour.cs" t="Include" />
               <e p="CoinBehaviour.cs" t="Include" />
               <e p="GoalBehaviour.cs" t="Include" />
-              <e p="LinkGenerator" t="Include">
-                <e p="Entities" t="Include">
-                  <e p="Edge.cs" t="Include" />
-                </e>
-                <e p="GenerateNavLinks.cs" t="Include" />
-                <e p="NavMeshLinksAutoPlacer.cs" t="Include" />
-                <e p="NavMeshLinkTBS.cs" t="Include" />
-              </e>
             </e>
             <e p="Player" t="Include">
               <e p="AgentLinkMover.cs" t="Include" />
@@ -162,10 +154,19 @@
               <e p="Node.cs" t="Include" />
               <e p="StorePath.cs" t="Include" />
             </e>
+            <e p="LinkGenerator" t="Include">
+              <e p="Entities" t="Include">
+                <e p="Edge.cs" t="Include" />
+              </e>
+              <e p="GenerateNavLinks.cs" t="Include" />
+              <e p="NavMeshLinksAutoPlacer.cs" t="Include" />
+              <e p="NavMeshLinkTBS.cs" t="Include" />
+            </e>
             <e p="PathFinding3D.cs" t="Include" />
           </e>
           <e p="Scripts.asmdef" t="Include" />
           <e p="UI" t="Include">
+            <e p="ARDebugManager.cs" t="Include" />
             <e p="BlockUIExtensions.cs" t="Include" />
             <e p="EventManager.cs" t="Include" />
             <e p="PlacementDragAndLock.cs" t="Include" />
@@ -179,6 +180,7 @@
               <e p="Singleton.cs" t="Include" />
             </e>
             <e p="Utility.cs" t="Include" />
+            <e p="WeightedRandomBag.cs" t="Include" />
           </e>
         </e>
         <e p="Tests" t="Include">

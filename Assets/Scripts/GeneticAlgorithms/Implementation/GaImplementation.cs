@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Behaviour.Entities;
@@ -11,7 +10,6 @@ using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Playables;
 using UnityEngine.Serialization;
 using Utilities;
 using Debug = UnityEngine.Debug;
@@ -81,49 +79,25 @@ namespace GeneticAlgorithms.Implementation
             timer.Stop();
 
             score += AnalyseAStarPath();
-            // score += AnalyseMultiPaths();
-            score += CalculateSpaceUsed();
-            score += CalculateFullUseOfChromosome();
-            score += CalculatePercentageOfWalkableSurfaces();
-            score += CalculateNullSpace();
+            score += AnalyseMultiPaths();
+            score += CalculateVolumeUsed();
+            score += PercentageOfChromosomeUsed();
+            score += PercentageOfChromosomeThatIsNullSpace();
+            score += PercentageOfWalkableSurfaces();
+            score += CalculateLinearity();
+            
             //todo change as max score has now changed
             // (x - min(x)) / (max(x) -min(x) --> https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
-            float max = 5f;
-            float min = -2f;
-            score = (score + min)/(max + min);
-      
+            float max = 8f;
+            float min = -12f;
+            score = (score - min)/(max - min);
+
             chromosome.Fitness = score;
             
             gameService.ResetGame(Utility.SafeDestroyInEditMode);
 
             return timer.Elapsed.TotalMilliseconds;
         }
-
-        // private float AnalyseMultiPaths()
-        // {
-        //     // Check number of paths
-        //     float score = 0;
-        //     int numberOfPaths = CalculateNumberOfPaths();
-        //     if (1 <= numberOfPaths && numberOfPaths <= 5)
-        //     {
-        //         score += 2;
-        //     }
-        //     else if (6 <= numberOfPaths && numberOfPaths <= 10)
-        //     {
-        //         score += 1;
-        //     }
-        //     else if (11 <= numberOfPaths && numberOfPaths <= 20)
-        //     {
-        //         score += 0.5f;
-        //     }
-        //
-        //     return score;
-        // }
-        // private int CalculateNumberOfPaths()
-        // {
-        //     List<List<Vector3>> allPaths = multiplePathsFinding.FindPaths();
-        //     return allPaths.Count;
-        // }
 
         private float AnalyseAStarPath()
         {
@@ -150,80 +124,142 @@ namespace GeneticAlgorithms.Implementation
 
             return score;
         }
+        private float AnalyseMultiPaths()
+        {
+            // Check number of paths
+            float score = 0;
+            int numberOfPaths =  multiplePathsFinding.FindPaths().Count;
+            if (1 <= numberOfPaths && numberOfPaths <= 5)
+            {
+                score += 2;
+            }
+            else if (6 <= numberOfPaths && numberOfPaths <= 10)
+            {
+                score += 1;
+            }
+            else if (11 <= numberOfPaths && numberOfPaths <= 20)
+            {
+                score += 0.5f;
+            }
         
-        private float CalculateFullUseOfChromosome()
+            return score;
+        }
+        private float PercentageOfChromosomeUsed()
         {
             int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
                                      Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
             
-            float used = numberBricksPlaced / (float) (Constants.CHROMOSONE_LENGTH * 3);
-            
-            return used;
+            return numberBricksPlaced / (float) (Constants.CHROMOSONE_LENGTH * 3);
         }
-        
-        private float CalculateNullSpace()
+        private float PercentageOfChromosomeThatIsNullSpace()
         {
             int numberOfIntentionalNullSpace = Utility.GetGameMap()[BlockType.NONE].Count;
-            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
-                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
-            
-            float used = numberOfIntentionalNullSpace / (float) numberBricksPlaced ;
+
+            float used = numberOfIntentionalNullSpace / (float) (Constants.CHROMOSONE_LENGTH * 3);
             return used;
         }
-        
-        private float CalculateSpaceUsed()
+        private float CalculateVolumeUsed()
         {
             float score = 0;
             int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
                                      Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
 
-            float used = (float) numberBricksPlaced / (float) Constants.TOTAL_MAXIMUM_AREA;
-            
-            if (used <= 0.06 && used >= 0.02)
+            float used = numberBricksPlaced / (float) Constants.TOTAL_VOLUMNE;
+            if (used >= 0.5)
             {
-                score += 1f;
+                Debug.Log("Volume used more than half");
+                score += 1;
             }
             else
             {
-                score -= 0.5f;
+                score -= 1f;
             }
-
             return score;
         }
-
-        private float CalculatePercentageOfWalkableSurfaces()
+        private float PercentageOfWalkableSurfaces()
         {
-            float score = 0;
             int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
                                      Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
-
-            float used = (float) Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count / (float) numberBricksPlaced;
             
-            if (used >= 0.6)
+            return Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count / (float) numberBricksPlaced;;
+        }
+
+        private float CalculateLinearity()
+        {
+            float score = 0;
+            Dictionary<int, int> tmp = new Dictionary<int, int>();
+            List<Vector3> allBricks = Utility.GetGameMap()[BlockType.BASIC_BLOCK];
+            allBricks.AddRange(Utility.GetGameMap()[BlockType.FREE_TO_WALK]);
+            
+            foreach (var i in allBricks)
+            {
+                if (tmp.ContainsKey((int) i.y))
+                {
+                    tmp[(int) i.y] = tmp[(int) i.y] + 1;
+                }
+                else
+                {
+                    tmp.Add((int) i.y, 0);
+                }
+            }
+
+            int diffValues = tmp.GroupBy(pair => pair.Value).Count();
+
+            if (diffValues < tmp.Count / 4)
+            {
+                score -= 1f;
+            } else if (diffValues < tmp.Count / 2)
+            {
+                score -= 0.5f;
+            } else
             {
                 score += 1f;
             }
-            else
-            {
-                score -= 0.5f;
-            }
-
             return score;
         }
-        
+
+        private float[] CalculateNewWeights(Chromosome chromosome)
+        {
+            float[] weights = new float[Constants.NUMBER_OF_CHUNKS];
+            List<int> allChunksInLevel = chromosome.Genes.Select(x => x.allele.chunkID).ToList();
+            int totalChunks = allChunksInLevel.Count;
+ 
+            foreach (int id in allChunksInLevel)
+            {
+                weights[id] += 1f;
+            }
+            
+            for (int i = 0; i < weights.Length; i++)
+            {
+                weights[i] = (weights[i] / totalChunks) * (1f/Constants.NUMBER_OF_CHUNKS);
+            }
+
+            return weights;
+        }
+
         #endregion
 
         #region InGame data for GA
 
         private void SetUpGARun(GameData gameData)
         {
-            GameData.SaveGameData(gameData);
+            var chromosomes = _ga._currentPopulation.FindAll(x => x.ID == gameData.chromosomeID);
+            if (chromosomes.Count > 1)
+                Debug.Log($"More than 1 Chromosome found with id {gameData.chromosomeID}");
             var chromosome = _ga._currentPopulation.Find(x => x.ID == gameData.chromosomeID);
+            
+            float[] currentWeights = CalculateNewWeights(chromosome);
+
+            GameData.SaveGameData(gameData);
+
             if (!_ga.playedLevels.Contains(chromosome))
             {
                 _ga.playedLevels.Add(chromosome);
             }
+            _ga.weightedRandomBag.UpdateWeights(currentWeights);
+
             Debug.Log($"Number of uniquely played levels: {_ga.playedLevels.Count}");
+            // Debug.Log($"Weights of current generation: {currentWeights.ToList()}");
         }
 
         #endregion

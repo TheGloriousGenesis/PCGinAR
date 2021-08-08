@@ -58,6 +58,7 @@ namespace Utilities
     
         public FileLogger(string corePath)
         {
+            Debug.Log($"Corepath: {corePath}");
             this.corePath = corePath;
             
         }

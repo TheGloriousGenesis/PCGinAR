@@ -81,8 +81,8 @@ namespace GeneticAlgorithms.Algorithms
                             two = chromosomes[1];
                         }
 
-                        one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateRandomGene);
-                        two = GeneticGeneticOperator.UniformMutation(two, MutationProbability, GenerateRandomGene);
+                        one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateGene);
+                        two = GeneticGeneticOperator.UniformMutation(two, MutationProbability, GenerateGene);
 
                         double fit1 = fitness(one);
                         double fit2 = fitness(two);

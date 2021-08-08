@@ -47,7 +47,7 @@ MonoBehaviour:
   m_StartPoint: {x: 0, y: 0, z: -2.5}
   m_EndPoint: {x: 0, y: 0, z: 2.5}
   m_Width: 0.8
-  m_CostModifier: -1
+  m_CostModifier: 2
   m_Bidirectional: 1
   m_AutoUpdatePosition: 1
   m_Area: 3

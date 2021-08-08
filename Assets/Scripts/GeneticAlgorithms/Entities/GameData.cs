@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UI;
 using UnityEngine;
 using static Utilities.ARLogger;
 
@@ -11,25 +12,28 @@ namespace GeneticAlgorithms.Entities
     public class GameData
     {
         private static GameDataCollection allData;
+        
         public int chromosomeID;
-        public int x;
-        public int y;
-        public int jumps;
+        
+        #region Game metrics
+        public float numberOfInGameMovements;
+        public float numberOfJumps;
         public bool goalReached;
+        public Challenge challenge;
+        #endregion
+        
+        #region AR metrics
         public double timeCompleted;
-
-        public int numberOfPhysicalMovement;
-        public int numberOfDeaths;
-        public int numberOfCoinPickups;
-    
-
+        public float numberOfPhysicalMovement;
+        #endregion
+        
         public GameData()
         {
-        
         }
 
         public static void SaveGameData(GameData gameData)
         {
+            ARDebugManager.Instance.LogInfo("Saving GameData...");
             string json;
             if (allData == null)
             {
@@ -65,14 +69,12 @@ namespace GeneticAlgorithms.Entities
         public List<GameData> data = new List<GameData>();
     }
 
-    public enum GameDataEnum
+    [Serializable]
+    public enum Challenge
     {
-        X,
-        Y,
-        JUMP,
-        GOAL_REACHED,
-        PHYSICAL_MOVEMENT,
-        DEATH,
-        COIN_PICKUP
+        EASY,
+        HARD,
+        NEUTRAL,
+        IMPOSSIBLE
     }
 }

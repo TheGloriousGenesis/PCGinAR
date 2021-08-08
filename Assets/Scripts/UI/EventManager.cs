@@ -8,9 +8,9 @@ namespace UI
     {
         public static EventManager current;
         
-        public static event Action<GameDataEnum,int> OnUpdateGameStats;
         public static event Action<GameData> OnSendGameStats;
-        
+
+        public static event Action<int> OnCurrentChromosomeInPlay;
         public static event Action OnGameStart;
         
         public static event Action<bool> OnGameLocked;
@@ -24,16 +24,16 @@ namespace UI
             current = this;
         }
 
+        public void CurrentChromosomeInPlay(int id)
+        {
+            OnCurrentChromosomeInPlay?.Invoke(id);
+        }
+        
         public void GameLocked(bool isLocked)
         {
             OnGameLocked?.Invoke(isLocked);
         }
 
-        public void UpdateGameStats(GameDataEnum field, int value)
-        {
-            OnUpdateGameStats?.Invoke(field, value);
-        }
-        
         public void SendGameStats(GameData gamedata)
         {
             OnSendGameStats?.Invoke(gamedata);

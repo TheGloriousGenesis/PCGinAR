@@ -42,4 +42,5 @@ namespace Behaviour.Entities
         public static readonly Vector3 BACK = new Vector3(0, 0, -Constants.BLOCK_SIZE);
         public static readonly Vector3 NONE = new Vector3(0, 0, 0);
     }
+
 }

@@ -21,6 +21,8 @@ namespace GeneticAlgorithms.Algorithms
         protected readonly Random RandomG;
         protected int Elitism;
         protected readonly GeneticOperators GeneticGeneticOperator;
+        public WeightedRandomBag<int> weightedRandomBag;
+        protected float[] currentWeights = new float[Constants.NUMBER_OF_CHUNKS];
 
         protected BaseAlgorithm(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
             int elitism, float mutationProbability, int iteration, int k)
@@ -32,12 +34,21 @@ namespace GeneticAlgorithms.Algorithms
             Elitism = elitism;
             MutationProbability = mutationProbability;
             Iteration = iteration;
-            // create initial population
             GeneticGeneticOperator = new GeneticOperators(RandomG, k);
-
+            weightedRandomBag = new WeightedRandomBag<int>(randomG, Constants.NUMBER_OF_CHUNKS);
+            SetUpCurrentWeights();
         }
-    
+
         #region Core genetic infrastucture (DNA)
+
+        protected void SetUpCurrentWeights()
+        {
+            for (int i = 0; i < Constants.NUMBER_OF_CHUNKS; i++)
+            {
+                currentWeights[0] = 1f / Constants.NUMBER_OF_CHUNKS;
+            }
+        }
+        
         protected List<Chromosome> GenerateGenotype(int popSize)
         {
             // A Genotype is the population in computation space
@@ -72,52 +83,51 @@ namespace GeneticAlgorithms.Algorithms
         // Generates a 3 cubed structure as a single gene
         private Allele GenerateAllele()
         {
-            var cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
-                BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
+            // Enumerable.Range(0, Constants.NUMBER_OF_CHUNKS).ToArray();
+            // var cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
+            //     BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
 
             Vector3 centerBlock = GenerateCenterBlockPosition();
 
-            var positions = new List<Vector3> {centerBlock};
+            int chunkID = weightedRandomBag.GetRandom();
+            
+            return new Allele(centerBlock, chunkID);
+        }
 
-            for (var i = 0; i < 2; i++)
-            {
-                // check if it is inclusive?
-                var choosePosition = RandomG.Next(0, cubeNumbers.Count);
-                positions.Add(cubeNumbers[choosePosition] + centerBlock);
-                cubeNumbers.Remove(cubeNumbers[choosePosition]);
-            }
-
-            var converted = positions.Select(x => new BlockCube(BlockType.BASIC_BLOCK, x)).ToList();
-            return new Allele(converted);
+        protected void UpdateWeights()
+        {
+            weightedRandomBag.UpdateWeights(currentWeights);
         }
         
-        protected Gene GenerateRandomGene()
-        {
-            return new Gene(GenerateRandomAllele());
-        }
-
-        // Generates a 3 cubed structure as a single gene
-        private Allele GenerateRandomAllele()
-        {
-            var cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
-                BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
-
-            Vector3 centerBlock = GenerateCenterBlockPosition();
-
-            var positions = new List<Vector3> {centerBlock};
-
-            for (var i = 0; i < 2; i++)
-            {
-                // check if it is inclusive?
-                var choosePosition = RandomG.Next(0, cubeNumbers.Count);
-                positions.Add(cubeNumbers[choosePosition] + centerBlock);
-                cubeNumbers.Remove(cubeNumbers[choosePosition]);
-            }
-
-            var converted = positions.Select(x => new BlockCube(this.RandomG.Next(0, 2) == 1 ? BlockType.BASIC_BLOCK : BlockType.NONE, x)).ToList();
-            return new Allele(converted);
-        }
         
+        
+        // protected Gene GenerateRandomGene()
+        // {
+        //     return new Gene(GenerateRandomAllele());
+        // }
+        //
+        // // Generates a 3 cubed structure as a single gene
+        // private Allele GenerateRandomAllele()
+        // {
+        //     var cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
+        //         BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
+        //
+        //     Vector3 centerBlock = GenerateCenterBlockPosition();
+        //
+        //     var positions = new List<Vector3> {centerBlock};
+        //
+        //     for (var i = 0; i < 2; i++)
+        //     {
+        //         // check if it is inclusive?
+        //         var choosePosition = RandomG.Next(0, cubeNumbers.Count);
+        //         positions.Add(cubeNumbers[choosePosition] + centerBlock);
+        //         cubeNumbers.Remove(cubeNumbers[choosePosition]);
+        //     }
+        //
+        //     var converted = positions.Select(x => new BlockCube(this.RandomG.Next(0, 2) == 1 ? BlockType.BASIC_BLOCK : BlockType.NONE, x)).ToList();
+        //     return new Allele(converted);
+        // }
+        //
 
         private Vector3 GenerateCenterBlockPosition()
         {

@@ -108,7 +108,6 @@ MonoBehaviour:
   falling: 0
   fallingThreshold: -9
   maxIncline: 45
-  numOfCoins: 0
 --- !u!195 &4557609895736260463
 NavMeshAgent:
   m_ObjectHideFlags: 0

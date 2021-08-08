@@ -14,13 +14,31 @@ namespace PathFinding.Entities
             _pending = new Queue<StorePath>();
             _pending.Enqueue(new StorePath(source, null));
         }
-
-        // Breadth-First-Search
-        public List<Vector3> NextShortestPath()
+        
+        public List<List<Vector3>> FindAllUniquePaths()
         {
-            var current = _pending.Dequeue();
-            while (current != null)
+            List<List<Vector3>> allPaths = new List<List<Vector3>>();
+            
+            var tmp = NextShortestPath();
+            var count = 20;
+
+            while (tmp != null && count > 0)
             {
+                tmp = NextShortestPath();
+                allPaths.Add(tmp);
+                count--;
+            }
+
+            return allPaths;
+        }
+        
+        // Breadth-First-Search
+        private List<Vector3> NextShortestPath()
+        {
+            while (_pending.Count > 0)
+            {
+                var current = _pending.Dequeue();
+
                 if (current.current == _destination)
                 {
                     return current.GeneratePath();
@@ -33,9 +51,10 @@ namespace PathFinding.Entities
                         _pending.Enqueue(nextPath);
                     }
                 }
-                current = _pending.Count == 0 ? null : _pending.Dequeue();
             }
             return null;
         }
+
+        
     }
 }

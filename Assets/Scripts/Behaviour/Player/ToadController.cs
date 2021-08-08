@@ -1,11 +1,13 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using GeneticAlgorithms.Entities;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using Utilities;
 using Utilities.DesignPatterns;
+using Debug = UnityEngine.Debug;
 
 namespace Behaviour.Player
 {
@@ -28,62 +30,70 @@ namespace Behaviour.Player
         private Transform cameraTransform;
         #endregion
 
-        #region Player control variables
+        #region Control variables
         
-        private PlayerControls controls;
-
         [SerializeField]
         private float moveSpeed = 1f;
-
         [SerializeField]
         private float turnSpeed = 3;
-
         [SerializeField]
         private float jump = 3f;
-
         [SerializeField]
         private bool isGrounded;
-
         public bool falling = false;
-
         public float fallingThreshold = -9f;
-
         // Maximum angle in degrees that should still count as a floor/"underfoot".
         public float maxIncline = 45.0f;
-
-        // public bool edgeDetected = false;
+        private PlayerControls controls;
 
         #endregion
+        
+        #region InGame metrics
+        
+        private int numberOfJumps = 0;
+        private int numberOfJoystickMovements = 0;
+        private bool goalReached = false;
+        private GameData _gameData = new GameData();
+        private Stopwatch timer = new Stopwatch();
+        
+        #endregion
 
-        #region UI variables
-        private Text playerStats;
+        #region AR Metrics
+
+        private static int INACTIVE_SAMPLE = 12;
+        private int currentSample = 0;
+        private int stepCount = 0;
+        private bool isActiveCounter = true;
+        private float accelerometerUpdateInterval = 1.0f / 60.0f;
+        private float lowPassKernelWidthInSeconds = 1.0f;
+        private float lowPassFilterFactor;
+        private Vector3 lowPassValue = Vector3.zero;
+        Accelerometer accelerometer;
+        
         #endregion
         
-        public int numOfCoins = 0;
-        
-        #region Inbuilt Unity Methods
-        void Awake()
+        private void Awake()
         {
             controls = new PlayerControls();
+            
+            accelerometer = Accelerometer.current;
+
+            if (accelerometer != null)
+            {
+                InputSystem.EnableDevice(accelerometer); 
+                ARDebugManager.Instance.LogInfo("Accelerator enabled");
+                lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
+                lowPassValue = accelerometer.acceleration.ReadValue();
+            }
         }
 
-        // void Start()
-        // {
-        //     if (Gyroscope.current != null)
-        //     {
-        //         InputSystem.EnableDevice(Gyroscope.current);
-        //     }
-        //     if (AttitudeSensor.current != null)
-        //     {
-        //         InputSystem.EnableDevice(AttitudeSensor.current);
-        //     }
-        //
-        // }
-        
-        IEnumerator Start()
+        private IEnumerator Start()
         {
+            EventManager.current.GameStart();
+            timer.Start();
             agent.updateRotation = false;
             agent.updatePosition = false;
+            
             while (true)
             {
                 NavMeshHit closestHit;
@@ -100,11 +110,9 @@ namespace Behaviour.Player
             }
         }
 
-        public void FixedUpdate()
+        private void FixedUpdate()
         {
             //todo: check if this is called when angle of phone moved
-            // UnityEngine.InputSystem.Gyroscope.current.angularVelocity.ReadValue();
-            // AttitudeSensor.current.attitude.ReadValue();
             
             // edgeDetected = Utility.EdgesOfCurrentGame.Contains(transform.position);
 
@@ -118,12 +126,20 @@ namespace Behaviour.Player
             {
                 CheckIfPlayerHasFallen();
             }
+
+            if (accelerometer != null)
+            {
+                lowPassValue = LowPassFilterAccelerometer(lowPassValue);
+
+                ARDebugManager.Instance.LogInfo($"Accelerator: {lowPassValue}");
+                Detect(Vector3.SqrMagnitude(lowPassValue), 1.3d);
+            }
             // if (_rigidbody.velocity == Vector3.zero)
             // {
             //     agent.enabled = true;
             // }
             // text.text = "Coin counter: " + numOfCoins.ToString();
-            
+
             // NavMeshHit hit;
 
             // var edgeHere = NavMesh.FindClosestEdge(transform.position, out hit,
@@ -149,17 +165,16 @@ namespace Behaviour.Player
         private void OnEnable()
         {
             controls.Enable();
+            EventManager.OnCurrentChromosomeInPlay += ObtainChromosomeIdOfCurrentLevel;
         }
 
         private void OnDisable()
         {
             controls.Disable();
+            EventManager.OnCurrentChromosomeInPlay -= ObtainChromosomeIdOfCurrentLevel;
         }
         
-        #endregion
-        
-        #region Player environment check methods
-        void OnCollisionStay(Collision collisionInfo)
+        private void OnCollisionStay(Collision collisionInfo)
         {
             int onground = 0;
             int inair = 0;
@@ -177,50 +192,29 @@ namespace Behaviour.Player
                 isGrounded = false;
             }
         }
-
-        bool IsContactUnderneath(ContactPoint contact)
-        {
-            // Ignore collisions with ceilings/walls
-            if (contact.normal.y <= 0f)
-                return false;
-
-            // Take the contact point into our local space.
-            Vector3 local = transform.InverseTransformPoint(contact.point);
-
-            // Flatten & ignore the vertical component.
-            // We'll just look at the footprint.
-            local.y = 0.0f;
-
-            // Cache this to a variable somewhere 
-            // to avoid repeating the trig for every check.
-            float threshold = 0.5f * Mathf.Sin(maxIncline * Mathf.Deg2Rad);
-            threshold *= threshold;
-
-            return local.sqrMagnitude <= threshold;
-        }
-
-        public void CheckIfPlayerHasFallen()
-        {
-            if (_rigidbody.velocity.y  < fallingThreshold)
-            {
-                falling = true;
-            } else
-            {
-                falling = false;
-            }
-
-            if (falling)
-            {
-                numOfCoins -= 100;
-                // text.text = "Coin counter: " + numOfCoins.ToString();
-                EventManager.current.GameEnd();
-                Utility.SafeDestroyInPlayMode(this.gameObject);
-            }
-        }
-
-        #endregion
         
-        #region Player movement methods
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.gameObject.CompareTag("Goal")) return;
+            EventManager.current.GameEnd();
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.current.GameEnd();
+            if (accelerometer != null)
+            {
+                InputSystem.DisableDevice(accelerometer);
+            }
+            timer.Stop();
+            _gameData.numberOfInGameMovements = numberOfJoystickMovements;
+            _gameData.numberOfJumps = numberOfJumps;
+            _gameData.timeCompleted = timer.ElapsedMilliseconds;
+            _gameData.goalReached = goalReached;
+            _gameData.numberOfPhysicalMovement = GETStepCount();
+            EventManager.current.SendGameStats(_gameData);
+        }
+        
         // Manage the navmesh movement here
         public void Move(Vector2 input)
         {
@@ -232,9 +226,8 @@ namespace Behaviour.Player
             Vector3 targetDirection = new Vector3(camDirection.x, 0, camDirection.z); //This line removes the "space ship" 3D flying effect. We take the cam direction but remove the y axis value
 
             if (dir != Vector3.zero)
-            { 
-                EventManager.current.UpdateGameStats(GameDataEnum.X, 1);
-                EventManager.current.UpdateGameStats(GameDataEnum.Y, 1);
+            {
+                numberOfJoystickMovements++;
                 //turn the character to face the direction of travel when there is input
                 transform.rotation = Quaternion.Slerp(
                     transform.rotation,
@@ -261,7 +254,7 @@ namespace Behaviour.Player
         {
             if (isGrounded && jumpingValue > 0)
             {
-                EventManager.current.UpdateGameStats(GameDataEnum.JUMP, 1);
+                numberOfJumps++;
                 isGrounded = false;
                 
                 agent.enabled = false;
@@ -271,7 +264,85 @@ namespace Behaviour.Player
             }
         }
 
-        #endregion
+        private bool Detect(double accelerometerValue,  double currentThreshold) {
+             
+            if (accelerometerValue >= 1  && accelerometerValue < 1.3)
+            {
+                Debug.Log($"Accelerat mag (LOW-MED): {accelerometerValue}");
+            }
+            if (currentSample == INACTIVE_SAMPLE) {
+                currentSample = 0;
+                if (!isActiveCounter)
+                    isActiveCounter = true;
+            }
+            if (isActiveCounter && (accelerometerValue > currentThreshold)) {
+                currentSample = 0;
+                isActiveCounter = false;
+                Debug.Log($"StepCounter, detect() true for threshold {currentThreshold}");
+                stepCount++;
+                return true;
+            }
+
+            ++currentSample;
+            return false;
+        }
+
+        private void ObtainChromosomeIdOfCurrentLevel(int chromosomeId)
+        {
+            _gameData.chromosomeID = chromosomeId;
+        }
+        
+        private int GETStepCount() {
+            return stepCount;
+        }
+        
+        private bool IsContactUnderneath(ContactPoint contact)
+        {
+            // Ignore collisions with ceilings/walls
+            if (contact.normal.y <= 0f)
+                return false;
+
+            // Take the contact point into our local space.
+            Vector3 local = transform.InverseTransformPoint(contact.point);
+
+            // Flatten & ignore the vertical component.
+            // We'll just look at the footprint.
+            local.y = 0.0f;
+
+            // Cache this to a variable somewhere 
+            // to avoid repeating the trig for every check.
+            float threshold = 0.5f * Mathf.Sin(maxIncline * Mathf.Deg2Rad);
+            threshold *= threshold;
+
+            return local.sqrMagnitude <= threshold;
+        }
+
+        private void CheckIfPlayerHasFallen()
+        {
+            if (_rigidbody.velocity.y  < fallingThreshold)
+            {
+                falling = true;
+            } else
+            {
+                falling = false;
+            }
+
+            if (falling)
+            {
+                // numOfCoins -= 100;
+                // text.text = "Coin counter: " + numOfCoins.ToString();
+                EventManager.current.GameEnd();
+                Utility.SafeDestroyInPlayMode(this.gameObject);
+            }
+        }
+
+        private Vector3 LowPassFilterAccelerometer(Vector3 prevValue)
+        {
+            Vector3 newValue = Vector3.Lerp(prevValue, accelerometer.acceleration.ReadValue(),
+                lowPassFilterFactor);
+            return newValue;
+        }
+
     }
 }
 

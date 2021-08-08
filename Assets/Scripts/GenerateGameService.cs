@@ -1,65 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Behaviour.Entities;
 using Behaviour.Platform.LinkGenerator;
 using Generators;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
+using PathFinding.LinkGenerator;
 using UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Utilities;
-using Debug = UnityEngine.Debug;
 
 public class GenerateGameService : MonoBehaviour
 {
-    // [SerializeField]
-    // private Text playerStats;
     [FormerlySerializedAs("_platform")] [SerializeField]
     private PlatformGenerator platform;
     [FormerlySerializedAs("_coins")] [SerializeField]
     private CoinGenerator coins;
-
     [FormerlySerializedAs("_linksAutoPlacer")] [SerializeField]
     private NavMeshLinksAutoPlacer linksAutoPlacer;
-
     [SerializeField]
     private GenerateNavLinks gen;
-    
-    private GameData _gameData;
-    
-    private Stopwatch timer = new Stopwatch();
-
-    // private GameObject placedPlayer;
-    
-    #region Event subscription
-
-    private void OnEnable()
-    {
-        EventManager.OnUpdateGameStats += UpdateStatus;
-        EventManager.OnGameEnd += GameComplete;
-        EventManager.OnGameStart += GameStart;
-        // EventManager.OnGameLocked += ActivatePlayer;
-    }
-    
-    private void OnDisable()
-    {
-        EventManager.OnUpdateGameStats -= UpdateStatus;
-        EventManager.OnGameEnd -= GameComplete;
-        EventManager.OnGameStart -= GameStart;
-        // EventManager.OnGameLocked -= ActivatePlayer;
-    }
-    #endregion
 
     #region In Play Mode
     public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome)
     {
-        Debug.Log("In create game in play object");
-
         GameObject go = CreateGame(plane, rotation, Constants.PLAYERTYPE, chromosome);
-        _gameData = new GameData {chromosomeID = chromosome.ID};
+        EventManager.current.CurrentChromosomeInPlay(chromosome.ID);
         return go;
     }    
     
@@ -71,29 +39,19 @@ public class GenerateGameService : MonoBehaviour
         
         linksAutoPlacer.RefreshLinks();
 
-        gen.DoGenerateLinks();
+        // gen.DoGenerateLinks();
         
         platform.PlaceGoal(orientation);
         
         platform.PlacePlayer(orientation, playerType);
         
-        
-        
         return ConfigureGameSpace(plane);
     }
 
-    // private void ActivatePlayer(bool islocked)
-    // {
-    //     if (placedPlayer)
-    //     {
-    //         placedPlayer.SetActive(islocked);
-    //     }
-    // }
-    
     private GameObject ConfigureGameSpace(Vector3 plane)
     {
         GameObject game = GameObject.Find("/GAME");
-        game.transform.position = Vector3.zero;
+        // game.transform.position = Vector3.zero;
 
         // GameObject platform = GameObject.Find("/GAME/Platform");
         // // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
@@ -119,6 +77,7 @@ public class GenerateGameService : MonoBehaviour
 
         return game;
     }
+    
     #endregion
     
     #region In GA Mode
@@ -153,7 +112,7 @@ public class GenerateGameService : MonoBehaviour
     {
         gen.ClearLinks();
         
-        // linksAutoPlacer.ClearLinks();
+        linksAutoPlacer.ClearLinks();
 
         DestroyPlatform(delFunc);
 
@@ -235,49 +194,6 @@ public class GenerateGameService : MonoBehaviour
         Utility.GetGameMap()[BlockType.AGENT] = new List<Vector3>();
     }
     #endregion
-    
-    #region In game methods
-    private void UpdateStatus(GameDataEnum field, int value)
-    {
-        switch (field)
-        {
-            case GameDataEnum.JUMP:
-                _gameData.jumps += value;
-                break;
-            case GameDataEnum.X:
-                _gameData.x += value;
-                break;
-            case GameDataEnum.Y:
-                _gameData.y += value;
-                break;
-            case GameDataEnum.GOAL_REACHED:
-                _gameData.goalReached = value == 1;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(field), field, null);
-        }
-    }
-
-    private void GameComplete()
-    {
-        timer.Stop();
-        _gameData.timeCompleted = timer.Elapsed.TotalMilliseconds;
-        EventManager.current.SendGameStats(_gameData);
-        // OnDisable();
-    }
-    
-    private void GameStart()
-    {
-        
-        timer = new Stopwatch();
-        timer.Start();
-    }
-    
-    #endregion
-    public void PlaceCoins()
-    {
-        // coins.PlaceCoins();
-    }
 
     private void OnApplicationQuit()
     {

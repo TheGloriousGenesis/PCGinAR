@@ -55,7 +55,7 @@ namespace GeneticAlgorithms.Algorithms
                 else
                 {
                     one = _currentPopulation[RandomG.Next()];
-                    one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateRandomGene);
+                    one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateGene);
                 }
                 PlaceInMapElites(one, fitness);
             }
