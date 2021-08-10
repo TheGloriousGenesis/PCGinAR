@@ -58,6 +58,13 @@ namespace GeneticAlgorithms.Implementation
             List<Chromosome> finalResult = _ga.Run(FitnessFunction);
             return finalResult[1];
         }
+        
+        public void RunInEdit()
+        {
+            Awake();
+            List<Chromosome> finalResult = _ga.Run(FitnessFunction);
+            gameService.CreateGameGA(BlockType.AGENT, finalResult[2]);
+        }
 
         private void Remove()
         {
@@ -69,7 +76,7 @@ namespace GeneticAlgorithms.Implementation
         }
 
         #region Fitness Analysis
-        private double FitnessFunction(Chromosome chromosome)
+        private FitnessValues FitnessFunction(Chromosome chromosome)
         {
             Stopwatch timer = new Stopwatch();
             float score = 0;
@@ -84,19 +91,20 @@ namespace GeneticAlgorithms.Implementation
             score += PercentageOfChromosomeUsed();
             score += PercentageOfChromosomeThatIsNullSpace();
             score += PercentageOfWalkableSurfaces();
-            score += CalculateLinearity();
-            
+            float linear = CalculateLinearity();
+
             //todo change as max score has now changed
             // (x - min(x)) / (max(x) -min(x) --> https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
-            float max = 8f;
-            float min = -12f;
+            float max = 7f;
+            float min = -11f;
             score = (score - min)/(max - min);
 
             chromosome.Fitness = score;
-            
+
             gameService.ResetGame(Utility.SafeDestroyInEditMode);
 
-            return timer.Elapsed.TotalMilliseconds;
+            return new FitnessValues() {time = timer.Elapsed.TotalMilliseconds,
+                fitness = score, linearity = linear};
         }
 
         private float AnalyseAStarPath()
@@ -106,7 +114,6 @@ namespace GeneticAlgorithms.Implementation
             // Check completable level
             if (path.status == NavMeshPathStatus.PathComplete)
             {
-                Debug.Log("A star hur");
                 score += 1;
             }
             else
@@ -167,7 +174,6 @@ namespace GeneticAlgorithms.Implementation
             float used = numberBricksPlaced / (float) Constants.TOTAL_VOLUMNE;
             if (used >= 0.5)
             {
-                Debug.Log("Volume used more than half");
                 score += 1;
             }
             else
@@ -186,36 +192,25 @@ namespace GeneticAlgorithms.Implementation
 
         private float CalculateLinearity()
         {
-            float score = 0;
-            Dictionary<int, int> tmp = new Dictionary<int, int>();
+            Dictionary<float, int> tmp = new Dictionary<float, int>(new FloatEqualityComparer());
             List<Vector3> allBricks = Utility.GetGameMap()[BlockType.BASIC_BLOCK];
             allBricks.AddRange(Utility.GetGameMap()[BlockType.FREE_TO_WALK]);
             
             foreach (var i in allBricks)
             {
-                if (tmp.ContainsKey((int) i.y))
+                if (tmp.ContainsKey(i.y))
                 {
-                    tmp[(int) i.y] = tmp[(int) i.y] + 1;
+                    tmp[i.y] = tmp[i.y] + 1;
                 }
                 else
                 {
-                    tmp.Add((int) i.y, 0);
+                    tmp.Add(i.y, 1);
                 }
             }
 
             int diffValues = tmp.GroupBy(pair => pair.Value).Count();
 
-            if (diffValues < tmp.Count / 4)
-            {
-                score -= 1f;
-            } else if (diffValues < tmp.Count / 2)
-            {
-                score -= 0.5f;
-            } else
-            {
-                score += 1f;
-            }
-            return score;
+            return (diffValues * 1.0f) / allBricks.Count;
         }
 
         private float[] CalculateNewWeights(Chromosome chromosome)
@@ -257,9 +252,6 @@ namespace GeneticAlgorithms.Implementation
                 _ga.playedLevels.Add(chromosome);
             }
             _ga.weightedRandomBag.UpdateWeights(currentWeights);
-
-            Debug.Log($"Number of uniquely played levels: {_ga.playedLevels.Count}");
-            // Debug.Log($"Weights of current generation: {currentWeights.ToList()}");
         }
 
         #endregion
@@ -278,7 +270,7 @@ namespace GeneticAlgorithms.Implementation
                 {
                     foreach (var targ in targets)
                     {
-                        ((GaImplementation)targ).Run();
+                        ((GaImplementation)targ).RunInEdit();
                     }
                 }
 

@@ -137,6 +137,7 @@
               <e p="Allele.cs" t="Include" />
               <e p="Chromosome.cs" t="Include" />
               <e p="FeatureDimension.cs" t="Include" />
+              <e p="FitnessValues.cs" t="Include" />
               <e p="GameData.cs" t="Include" />
               <e p="Gene.cs" t="Include" />
               <e p="GeneticOperators.cs" t="Include" />
@@ -165,6 +166,7 @@
             <e p="PathFinding3D.cs" t="Include" />
           </e>
           <e p="Scripts.asmdef" t="Include" />
+          <e p="SimpleRNG.cs" t="Include" />
           <e p="UI" t="Include">
             <e p="ARDebugManager.cs" t="Include" />
             <e p="BlockUIExtensions.cs" t="Include" />

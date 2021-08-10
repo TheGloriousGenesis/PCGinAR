@@ -37,7 +37,8 @@ public class GenerateGameService : MonoBehaviour
 
         platform.CreatePlatform(orientation, chromosome);
         
-        linksAutoPlacer.RefreshLinks();
+        // todo: uncomment when adding enemies
+        // linksAutoPlacer.RefreshLinks();
 
         // gen.DoGenerateLinks();
         
@@ -51,30 +52,7 @@ public class GenerateGameService : MonoBehaviour
     private GameObject ConfigureGameSpace(Vector3 plane)
     {
         GameObject game = GameObject.Find("/GAME");
-        // game.transform.position = Vector3.zero;
-
-        // GameObject platform = GameObject.Find("/GAME/Platform");
-        // // This line might not be needed. Why dont i try placing object in front of camera using camera transformation.
-        // game.transform.position = plane;
-        // game.transform.rotation = Quaternion.Inverse(game.transform.rotation);
-        //
-        // // Might be able to set platform scale before hand. Maybe do a generic config file that sets scales and rotation for each asset attached?
-        // // have tried to rescale before brick added and that didnt work so think about it
-        // game.transform.localScale = game.transform.localScale * 0.5f;
-        // linksAutoPlacer.RefreshLinks();
-        // Vector3 sumVector = new Vector3(0f,0f,0f);
-        //
-        // foreach (Transform child in platform.transform)
-        // {          
-        //     sumVector += child.position;        
-        // }
-        //
-        // Vector3 groupCenter = sumVector / platform.transform.childCount;
-        //
-        // Debug.Log($"Center of render: {groupCenter}");
-        //
-        // game.transform.position = groupCenter * - 1;
-
+        game.transform.position = plane;
         return game;
     }
     
@@ -84,10 +62,10 @@ public class GenerateGameService : MonoBehaviour
     
     public GameObject CreateGameGA(BlockType playerType, Chromosome chromosome)
     {
-        return CreateGame(Quaternion.identity, playerType, chromosome);
+        return CreateGameGA(Quaternion.identity, playerType, chromosome);
     }
 
-    private GameObject CreateGame(Quaternion orientation, BlockType playerType, Chromosome chromosome)
+    private GameObject CreateGameGA(Quaternion orientation, BlockType playerType, Chromosome chromosome)
     {
         ResetGame(Utility.SafeDestroyInEditMode);
 

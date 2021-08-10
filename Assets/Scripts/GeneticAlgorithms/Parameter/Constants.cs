@@ -5,16 +5,16 @@ namespace GeneticAlgorithms.Parameter
 {
     public static class Constants
     {
-        public const float BLOCK_SIZE = 1.0f;
+        public const float BLOCK_SIZE = 0.5f;
         public const BlockType PLAYERTYPE = BlockType.PLAYER;
 
         public const int MAX_PLATFORM_DIMENSION_X = 5;
         public const int MAX_PLATFORM_DIMENSION_Y = 2;
         public const int MAX_PLATFORM_DIMENSION_Z = 5;
         
-        public static int TOTAL_VOLUMNE = ((Constants.MAX_PLATFORM_DIMENSION_X + 2) *
-                                    (Constants.MAX_PLATFORM_DIMENSION_Z + 2) *
-                                    (Constants.MAX_PLATFORM_DIMENSION_Y + 2)) - 
+        public static int TOTAL_VOLUMNE = ((MAX_PLATFORM_DIMENSION_X + 2) *
+                                    (MAX_PLATFORM_DIMENSION_Z + 2) *
+                                    (MAX_PLATFORM_DIMENSION_Y + 2)) - 
                                                (2 * (MAX_PLATFORM_DIMENSION_X * MAX_PLATFORM_DIMENSION_Y +
                                                      MAX_PLATFORM_DIMENSION_X * MAX_PLATFORM_DIMENSION_Z +
                                                      MAX_PLATFORM_DIMENSION_Y * MAX_PLATFORM_DIMENSION_Z + 

@@ -36,7 +36,7 @@ namespace GeneticAlgorithms.Algorithms
             _featureDimensions[2] = new FeatureDimension("NumberOfJumps");
         }
 
-        public override List<Chromosome> Run(Func<Chromosome, double> fitness)
+        public override List<Chromosome> Run(Func<Chromosome, FitnessValues> fitness)
         {
             var gaTimer = new Stopwatch();
             
@@ -81,15 +81,15 @@ namespace GeneticAlgorithms.Algorithms
         }
         
         // fitness == to performance
-        public void PlaceInMapElites(Chromosome one, Func<Chromosome, double> fitness)
+        public void PlaceInMapElites(Chromosome one, Func<Chromosome, FitnessValues> fitness)
         {
             var _fitness = fitness(one);
             // Logger.Log(Logger.Log(LogTarget.MapElitesOutput, $"{currentPopulation[i].id_},{time}," +
             //                                                  $"{currentPopulation[i].fitness},{iter}");
             var getIndices = GetFeatureValue(one);
             var currentFitnessInCell = _mapOfElitesFitness[getIndices[0], getIndices[1], getIndices[2]];
-            if (currentFitnessInCell != 0.0f && !(currentFitnessInCell < _fitness)) return;
-            _mapOfElitesFitness[getIndices[0], getIndices[1], getIndices[2]] = _fitness;
+            if (currentFitnessInCell != 0.0f && !(currentFitnessInCell < _fitness.fitness)) return;
+            _mapOfElitesFitness[getIndices[0], getIndices[1], getIndices[2]] = _fitness.fitness;
             _mapOfElites[getIndices[0], getIndices[1], getIndices[2]] = one;
         }
 

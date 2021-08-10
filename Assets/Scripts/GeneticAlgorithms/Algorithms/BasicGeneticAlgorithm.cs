@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
-using UnityEngine;
 using Utilities;
-using Random = System.Random;
 
 namespace GeneticAlgorithms.Algorithms
 {
@@ -15,18 +13,19 @@ namespace GeneticAlgorithms.Algorithms
         public List<Chromosome> _currentPopulation;
         private List<Chromosome> _runPopulation;
         public List<Chromosome> playedLevels;
-        
+
+
         public BasicGeneticAlgorithm(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
             int elitism, float mutationProbability, int iteration, int k) : 
-            base(populationSize, chromosomeLength, crossoverProbability, randomG, elitism, mutationProbability, iteration,
-                k)
+            base(populationSize, chromosomeLength, crossoverProbability, randomG, elitism, 
+                mutationProbability, iteration, k)
         {
-            _currentPopulation = GenerateGenotype(populationSize);
-            _runPopulation = new List<Chromosome>(populationSize);
-            playedLevels = new List<Chromosome>();
+            this._currentPopulation = GenerateGenotype(populationSize);
+            this._runPopulation = new List<Chromosome>(populationSize);
+            this.playedLevels = new List<Chromosome>();
         }
 
-        public override List<Chromosome> Run(Func<Chromosome, double> fitness)
+        public override List<Chromosome> Run(Func<Chromosome, FitnessValues> fitness)
         {
             // _runPopulation.Clear();
             // playedLevels.Clear();
@@ -47,10 +46,10 @@ namespace GeneticAlgorithms.Algorithms
                 // calculate fitness for test population.
                 foreach (var t in _currentPopulation)
                 {
-                    double time = fitness(t);
-                    
+                    FitnessValues fv = fitness(t);
+
                     ARLogger.Log(LogTarget.BasicGeneticOutput, variation,
-                        $"{t.ID},{time},{t.Fitness},{Iteration}");
+                        $"{t.ID},{fv.time},{fv.fitness},{fv.linearity},{Iteration}");
                 }
                 
                 // for last iteration, population does not need to be generated
@@ -84,8 +83,8 @@ namespace GeneticAlgorithms.Algorithms
                         one = GeneticGeneticOperator.UniformMutation(one, MutationProbability, GenerateGene);
                         two = GeneticGeneticOperator.UniformMutation(two, MutationProbability, GenerateGene);
 
-                        double fit1 = fitness(one);
-                        double fit2 = fitness(two);
+                        double fit1 = fitness(one).fitness;
+                        double fit2 = fitness(two).fitness;
 
                         if (fit1 > fit2)
                         {
@@ -96,7 +95,6 @@ namespace GeneticAlgorithms.Algorithms
                         }
                         else
                         {
-                            Debug.Log($"Tie breaker: {RandomG.Next(0,1)}");
                             _runPopulation.Add(RandomG.Next(0,1) == 1 ? one : two);
                         }
                     }
@@ -104,9 +102,7 @@ namespace GeneticAlgorithms.Algorithms
                 List<Chromosome> tmpList = _currentPopulation;
                 _currentPopulation = _runPopulation;
                 _runPopulation = tmpList;
-                // Debug.Log($"Current pop size: {_currentPopulation.Count}");
                 Iteration = Iteration - 1;
-                // Debug.Log($"Current Generation: {Iteration}");
             }
 
             Iteration = 5;

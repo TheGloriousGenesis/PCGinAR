@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using System;
 using System.Diagnostics;
 using GeneticAlgorithms.Entities;
+using GeneticAlgorithms.Parameter;
 using UI;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using Utilities;
 using Utilities.DesignPatterns;
@@ -13,7 +13,6 @@ namespace Behaviour.Player
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
-    [RequireComponent(typeof(NavMeshAgent))]
     public class ToadController : Singleton<ToadController>
     {
         // Influenced by https://github.com/whl33886/GravityCar/blob/master/Assets/CarTest/CarController.cs
@@ -22,9 +21,6 @@ namespace Behaviour.Player
         #region Game Components
         [SerializeField]
         private Rigidbody _rigidbody;
-
-        [SerializeField]
-        private NavMeshAgent agent;
 
         [SerializeField]
         private Transform cameraTransform;
@@ -39,7 +35,8 @@ namespace Behaviour.Player
         [SerializeField]
         private float jump = 3f;
         [SerializeField]
-        private bool isGrounded;
+        private bool isGrounded = true;
+
         public bool falling = false;
         public float fallingThreshold = -9f;
         // Maximum angle in degrees that should still count as a floor/"underfoot".
@@ -81,41 +78,19 @@ namespace Behaviour.Player
             if (accelerometer != null)
             {
                 InputSystem.EnableDevice(accelerometer); 
-                ARDebugManager.Instance.LogInfo("Accelerator enabled");
                 lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
                 lowPassValue = accelerometer.acceleration.ReadValue();
             }
         }
 
-        private IEnumerator Start()
+        private void Start()
         {
             EventManager.current.GameStart();
             timer.Start();
-            agent.updateRotation = false;
-            agent.updatePosition = false;
-            
-            while (true)
-            {
-                NavMeshHit closestHit;
-                if (NavMesh.SamplePosition(this.transform.position, out closestHit, 500, NavMesh.AllAreas))
-                {
-                    transform.position = closestHit.position;
-                }
-                if (agent.isOnNavMesh)
-                {
-                    Debug.Log("Agent is on mesh");
-                    agent.enabled = false;
-                }
-                yield return null;
-            }
         }
 
         private void FixedUpdate()
         {
-            //todo: check if this is called when angle of phone moved
-            
-            // edgeDetected = Utility.EdgesOfCurrentGame.Contains(transform.position);
-
             Move(controls.Player.Move.ReadValue<Vector2>());
             Jump(controls.Player.Jump.ReadValue<float>());
         }
@@ -131,35 +106,8 @@ namespace Behaviour.Player
             {
                 lowPassValue = LowPassFilterAccelerometer(lowPassValue);
 
-                ARDebugManager.Instance.LogInfo($"Accelerator: {lowPassValue}");
                 Detect(Vector3.SqrMagnitude(lowPassValue), 1.3d);
             }
-            // if (_rigidbody.velocity == Vector3.zero)
-            // {
-            //     agent.enabled = true;
-            // }
-            // text.text = "Coin counter: " + numOfCoins.ToString();
-
-            // NavMeshHit hit;
-
-            // var edgeHere = NavMesh.FindClosestEdge(transform.position, out hit,
-            //     NavMesh.AllAreas);
-            //
-            // edgeDetected = edgeHere;
-            //
-            // var sampleResult = NavMesh.SamplePosition(transform.position, out hit, agent.radius,
-            //     NavMesh.AllAreas);
-            //
-            // if (sampleResult && isGrounded)
-            // {
-            //     transform.position = hit.position;
-            //     _rigidbody.isKinematic = true;
-            //     agent.enabled = true;
-            // }
-            // else
-            // {
-            //     Debug.Log("navmesh agent landed outside navmesh, cannot get back in");
-            // }
         }
 
         private void OnEnable()
@@ -180,7 +128,6 @@ namespace Behaviour.Player
             int inair = 0;
             foreach (ContactPoint contact in collisionInfo.contacts)
             {
-                //Debug.DrawRay(contact.point, contact.normal, Color.white, 2);
                 _ = IsContactUnderneath(contact) ? onground = onground + 1 : inair = inair + 1;
             }
 
@@ -196,6 +143,7 @@ namespace Behaviour.Player
         private void OnTriggerEnter(Collider other)
         {
             if (!other.gameObject.CompareTag("Goal")) return;
+            goalReached = true;
             EventManager.current.GameEnd();
         }
 
@@ -211,11 +159,14 @@ namespace Behaviour.Player
             _gameData.numberOfJumps = numberOfJumps;
             _gameData.timeCompleted = timer.ElapsedMilliseconds;
             _gameData.goalReached = goalReached;
+            #if !UNITY_EDITOR
             _gameData.numberOfPhysicalMovement = GETStepCount();
+            #else
+            _gameData.numberOfPhysicalMovement = (int) SimpleRNG.GetNormal(400, 60);
+            #endif
             EventManager.current.SendGameStats(_gameData);
         }
         
-        // Manage the navmesh movement here
         public void Move(Vector2 input)
         {
             Vector3 dir = Vector3.zero;
@@ -236,20 +187,10 @@ namespace Behaviour.Player
                 );
             }
             
-            // if (edgeDetected)
-            // {
-            //     Debug.Log("Edge detected");
-            //     agent.enabled = false;
-            //     _rigidbody.isKinematic = false;
-            //     _rigidbody.AddForce(targetDirection.normalized * moveSpeed);
-            // }
-            agent.enabled = false;
-            _rigidbody.isKinematic = false;
             //normalized prevents char moving faster than it should with diagonal input
             _rigidbody.AddForce(targetDirection.normalized * moveSpeed);
         }
     
-        // Manage the navmesh movement here
         public void Jump(float jumpingValue)
         {
             if (isGrounded && jumpingValue > 0)
@@ -257,19 +198,12 @@ namespace Behaviour.Player
                 numberOfJumps++;
                 isGrounded = false;
                 
-                agent.enabled = false;
-                _rigidbody.isKinematic = false;
-                
                 _rigidbody.AddForce(new Vector3(0, 2 * jump, 0), ForceMode.Impulse);
             }
         }
 
         private bool Detect(double accelerometerValue,  double currentThreshold) {
-             
-            if (accelerometerValue >= 1  && accelerometerValue < 1.3)
-            {
-                Debug.Log($"Accelerat mag (LOW-MED): {accelerometerValue}");
-            }
+            
             if (currentSample == INACTIVE_SAMPLE) {
                 currentSample = 0;
                 if (!isActiveCounter)

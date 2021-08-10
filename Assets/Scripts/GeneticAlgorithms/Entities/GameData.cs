@@ -19,7 +19,6 @@ namespace GeneticAlgorithms.Entities
         public float numberOfInGameMovements;
         public float numberOfJumps;
         public bool goalReached;
-        public Challenge challenge;
         #endregion
         
         #region AR metrics

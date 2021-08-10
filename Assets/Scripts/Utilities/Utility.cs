@@ -112,6 +112,7 @@ namespace Utilities
                 }
             }
         }
+        
         public static T DeepClone<T>(this T obj)
         {
             using (var ms = new MemoryStream())
@@ -164,27 +165,36 @@ namespace Utilities
 
             return calculatedLength;
         }
-    
+        
         #endregion
 
         #region Data capturing
-        public static void SaveToFile(Object obj, string path)
-        {
-            var bf = new BinaryFormatter(); 
-            var file = File.Create(path);
-            bf.Serialize(file, obj);
-            file.Close();
-            Debug.Log($"{obj.name} data saved!");
-        }
-
-        public static Object LoadFromFile(string path, Object obj)
-        {
-            var extractFromJson = File.ReadAllText(path);
-            return obj;
-        }
+        // public static void SaveToFile(Object obj, string path)
+        // {
+        //     var bf = new BinaryFormatter(); 
+        //     var file = File.Create(path);
+        //     bf.Serialize(file, obj);
+        //     file.Close();
+        //     Debug.Log($"{obj.name} data saved!");
+        // }
+        //
+        // public static Object LoadFromFile(string path, Object obj)
+        // {
+        //     var extractFromJson = File.ReadAllText(path);
+        //     return obj;
+        // }
 
         #endregion
     }
 
+    [Serializable]
+    public sealed class FloatEqualityComparer : EqualityComparer<float>
+    {
+        public override bool Equals(float x, float y) => GetEquatable(x) == GetEquatable(y);
+    
+        public override int GetHashCode(float f) => GetEquatable(f).GetHashCode();
+
+        private static float GetEquatable(float f) => (float) Math.Round(f, 3);
+    }
 
 }

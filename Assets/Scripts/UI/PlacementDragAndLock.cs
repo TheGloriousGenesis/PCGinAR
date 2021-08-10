@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Remoting;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Implementation;
+using PathFinding;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -23,7 +24,6 @@ namespace UI
     public class PlacementDragAndLock : MonoBehaviour
     {
         #region Game variables
-        [SerializeField]
         private GameObject placedObject;
         
         private GameObject placedPrefab;
@@ -59,8 +59,6 @@ namespace UI
         
         #region AR variables
 
-        [SerializeField]
-        private UnityEvent OnInitialized;
         private ARRaycastManager arRaycastManager;
 
         private ARPlaneManager m_ARPlaneManager;
@@ -78,6 +76,8 @@ namespace UI
         
         private Vector2 touchPosition = default;
 
+        private Pose currentPose;
+
         #endregion
 
         private float initialDistance;
@@ -86,8 +86,8 @@ namespace UI
 
         private List<ARAnchor> anchors = new List<ARAnchor>();
 
-        private bool Initialized { get; set; }
-
+        private bool initialized = false;
+        
         private void Awake()
         {
             AndroidRuntimePermissions.Permission result =
@@ -102,19 +102,13 @@ namespace UI
                 Application.Quit();
             }
             
+#if !UNITY_EDITOR
             arRaycastManager = GetComponent<ARRaycastManager>();
             m_ARPlaneManager = GetComponent<ARPlaneManager>();
-
-            // m_ARPlaneManager.planesChanged += PlanesChanged;
-#if UNITY_EDITOR
-            m_ARPlaneManager.enabled = false;
-            Initialized = true;
-#else 
-            SetAllPlanesActive(false);
             m_ARAnchorManager = GetComponent<ARAnchorManager>();
+
+            SetAllPlanesActive(false);
 #endif
-
-
             EnhancedTouchSupport.Enable();
             
             if (lockButton != null)
@@ -128,53 +122,39 @@ namespace UI
             }
         }
 
+        private void Initialized()
+        {
+            
+        }
+        
+
         // method concerns itself with selection and dragging of prefab
         private void Update()
         {
             if (currentGame == null)
                 return;
 
-            #if UNITY_EDITOR
+            #if !UNITY_EDITOR
             var activeTouches = Touch.activeTouches;
-            Touch touch;
-            // if user touches the screen
-            if (activeTouches.Count > 0)
-            {
-                // Obtain first touch point
-                touch = activeTouches[0];
-            }
-            else
-            {
-                return;
-            }
-
-            bool isOverUI = touch.screenPosition.IsTouchingUI();
-
-            if (isOverUI) return;
 
             if(Input.touchCount > 0)
             {
-                
-                touchPosition = arCamera.ScreenToWorldPoint(new Vector3(touch.screenPosition.x, touch.screenPosition.y, 
-                    0.3f));
+                Touch touch = Touch.activeTouches[0];
+            
+                bool isOverUI = touch.screenPosition.IsTouchingUI();
+
+                if (isOverUI) return;
+
+                touchPosition = touch.screenPosition;
 
                 if(touch.phase == TouchPhase.Began)
                 {
-                    ARDebugManager.Instance.LogInfo($"Touch began");
-                    if (placedObject == null)
-                    {
-                        ARDebugManager.Instance.LogInfo($"PlacedObject is null but will be instaniated");
-                        // MoveGameObject(touchPosition);
-                    }
-
-                    PinchAndZoom();
-
-                    Ray ray = arCamera.ScreenPointToRay(touchPosition);
+                    Ray ray = arCamera.ScreenPointToRay(touch.screenPosition);
                     RaycastHit hitObject;
                     if(Physics.Raycast(ray, out hitObject))
                     {
-                        // allows you to start moving object around
-                        if(placedObject != null)
+                        Node placement = hitObject.transform.GetComponent<Node>();
+                        if(placement != null)
                         {
                             onTouchHold = isLocked ? false : true;
                         }
@@ -185,30 +165,27 @@ namespace UI
                 {
                     onTouchHold = false;
                 }
-
-                MoveGameObject(touchPosition);
             }
-            #else
-            if (Input.GetMouseButtonDown(0))
+            MoveGameObject();
+            // PinchAndZoom();
+#else
+            if(placedObject != null)
             {
-                if(placedObject != null)
-                {
-                    onTouchHold = isLocked ? false : true;
-                }
+                Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+                Vector3 offset =  placedObject.transform.position - Camera.main.ScreenToWorldPoint(
+                    new Vector3(Input.mousePosition.x, Input.mousePosition.y,screenPoint.z));
+                Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+                Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+                placedObject.transform.position = curPosition;            
             }
-            else
-            {
-                onTouchHold = false;
-            }
-            MoveGameObject(Vector3.zero);
+            MoveGameObject();
             #endif
         }
 
-        private void MoveGameObject(Vector3 touchPosition)
+        private void MoveGameObject()
         {
 #if !UNITY_EDITOR
-            ARDebugManager.Instance.LogInfo($"ArRaycastManager is touch plane: {arRaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon)}");
-
+            if (isLocked) return;
             if (!arRaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon)) return;
             var hitPose = hits[0].pose;
 #else
@@ -217,35 +194,25 @@ namespace UI
             hitPose.rotation = Quaternion.identity;
 
 #endif
+            currentPose = hitPose;
+            
             if (placedObject == null && currentGame != null)
             {
-                placedPrefab = gameService.CreateGameInPlay(hitPose.position, hitPose.rotation, 
+                placedPrefab = gameService.CreateGameInPlay(currentPose.position, currentPose.rotation, 
                     currentGame );
-
+                
                 // hide game object until player touches screen
                 placedObject = placedPrefab;
 
                 // change generate button to end game set welcome off
-                generateButton.GetComponentInChildren<Text>().text = isGenerated ? "End Game" : "Generate";
+                generateButton.GetComponentInChildren<Text>().text = "End Game";
                 welcomePanel.SetActive(false);
-
-                //todo: check if this starts the timer properly
-                EventManager.current.GameStart();
             } 
             else if (placedObject == null && currentGame == null)
             {
                 ARDebugManager.Instance.LogInfo($"Please press Generate button to create your level!");
             }
 #if !UNITY_EDITOR
-            if (!onTouchHold) return;
-
-            // moves object around
-            placedObject.transform.position = hitPose.position;
-            if (defaultRotation == 0)
-            {
-                placedObject.transform.rotation = hitPose.rotation;
-            }
-
             ARAnchor anchor = m_ARAnchorManager.AddAnchor(hitPose);
             if (anchor == null) 
                 ARDebugManager.Instance.LogInfo($"Error creating reference point");
@@ -253,18 +220,30 @@ namespace UI
             {
                 anchors.Add(anchor);
             }
+            ARDebugManager.Instance.LogInfo($"Number of anchors: {anchors.Count}");
+
+            if (!onTouchHold) return;
+
+            // moves object around
+            ARDebugManager.Instance.LogInfo($"Object can be moved around");
+            placedObject.transform.position = hitPose.position;
+            if (defaultRotation == 0)
+            {
+                placedObject.transform.rotation = hitPose.rotation;
+            }
 #endif
         }
 
         private void PinchAndZoom()
         {
+            if (!isGenerated) return;
             if (placedObject == null && placedPrefab != null)
             {
                 placedObject = placedPrefab;
             }
             if (placedPrefab == null)
             {
-                ARDebugManager.Instance.LogInfo($"Placed prefab is null (check placed Object) in PNZ method");
+                Debug.Log($"Placed prefab is null (check placed Object) in PNZ method");
                 return;
             }
             if (Input.touchCount == 2)
@@ -310,7 +289,7 @@ namespace UI
 #if !UNITY_EDITOR
             SetAllPlanesActive(!isLocked);
 #endif
-            EventManager.current.GameLocked(isLocked);
+            EventManager.current.GameLocked(true);
         }
 
         private void Generate()
@@ -339,7 +318,9 @@ namespace UI
             isGenerated = true;
 
 #if !UNITY_EDITOR
-            SetAllPlanesActive(true);
+            if (!isLocked) {
+                SetAllPlanesActive(true);
+            }
 #endif
             welcomePanel.SetActive(true);
             generateButton.GetComponentInChildren<Text>().text = "Ready?";

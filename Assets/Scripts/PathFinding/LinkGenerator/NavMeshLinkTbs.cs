@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 
-namespace Behaviour.Platform.LinkGenerator
+namespace PathFinding.LinkGenerator
 {
     public class NavMeshLinkTbs : NavMeshLink
     {

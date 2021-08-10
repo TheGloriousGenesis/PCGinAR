@@ -49,9 +49,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""2bb5e56d-c265-49cb-8d52-1a550e55400d"",
                     ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(pressPoint=1)"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Touch;Joystick;Keyboard&Mouse;Gamepad"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -62,7 +62,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

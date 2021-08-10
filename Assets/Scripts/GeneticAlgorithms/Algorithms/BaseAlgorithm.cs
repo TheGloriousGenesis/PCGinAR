@@ -98,49 +98,19 @@ namespace GeneticAlgorithms.Algorithms
         {
             weightedRandomBag.UpdateWeights(currentWeights);
         }
-        
-        
-        
-        // protected Gene GenerateRandomGene()
-        // {
-        //     return new Gene(GenerateRandomAllele());
-        // }
-        //
-        // // Generates a 3 cubed structure as a single gene
-        // private Allele GenerateRandomAllele()
-        // {
-        //     var cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
-        //         BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
-        //
-        //     Vector3 centerBlock = GenerateCenterBlockPosition();
-        //
-        //     var positions = new List<Vector3> {centerBlock};
-        //
-        //     for (var i = 0; i < 2; i++)
-        //     {
-        //         // check if it is inclusive?
-        //         var choosePosition = RandomG.Next(0, cubeNumbers.Count);
-        //         positions.Add(cubeNumbers[choosePosition] + centerBlock);
-        //         cubeNumbers.Remove(cubeNumbers[choosePosition]);
-        //     }
-        //
-        //     var converted = positions.Select(x => new BlockCube(this.RandomG.Next(0, 2) == 1 ? BlockType.BASIC_BLOCK : BlockType.NONE, x)).ToList();
-        //     return new Allele(converted);
-        // }
-        //
 
         private Vector3 GenerateCenterBlockPosition()
         {
             //todo analyse the changes for this
             // good for condensing the size of the space
-            var xPos = RandomG.Next(0, Constants.MAX_PLATFORM_DIMENSION_X );
-            var yPos = RandomG.Next(0, Constants.MAX_PLATFORM_DIMENSION_Y );
-            var zPos = RandomG.Next(0, Constants.MAX_PLATFORM_DIMENSION_Z );
+            var xPos = RandomG.Next(-Constants.MAX_PLATFORM_DIMENSION_X/2, Constants.MAX_PLATFORM_DIMENSION_X/2 ) * Constants.BLOCK_SIZE;
+            var yPos = RandomG.Next(-Constants.MAX_PLATFORM_DIMENSION_Y/2, Constants.MAX_PLATFORM_DIMENSION_Y /2 ) * Constants.BLOCK_SIZE;
+            var zPos = RandomG.Next(-Constants.MAX_PLATFORM_DIMENSION_Z/2, Constants.MAX_PLATFORM_DIMENSION_Y/2) * Constants.BLOCK_SIZE;
             return new Vector3(xPos, yPos, zPos);
         }
         #endregion
     
-        public abstract List<Chromosome> Run(Func<Chromosome, double> fitness);
+        public abstract List<Chromosome> Run(Func<Chromosome, FitnessValues> fitness);
         public abstract void SaveInfo();
     }
 }
