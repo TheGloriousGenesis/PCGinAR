@@ -252,6 +252,11 @@ namespace GeneticAlgorithms.Implementation
                 _ga.playedLevels.Add(chromosome);
             }
             _ga.weightedRandomBag.UpdateWeights(currentWeights);
+
+            if (gameData.timeCompleted > 13906.8)
+            {
+                
+            }
         }
 
         #endregion
