@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
+using Generators;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Implementation;
 using PathFinding;
@@ -88,6 +89,7 @@ namespace UI
 
         private bool initialized = false;
         
+        
         private void Awake()
         {
             AndroidRuntimePermissions.Permission result =
@@ -122,12 +124,6 @@ namespace UI
             }
         }
 
-        private void Initialized()
-        {
-            
-        }
-        
-
         // method concerns itself with selection and dragging of prefab
         private void Update()
         {
@@ -139,7 +135,7 @@ namespace UI
 
             if(Input.touchCount > 0)
             {
-                Touch touch = Touch.activeTouches[0];
+                Touch touch = activeTouches[0];
             
                 bool isOverUI = touch.screenPosition.IsTouchingUI();
 
@@ -158,6 +154,8 @@ namespace UI
                         {
                             onTouchHold = isLocked ? false : true;
                         }
+                        ARDebugManager.Instance.LogInfo($"onTouchHold: {onTouchHold}");
+
                     }
                 }
 
@@ -185,20 +183,18 @@ namespace UI
         private void MoveGameObject()
         {
 #if !UNITY_EDITOR
-            if (isLocked) return;
             if (!arRaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon)) return;
             var hitPose = hits[0].pose;
+            Debug.Log($"Trackable id: {hits[0].trackableId}");
 #else
             var hitPose = new Pose();
             hitPose.position = Vector3.zero;
             hitPose.rotation = Quaternion.identity;
 
 #endif
-            currentPose = hitPose;
-            
             if (placedObject == null && currentGame != null)
             {
-                placedPrefab = gameService.CreateGameInPlay(currentPose.position, currentPose.rotation, 
+                placedPrefab = gameService.CreateGameInPlay(hitPose.position, hitPose.rotation, 
                     currentGame );
                 
                 // hide game object until player touches screen
@@ -212,7 +208,13 @@ namespace UI
             {
                 ARDebugManager.Instance.LogInfo($"Please press Generate button to create your level!");
             }
+            else
+            {
+                placedObject.transform.position = hitPose.position;
+            }
 #if !UNITY_EDITOR
+            if (!onTouchHold) return;
+
             ARAnchor anchor = m_ARAnchorManager.AddAnchor(hitPose);
             if (anchor == null) 
                 ARDebugManager.Instance.LogInfo($"Error creating reference point");
@@ -221,8 +223,6 @@ namespace UI
                 anchors.Add(anchor);
             }
             ARDebugManager.Instance.LogInfo($"Number of anchors: {anchors.Count}");
-
-            if (!onTouchHold) return;
 
             // moves object around
             ARDebugManager.Instance.LogInfo($"Object can be moved around");
@@ -234,55 +234,11 @@ namespace UI
 #endif
         }
 
-        private void PinchAndZoom()
-        {
-            if (!isGenerated) return;
-            if (placedObject == null && placedPrefab != null)
-            {
-                placedObject = placedPrefab;
-            }
-            if (placedPrefab == null)
-            {
-                Debug.Log($"Placed prefab is null (check placed Object) in PNZ method");
-                return;
-            }
-            if (Input.touchCount == 2)
-            {
-                var touchZero = Input.GetTouch(0);
-                var touchOne = Input.GetTouch(1);
-
-                if (touchZero.phase == UnityEngine.TouchPhase.Ended || touchZero.phase == UnityEngine.TouchPhase.Canceled ||
-                    touchOne.phase == UnityEngine.TouchPhase.Ended || touchOne.phase == UnityEngine.TouchPhase.Canceled)
-                {
-                    return;
-                }
-
-                if (touchZero.phase == UnityEngine.TouchPhase.Began || touchOne.phase == UnityEngine.TouchPhase.Began)
-                {
-                    initialDistance = Vector2.Distance(touchZero.position, touchOne.position);
-                    initialScale = placedObject.transform.localScale;
-                }
-                else
-                {
-                    var currentDistance = Vector2.Distance(touchZero.position, touchOne.position);
-
-                    if (Mathf.Approximately(initialDistance, 0))
-                    {
-                        return; //change is too small to do anything
-                    }
-
-                    var factor = currentDistance / initialDistance;
-                    placedObject.transform.localScale = initialScale * factor;
-                }
-            }
-        }
-        
-
         #region UI methods
 
         private void Lock()
         {
-            if (placedObject == null) return;
+            if (placedPrefab == null) return;
             isLocked = !isLocked;
             lockButton.GetComponentInChildren<Text>().text = isLocked ? "Locked" : "Unlocked";
 

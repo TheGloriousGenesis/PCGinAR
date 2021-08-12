@@ -99,10 +99,11 @@ MonoBehaviour:
   _rigidbody: {fileID: 4726953990239154548}
   cameraTransform: {fileID: 2673622830390794182, guid: 60381462928260f46a9d199953b098ea,
     type: 3}
-  moveSpeed: 7
+  moveSpeed: 10
   turnSpeed: 3
   jump: 1
   isGrounded: 0
+  maxSpeed: 10
   falling: 0
   fallingThreshold: -9
   maxIncline: 45

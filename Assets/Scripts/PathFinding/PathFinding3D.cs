@@ -4,7 +4,6 @@ using System.Linq;
 using Behaviour.Entities;
 using PathFinding.Entities;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 
 namespace PathFinding
@@ -13,20 +12,15 @@ namespace PathFinding
 
 #endif
 	public class PathFinding3D: MonoBehaviour {
-
-		#region graph variables
-		private Dictionary<Vector3, Node> _nodeMap = new Dictionary<Vector3, Node>();
-		private List<Node> allWalkableNodesInScene = new List<Node>();
-		#endregion
-	
-		[FormerlySerializedAs("_walkableSurface")] [SerializeField]
-		private List<Vector3> walkableSurface;
+		
 		[SerializeField]
 		private GameObject platform;
-		[SerializeField]
-		private Node player;
-		[SerializeField]
-		private Node target;
+
+		private Dictionary<Vector3, Node> _nodeMap = new Dictionary<Vector3, Node>();
+		private List<Node> _allWalkableNodesInScene = new List<Node>();
+		private Node _player;
+		private Node _target;
+		private List<Vector3> _walkableSurface;
 		
 		public List<List<Vector3>> FindPaths()
 		{
@@ -40,35 +34,35 @@ namespace PathFinding
 			FindAllWalkableNodes();
 			CreateAdjacencyMatrix();
 
-			player = _nodeMap[Utility.GetGameMap()[BlockType.AGENT][0]];
-			target = _nodeMap[Utility.GetGameMap()[BlockType.GOAL][0]];
+			_player = _nodeMap[Utility.GetGameMap()[BlockType.AGENT][0]];
+			_target = _nodeMap[Utility.GetGameMap()[BlockType.GOAL][0]];
 			
-			if (player == null || target == null)
+			if (_player == null || _target == null)
 			{
 				throw new Exception("No Player or target is found");
 			}
 			
-			var p = new GraphPaths(player, target);
+			var p = new GraphPaths(_player, _target);
 			return p.FindAllUniquePaths();
 		}
 
 		private void FindAllWalkableNodes() {
-			walkableSurface = Utility.GetGameMap()[BlockType.FREE_TO_WALK];
+			_walkableSurface = Utility.GetGameMap()[BlockType.FREE_TO_WALK];
 
 			foreach (Transform child in platform.transform)
 			{
 				var position = child.position;
-				if (!walkableSurface.Contains(position)) continue;
+				if (!_walkableSurface.Contains(position)) continue;
 				var tmp = (child.gameObject).GetComponent<Node>();
 				tmp.positionData = position;
 				tmp.walkable = true;
 				_nodeMap.Add(position, tmp); 
 			}
-			allWalkableNodesInScene = _nodeMap.Values.ToList();
+			_allWalkableNodesInScene = _nodeMap.Values.ToList();
 		}
 	
 		private void CreateAdjacencyMatrix() {
-			foreach(var n in allWalkableNodesInScene) {
+			foreach(var n in _allWalkableNodesInScene) {
 				n.neighbours = GetNeighbours(n.positionData, new List<Node>(){n});
 			}
 		}
@@ -98,8 +92,8 @@ namespace PathFinding
 		public void ResetPathFinding()
 		{
 			_nodeMap = new Dictionary<Vector3, Node>();
-			allWalkableNodesInScene = new List<Node>();
-			walkableSurface = new List<Vector3>();
+			_allWalkableNodesInScene = new List<Node>();
+			_walkableSurface = new List<Vector3>();
 		}
 	}
 }

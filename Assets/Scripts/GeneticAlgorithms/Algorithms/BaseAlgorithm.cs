@@ -13,9 +13,10 @@ namespace GeneticAlgorithms.Algorithms
     // TODO: Check that a given chromosone has unique genes that do not overlap in space (maybe use hashset)
     public abstract class BaseAlgorithm
     {
+        public readonly int ChromosomeLength;
+        
         protected readonly int PopulationSize;
         protected int Iteration; // same as number of generations
-        protected readonly int ChromosomeLength;
         protected readonly float CrossoverProbability;
         protected readonly float MutationProbability;
         protected readonly Random RandomG;
@@ -101,12 +102,15 @@ namespace GeneticAlgorithms.Algorithms
 
         private Vector3 GenerateCenterBlockPosition()
         {
+            float[] xRange = Utility.Range(0f, Constants.MAX_PLATFORM_DIMENSION_X, Constants.BLOCK_SIZE);
+            float[] yRange = Utility.Range(0f, Constants.MAX_PLATFORM_DIMENSION_Y, Constants.BLOCK_SIZE);
+            float[] zRange = Utility.Range(0f, Constants.MAX_PLATFORM_DIMENSION_Z, Constants.BLOCK_SIZE);
             //todo analyse the changes for this
             // good for condensing the size of the space
-            var xPos = RandomG.Next(-Constants.MAX_PLATFORM_DIMENSION_X/2, Constants.MAX_PLATFORM_DIMENSION_X/2 ) * Constants.BLOCK_SIZE;
-            var yPos = RandomG.Next(-Constants.MAX_PLATFORM_DIMENSION_Y/2, Constants.MAX_PLATFORM_DIMENSION_Y /2 ) * Constants.BLOCK_SIZE;
-            var zPos = RandomG.Next(-Constants.MAX_PLATFORM_DIMENSION_Z/2, Constants.MAX_PLATFORM_DIMENSION_Y/2) * Constants.BLOCK_SIZE;
-            return new Vector3(xPos, yPos, zPos);
+            var xPos = RandomG.Next(xRange.Length);
+            var yPos = RandomG.Next(yRange.Length);
+            var zPos = RandomG.Next(zRange.Length);
+            return new Vector3(xRange[xPos], yRange[yPos], zRange[zPos]);
         }
         #endregion
     

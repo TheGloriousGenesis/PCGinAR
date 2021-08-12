@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Behaviour.Entities;
+﻿using Behaviour.Entities;
+using Generators;
 using GeneticAlgorithms.Parameter;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
@@ -18,9 +18,7 @@ namespace Behaviour.Player
         private Rigidbody rBody;
 
         private Transform Target;
-
-        private ToadController ARPlayer;
-
+        
         public float fallingThreshold = -8f;
 
         public PlayerControls controls;
@@ -31,7 +29,6 @@ namespace Behaviour.Player
 
         void Awake()
         {
-            ARPlayer = GetComponent<ToadController>();
             rBody = GetComponent<Rigidbody>();
             
             if (Target == null)
@@ -56,11 +53,11 @@ namespace Behaviour.Player
             // think about updating map and positions of the player goal so maybe can place coins
             Vector3 posPlayer = Utility.GetKRandomElements(Utility.GetGameMap()[BlockType.FREE_TO_WALK], 1, 
                 rand)[0];
-            this.transform.position = posPlayer + BlockPosition.UP * 2;
+            transform.position = posPlayer + BlockPosition.UP;
             
             Vector3 posGoal = Utility.GetKRandomElements(Utility.GetGameMap()[BlockType.FREE_TO_WALK], 1, 
                 rand)[0];
-            this.Target.position = posGoal + BlockPosition.UP * 2;
+            Target.position = posGoal + BlockPosition.UP;
         }
 
         // information to collect to send to brain to make decision

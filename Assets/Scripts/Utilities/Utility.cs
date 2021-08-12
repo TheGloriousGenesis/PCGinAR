@@ -100,6 +100,28 @@ namespace Utilities
         
         #region Misc
         
+        // public static IEnumerable<float> Range(float min, float max, float step)
+        // {
+        //     float i;
+        //     for (i=min; i<=max; i+=step)
+        //         yield return i;
+        //
+        //     if (Math.Abs(i - (max+step)) > 0.001) // added only because you want max to be returned as last item
+        //         yield return max; 
+        // }
+        
+        public static float[] Range(float min, float max, float step)
+        {
+            float[] tmp = new float[(int) (max / step) + 1];
+            int count = 0;
+            for (float i = min; i <= max; i += step)
+            {
+                tmp[count] = i;
+                count++;
+            }
+            return tmp;
+        }
+        
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>
             (this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {

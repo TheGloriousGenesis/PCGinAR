@@ -6,11 +6,11 @@ namespace GeneticAlgorithms.Parameter
     public static class Constants
     {
         public const float BLOCK_SIZE = 0.5f;
-        public const BlockType PLAYERTYPE = BlockType.PLAYER;
+        public const BlockType PLAYERTYPE = BlockType.AGENT;
 
-        public const int MAX_PLATFORM_DIMENSION_X = 5;
+        public const int MAX_PLATFORM_DIMENSION_X = 10;
         public const int MAX_PLATFORM_DIMENSION_Y = 2;
-        public const int MAX_PLATFORM_DIMENSION_Z = 5;
+        public const int MAX_PLATFORM_DIMENSION_Z = 3;
         
         public static int TOTAL_VOLUMNE = ((MAX_PLATFORM_DIMENSION_X + 2) *
                                     (MAX_PLATFORM_DIMENSION_Z + 2) *
@@ -24,12 +24,12 @@ namespace GeneticAlgorithms.Parameter
                                                      4));
         
         // at least half the area should be covered in chromosomes
-        public static readonly int CHROMOSONE_LENGTH = (int) Math.Ceiling(TOTAL_VOLUMNE *
-                                                                          (1.0/4.0) * (1.0/3.0));
+        public static int CHROMOSONE_LENGTH = (int) Math.Ceiling(TOTAL_VOLUMNE *
+                                                                 (1.0/3.0));
 
-        public const int POPULATION_SIZE = 6;
+        public const int POPULATION_SIZE = 10;
         
-        public const int ITERATION = 10;
+        public const int NUMBER_OF_GENERATIONS = 10;
 
         public const float CROSSOVER_PROBABILITY = 0.6f;
         public static readonly float MUTATION_PROBABILITY = 1f / CHROMOSONE_LENGTH;

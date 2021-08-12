@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Behaviour.Entities;
+using Generators;
 using GeneticAlgorithms.Algorithms;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
@@ -23,11 +24,32 @@ namespace GeneticAlgorithms.Implementation
 {
     public class GaImplementation : MonoBehaviour
     {
-        [Header("Game Property")] 
+        [Header("Core Genetic Algorithm Variables")] 
         [SerializeField]
-        private GenerateGameService gameService;
-        [FormerlySerializedAs("multiplePaths")] [SerializeField] PathFinding3D multiplePathsFinding;
-    
+        private int Seed = Constants.SEED;
+        [SerializeField]
+        private int PopulationSize = Constants.POPULATION_SIZE;
+        [SerializeField]
+        private int ChromosomeLength = Constants.CHROMOSONE_LENGTH;
+        [SerializeField]
+        private int Elitism = Constants.ELITISM;
+        [SerializeField]
+        private int NumberOfGenerations = Constants.NUMBER_OF_GENERATIONS;
+        
+        [Header("Crossover Variables")]
+        [SerializeField]
+        private float CrossoverProbability = Constants.CROSSOVER_PROBABILITY;
+        
+        [Header("Mutation Variables")]
+        [SerializeField]
+        private float MutationProbability = Constants.MUTATION_PROBABILITY;
+        
+        [Header("Selection Variables")] 
+        [SerializeField]
+        private int K = Constants.K;
+        
+        private GenerateGameService _gameService;
+        private PathFinding3D _pathFinding;
         private Random _random;
         private BasicGeneticAlgorithm _ga;
 
@@ -47,10 +69,12 @@ namespace GeneticAlgorithms.Implementation
 
         private void Awake()
         {
-            if (_random == null) _random = new Random(Constants.SEED);
+            _gameService = GetComponent<GenerateGameService>();
+            _pathFinding = GetComponent<PathFinding3D>();
+            if (_random == null) _random = new Random(Seed);
             
-            if (_ga == null) _ga = new BasicGeneticAlgorithm(Constants.POPULATION_SIZE, Constants.CHROMOSONE_LENGTH, Constants.CROSSOVER_PROBABILITY,
-                _random, Constants.ELITISM, Constants.MUTATION_PROBABILITY, Constants.ITERATION, Constants.K);
+            if (_ga == null) _ga = new BasicGeneticAlgorithm(PopulationSize, ChromosomeLength, CrossoverProbability,
+                _random, Elitism, MutationProbability, NumberOfGenerations, K);
         }
 
         public Chromosome Run()
@@ -63,14 +87,14 @@ namespace GeneticAlgorithms.Implementation
         {
             Awake();
             List<Chromosome> finalResult = _ga.Run(FitnessFunction);
-            gameService.CreateGameGA(BlockType.AGENT, finalResult[2]);
+            _gameService.CreateGameGA(BlockType.AGENT, finalResult[2]);
         }
 
         private void Remove()
         {
-            gameService.ResetGame(Utility.SafeDestroyInEditMode);
+            _gameService.ResetGame(Utility.SafeDestroyInEditMode);
             _ga = null;
-            multiplePathsFinding.ResetPathFinding();
+            _pathFinding.ResetPathFinding();
             Chromosome.ResetCounter();
             _random = null;
         }
@@ -82,10 +106,11 @@ namespace GeneticAlgorithms.Implementation
             float score = 0;
 
             timer.Start();
-            gameService.CreateGameGA(BlockType.AGENT, chromosome);
+            _gameService.CreateGameGA(BlockType.AGENT, chromosome);
             timer.Stop();
 
             score += AnalyseAStarPath();
+            
             score += AnalyseMultiPaths();
             score += CalculateVolumeUsed();
             score += PercentageOfChromosomeUsed();
@@ -101,7 +126,7 @@ namespace GeneticAlgorithms.Implementation
 
             chromosome.Fitness = score;
 
-            gameService.ResetGame(Utility.SafeDestroyInEditMode);
+            _gameService.ResetGame(Utility.SafeDestroyInEditMode);
 
             return new FitnessValues() {time = timer.Elapsed.TotalMilliseconds,
                 fitness = score, linearity = linear};
@@ -135,7 +160,7 @@ namespace GeneticAlgorithms.Implementation
         {
             // Check number of paths
             float score = 0;
-            int numberOfPaths =  multiplePathsFinding.FindPaths().Count;
+            int numberOfPaths =  _pathFinding.FindPaths().Count;
             if (1 <= numberOfPaths && numberOfPaths <= 5)
             {
                 score += 2;
@@ -252,11 +277,22 @@ namespace GeneticAlgorithms.Implementation
                 _ga.playedLevels.Add(chromosome);
             }
             _ga.weightedRandomBag.UpdateWeights(currentWeights);
-
-            if (gameData.timeCompleted > 13906.8)
+            
+            if (gameData.goalReached != true)
+            {
+                _ga._currentPopulation.RemoveAll(x => x.ID == gameData.chromosomeID);
+            }
+            // if (gameData.timeCompleted > 13906.8)
+            // {
+            //     Constants.CHROMOSONE_LENGTH = 2;
+            // }
+            if (gameData.numberOfJumps < 4)
             {
                 
+                Constants.CHROMOSONE_LENGTH = 5;
             }
+            
+            
         }
 
         #endregion

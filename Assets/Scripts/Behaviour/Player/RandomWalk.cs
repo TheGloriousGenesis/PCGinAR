@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 // Walk to a random position and repeat
-namespace Behaviour
+namespace Behaviour.Player
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public class RandomWalk : MonoBehaviour

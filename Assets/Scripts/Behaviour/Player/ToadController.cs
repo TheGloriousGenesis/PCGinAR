@@ -1,7 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GeneticAlgorithms.Entities;
-using GeneticAlgorithms.Parameter;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -36,6 +34,9 @@ namespace Behaviour.Player
         private float jump = 3f;
         [SerializeField]
         private bool isGrounded = true;
+
+        [SerializeField] 
+        private float maxSpeed = 10;
 
         public bool falling = false;
         public float fallingThreshold = -9f;
@@ -91,6 +92,7 @@ namespace Behaviour.Player
 
         private void FixedUpdate()
         {
+            _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, maxSpeed);
             Move(controls.Player.Move.ReadValue<Vector2>());
             Jump(controls.Player.Jump.ReadValue<float>());
         }
@@ -196,9 +198,8 @@ namespace Behaviour.Player
             if (isGrounded && jumpingValue > 0)
             {
                 numberOfJumps++;
-                isGrounded = false;
-                
                 _rigidbody.AddForce(new Vector3(0, 2 * jump, 0), ForceMode.Impulse);
+                isGrounded = false;
             }
         }
 
@@ -218,6 +219,7 @@ namespace Behaviour.Player
             }
 
             ++currentSample;
+            ARDebugManager.Instance.LogInfo($"Current Steps = {stepCount}");
             return false;
         }
 

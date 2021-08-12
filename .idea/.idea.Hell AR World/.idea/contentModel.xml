@@ -76,6 +76,9 @@
             <e p="BasicGeneticImplResults_Ps20_Cl20_Pd20_G10.txt" t="Include" />
             <e p="BasicGeneticImplResults_Ps20_Cl20_Pd20_G25.txt" t="Include" />
             <e p="BasicGeneticImplResults_Ps50_Cl50_Pd50_G25.txt" t="Include" />
+            <e p="BasicGeneticImplResults_Ps5_Cl5_Pd5_G5.txt" t="Include" />
+            <e p="BasicGeneticImplResults_Ps6_Cl5_Pd5.2.5_G10.txt" t="Include" />
+            <e p="BasicGeneticImplResults_Ps6_Cl5_Pd5.2.5_G5.txt" t="Include" />
           </e>
         </e>
         <e p="Samples" t="Include">
@@ -98,6 +101,7 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="AnchorCreator.cs" t="Include" />
           <e p="Behaviour" t="Include">
             <e p="Entities" t="Include">
               <e p="BlockCube.cs" t="Include" />
@@ -120,9 +124,9 @@
               <e p="ToadController.cs" t="Include" />
             </e>
           </e>
-          <e p="GenerateGameService.cs" t="Include" />
           <e p="Generators" t="Include">
             <e p="CoinGenerator.cs" t="Include" />
+            <e p="GenerateGameService.cs" t="Include" />
             <e p="PlatformGenerator.cs" t="Include" />
           </e>
           <e p="GeneticAlgorithms" t="Include">
@@ -165,8 +169,11 @@
             </e>
             <e p="PathFinding3D.cs" t="Include" />
           </e>
+          <e p="PlaceOnPlane.cs" t="Include" />
+          <e p="PlaneDetectionController.cs" t="Include" />
+          <e p="ScaleController.cs" t="Include" />
+          <e p="ScreenSpaceJointVisualizer.cs" t="Include" />
           <e p="Scripts.asmdef" t="Include" />
-          <e p="SimpleRNG.cs" t="Include" />
           <e p="UI" t="Include">
             <e p="ARDebugManager.cs" t="Include" />
             <e p="BlockUIExtensions.cs" t="Include" />
@@ -181,6 +188,7 @@
               <e p="SerializeVector3.cs" t="Include" />
               <e p="Singleton.cs" t="Include" />
             </e>
+            <e p="SimpleRNG.cs" t="Include" />
             <e p="Utility.cs" t="Include" />
             <e p="WeightedRandomBag.cs" t="Include" />
           </e>

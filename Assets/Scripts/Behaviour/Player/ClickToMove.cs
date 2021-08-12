@@ -10,6 +10,7 @@ public class ClickToMove : MonoBehaviour
     private GameObject target;
     private float elapsed = 0.0f;
     private NavMeshPath path;
+    public float m_Range = 25.0f;
 
     void Start()
     {
@@ -17,10 +18,22 @@ public class ClickToMove : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Goal");
         path = new NavMeshPath();
         elapsed = 0.0f;
+
+        HeadToPoint();
+    }
+
+    public void HeadToPoint()
+    {
+        
     }
 
     void Update()
     {
+        if (m_Agent.pathPending || m_Agent.remainingDistance > 0.1f)
+            return;
+
+        m_Agent.destination = m_Range * Random.insideUnitCircle;
+        
         if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);

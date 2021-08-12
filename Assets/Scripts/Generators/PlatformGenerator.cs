@@ -111,7 +111,9 @@ namespace Generators
                     }
                     else
                     {
-                        Debug.Log("Can not find closest place");
+                        Debug.Log("Can not find closest place on Mesh");
+                        player = Instantiate(prefabs[playerType], farthestBrick,
+                            rotation);
                     }
                 }
                 else

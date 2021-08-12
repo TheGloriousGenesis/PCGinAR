@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Behaviour.Platform.LinkGenerator.Entities;
+using GeneticAlgorithms.Parameter;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +12,7 @@ using Utilities;
 #endif
 
 
-namespace Behaviour.Platform.LinkGenerator
+namespace PathFinding.LinkGenerator
 {
     public class NavMeshLinksAutoPlacer : MonoBehaviour
     {
@@ -44,7 +45,7 @@ namespace Behaviour.Platform.LinkGenerator
         private readonly List<Edge> _edges = new List<Edge>();
         private readonly List<Vector3> _edgeVertices = new List<Vector3>();
 
-        private float _agentRadius = 2;
+        private float _agentRadius = 0.05f;
 
         private Vector3 _reUsableV3;
         private Vector3 _offSetPosY;
@@ -140,12 +141,14 @@ namespace Behaviour.Platform.LinkGenerator
         private void CheckPlacePos(Vector3 pos, Quaternion normal)
         {
             var startPos = pos + normal * Vector3.forward * _agentRadius * 2;
-            var endPos = startPos - Vector3.up * maxJumpHeight * 1.1f;
+            var endPos = startPos - Vector3.up * maxJumpHeight * Constants.BLOCK_SIZE;
 
-            // ignore trigger colliders during raycast
+            // ignore trigger colliders during raycast from start of link to end of link 
             if (!Physics.Linecast(startPos, endPos, out var raycastHit, raycastLayerMask.value,
                 QueryTriggerInteraction.Ignore)) return;
+            // if there is a hit then sample if that position is on the nav mesh
             if (!NavMesh.SamplePosition(raycastHit.point, out var navMeshHit, 1f, NavMesh.AllAreas)) return;
+            // if position hit is on the navmesh, calculate path from current position to place where navmesh hit
             var path = new NavMeshPath();
             NavMesh.CalculatePath(pos, navMeshHit.position, NavMesh.AllAreas, path);
 
@@ -154,7 +157,7 @@ namespace Behaviour.Platform.LinkGenerator
             var extremeDrop = calcV3.y - navMeshHit.position.y;
 
             if (path.status == NavMeshPathStatus.PathComplete) return;
-            if (dis > 1.1f && (extremeDrop < maxJumpHeight))
+            if (dis > Constants.BLOCK_SIZE && (extremeDrop < maxJumpHeight))
             {
                 //SPAWN NAVMESH LINKS
                 var spawnedTransform = Instantiate(
