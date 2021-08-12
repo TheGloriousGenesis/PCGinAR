@@ -7,11 +7,11 @@ using GeneticAlgorithms.Algorithms;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
 using PathFinding;
+using PathFinding.LinkGenerator;
 using UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 using Utilities;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
@@ -47,7 +47,11 @@ namespace GeneticAlgorithms.Implementation
         [Header("Selection Variables")] 
         [SerializeField]
         private int K = Constants.K;
-        
+
+        [Header("Post Processing Variables")] 
+        [SerializeField]
+        private int NumberOfCoins = 5;
+
         private GenerateGameService _gameService;
         private PathFinding3D _pathFinding;
         private Random _random;
@@ -71,9 +75,9 @@ namespace GeneticAlgorithms.Implementation
         {
             _gameService = GetComponent<GenerateGameService>();
             _pathFinding = GetComponent<PathFinding3D>();
-            if (_random == null) _random = new Random(Seed);
+            _random = new Random(Seed);
             
-            if (_ga == null) _ga = new BasicGeneticAlgorithm(PopulationSize, ChromosomeLength, CrossoverProbability,
+            _ga = new BasicGeneticAlgorithm(PopulationSize, ChromosomeLength, CrossoverProbability,
                 _random, Elitism, MutationProbability, NumberOfGenerations, K);
         }
 
@@ -88,6 +92,20 @@ namespace GeneticAlgorithms.Implementation
             Awake();
             List<Chromosome> finalResult = _ga.Run(FitnessFunction);
             _gameService.CreateGameGA(BlockType.AGENT, finalResult[2]);
+            _gameService.PostProcessingAdjustments(NumberOfCoins);
+        }
+
+        private void RemoveInEdit()
+        {
+            if (!_gameService)
+                _gameService = GetComponent<GenerateGameService>();
+            if (!_pathFinding)
+                _pathFinding = GetComponent<PathFinding3D>();
+            _gameService.ResetGame(Utility.SafeDestroyInEditMode);
+            _ga = null;
+            _pathFinding.ResetPathFinding();
+            Chromosome.ResetCounter();
+            _random = null;
         }
 
         private void Remove()
@@ -134,7 +152,7 @@ namespace GeneticAlgorithms.Implementation
 
         private float AnalyseAStarPath()
         {
-            NavMeshPath path = GenerateGameService.PathStatus();
+            NavMeshPath path = NavMeshLinksAutoPlacer.ContainsPath();
             float score = 0;
             // Check completable level
             if (path.status == NavMeshPathStatus.PathComplete)
@@ -319,7 +337,7 @@ namespace GeneticAlgorithms.Implementation
                 {
                     foreach (var targ in targets)
                     {
-                        ((GaImplementation)targ).Remove();
+                        ((GaImplementation)targ).RemoveInEdit();
                     }
                 }
             }

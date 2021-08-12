@@ -1,6 +1,7 @@
 ﻿using Behaviour.Entities;
 using UnityEngine;
 using Utilities;
+using Random = System.Random;
 
 namespace Generators
 {
@@ -8,16 +9,23 @@ namespace Generators
     {
         public PrefabFactory prefabs;
 
-        public void PlaceCoins()
+        public void PlaceCoins(int numberOfCoins)
         {
             var surface = Utility.GetGameMap()[BlockType.FREE_TO_WALK];
 
-            // foreach (var i in surface)
-            // {
-            //     var coin = Instantiate(prefabs[BlockType.COIN], i + Vector3.up * 2, Quaternion.identity);
-            //     coin.transform.parent = transform;
-            //     Utility.GamePlacement[i.Key] = BlockType.COIN;
-            // }
+            if (numberOfCoins < surface.Count)
+                return;
+            var placedPositions = Utility.GetKRandomElements(surface, numberOfCoins, new Random());
+            
+            foreach (var i in placedPositions)
+            {
+                var coin = Instantiate(prefabs[BlockType.COIN], i + Vector3.up * 2, Quaternion.identity);
+                coin.transform.parent = transform;
+            }
+
+            surface.RemoveAll(x => placedPositions.Contains(x));
+            Utility.GetGameMap()[BlockType.FREE_TO_WALK] = surface;
+            Utility.GetGameMap()[BlockType.COIN] = placedPositions;
         }
     }
 }

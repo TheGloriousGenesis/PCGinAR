@@ -4,6 +4,7 @@ using System.Linq;
 using Behaviour.Entities;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
+using PathFinding.LinkGenerator;
 using UnityEngine;
 using UnityEngine.AI;
 using Utilities;
@@ -13,17 +14,36 @@ namespace Generators
 {
     public class PlatformGenerator : MonoBehaviour
     {
-
-        #region Platform assets
         public PrefabFactory prefabs;
-        #endregion
+        private NavMeshLinksAutoPlacer _linksAutoPlacer;
+
+        private void Awake()
+        {
+            _linksAutoPlacer = GetComponent<NavMeshLinksAutoPlacer>();
+            // private GenerateNavLinks _gen;
+        }
 
         public void CreatePlatform(Quaternion orientation, Chromosome chromosome)
         {
             PlacePlatform(orientation, chromosome);
             ObtainWalkableSurface();
         }
+        
+        public void CreateLinks()
+        {
+            _linksAutoPlacer.RefreshLinks();
+            // gen.DoGenerateLinks();
+        }
 
+        public void DestoryLinksAndSurfaceNavMesh()
+        {
+            if (_linksAutoPlacer == null)
+                _linksAutoPlacer = GetComponent<NavMeshLinksAutoPlacer>();
+            _linksAutoPlacer.ClearLinks();
+            _linksAutoPlacer.ClearSurfaceData();
+            // _gen.ClearLinks();
+        }
+        
         private void PlacePlatform(Quaternion orientation, Chromosome chromosome)
         {
             List<Gene> genes = chromosome.Genes;
@@ -57,7 +77,7 @@ namespace Generators
             Utility.GetGameMap()[BlockType.BASIC_BLOCK] = fullSpace;
             Utility.GetGameMap()[BlockType.NONE] = nullSpace;
         }
-
+        
         private void ObtainWalkableSurface()
         {
             GameObject platform = gameObject;
@@ -238,6 +258,7 @@ namespace Generators
 
             return cubePosition;
         }
+
 
     }
 }

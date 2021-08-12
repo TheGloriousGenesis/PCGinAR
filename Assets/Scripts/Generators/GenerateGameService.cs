@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Behaviour.Entities;
-using Behaviour.Platform.LinkGenerator;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
-using PathFinding.LinkGenerator;
 using UI;
 using UnityEngine;
-using UnityEngine.AI;
 using Utilities;
 
 namespace Generators
@@ -16,17 +13,12 @@ namespace Generators
     {
         private PlatformGenerator _platformGenerator;
         private CoinGenerator _coinGenerator;
-        private NavMeshLinksAutoPlacer _linksAutoPlacer;
-        // private GenerateNavLinks _gen;
 
         private void Awake()
         {
-            _platformGenerator = GetComponentInChildren<PlatformGenerator>();
-            _coinGenerator = GetComponentInChildren<CoinGenerator>();
-            _linksAutoPlacer = GetComponent<NavMeshLinksAutoPlacer>();
-            
+            RetrieveComponents();
         }
-
+        
         #region In Play Mode
         public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome)
         {
@@ -41,22 +33,19 @@ namespace Generators
 
             _platformGenerator.CreatePlatform(orientation, chromosome);
         
-            // todo: uncomment when adding enemies
-            _linksAutoPlacer.RefreshLinks();
-
-            // gen.DoGenerateLinks();
+            _platformGenerator.CreateLinks();
         
             _platformGenerator.PlaceGoal(orientation);
         
             _platformGenerator.PlacePlayer(orientation, playerType);
-        
+            
             return ConfigureGameSpace(plane);
         }
 
         private GameObject ConfigureGameSpace(Vector3 plane)
         {
             GameObject game = GameObject.Find("/GAME");
-            // game.transform.position = plane;
+            game.transform.position = plane;
             return game;
         }
     
@@ -71,31 +60,28 @@ namespace Generators
 
         private GameObject CreateGameGA(Quaternion orientation, BlockType playerType, Chromosome chromosome)
         {
+            if (_platformGenerator == null)
+                _platformGenerator = GetComponentInChildren<PlatformGenerator>();
+            if (_coinGenerator == null)
+                _coinGenerator = GetComponentInChildren<CoinGenerator>(); 
+
             ResetGame(Utility.SafeDestroyInEditMode);
 
             _platformGenerator.CreatePlatform(orientation, chromosome);
 
-            _linksAutoPlacer.RefreshLinks();
+            _platformGenerator.CreateLinks();
 
             _platformGenerator.PlaceGoal(orientation);
             _platformGenerator.PlacePlayer(orientation, playerType);
         
             return GameObject.Find("/GAME");
         }
-    
-        public static NavMeshPath PathStatus()
-        {
-            return NavMeshLinksAutoPlacer.ContainsPath();
-        }
+        
         #endregion
 
         #region Delete methods
         public void ResetGame(Action<GameObject> delFunc)
         {
-            // _gen.ClearLinks();
-        
-            _linksAutoPlacer.ClearLinks();
-
             DestroyPlatform(delFunc);
 
             DestroyCoins(delFunc);
@@ -108,7 +94,8 @@ namespace Generators
 
             DestroyGamePlacement();
 
-            _linksAutoPlacer.ClearSurfaceData();
+            _platformGenerator.DestoryLinksAndSurfaceNavMesh();
+
         }
     
         private static void DestroyGamePlacement()
@@ -176,6 +163,17 @@ namespace Generators
             Utility.GetGameMap()[BlockType.AGENT] = new List<Vector3>();
         }
         #endregion
+
+        public void PostProcessingAdjustments(int numberOfCoins)
+        {
+            _coinGenerator.PlaceCoins(numberOfCoins);
+        }
+        
+        private void RetrieveComponents()
+        {
+            _platformGenerator = GetComponentInChildren<PlatformGenerator>();
+            _coinGenerator = GetComponentInChildren<CoinGenerator>(); 
+        }
 
         private void OnApplicationQuit()
         {
