@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Utilities
 {
-    public static class ARLogger
+    public static class DataLogger
     {
         // todo: this does not save on mobile, sort this out!
         public static readonly string AppPath = Application.persistentDataPath + "/";
@@ -23,8 +23,8 @@ namespace Utilities
                     logger.fileName = $"MAPElitesImplResults_{variation}.txt";
                     logger.Log(message);
                     break;
-                case LogTarget.Linearity:
-                    logger.fileName = $"Linearity_{variation}.txt";
+                case LogTarget.FitnessComponent:
+                    logger.fileName = $"FitnessComponent_{variation}.txt";
                     logger.Log(message);
                     break;
                 case LogTarget.MultiPaths:
@@ -77,7 +77,7 @@ namespace Utilities
     
         public FileLogger(string corePath)
         {
-            Debug.Log($"Corepath: {corePath}");
+            // Debug.Log($"Corepath: {corePath}");
             this.corePath = corePath;
             
         }
@@ -87,10 +87,10 @@ namespace Utilities
     {
         BasicGeneticOutput,
         MapElitesOutput,
+        FitnessComponent,
         AStarPath,
         MultiPaths,
         WalkableSurfaces,
-        NullSpace,
-        Linearity
+        NullSpace
     }
 }
