@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UI;
 using UnityEngine;
-using static Utilities.ARLogger;
+using static Utilities.DataLogger;
 
 namespace GeneticAlgorithms.Entities
 {

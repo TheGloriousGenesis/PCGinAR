@@ -170,6 +170,8 @@ namespace Generators
                 var goal = Instantiate(prefabs[BlockType.GOAL], goalPosition + Vector3.up * (Constants.BLOCK_SIZE) , rotation);
                 goal.transform.parent = this.transform.parent;
             }
+            // Do not remove as brick is technically still free to walk
+            // Utility.GetGameMap()[BlockType.FREE_TO_WALK].Remove(goalPosition);
         }
         
         private List<Vector3> GetPosition(Allele allele)

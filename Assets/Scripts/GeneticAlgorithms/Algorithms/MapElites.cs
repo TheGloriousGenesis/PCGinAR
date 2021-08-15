@@ -17,9 +17,9 @@ namespace GeneticAlgorithms.Algorithms
         private FeatureDimension[] _featureDimensions;
 
         public MapElites(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
-            int elitism, float mutationProbability,int iteration, int k, int N) :
+            int elitism, float mutationProbability,int iteration, int k, int N, int x, int y, int z) :
             base(populationSize, chromosomeLength, crossoverProbability, randomG, elitism, 
-                mutationProbability, iteration, k)
+                mutationProbability, iteration, k, x, y, z)
         {
             _n = N;
             _mapOfElites = new Chromosome[N, N, N];

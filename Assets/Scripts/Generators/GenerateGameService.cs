@@ -14,20 +14,27 @@ namespace Generators
         private PlatformGenerator _platformGenerator;
         private CoinGenerator _coinGenerator;
 
+        [SerializeField] 
+        private GameObject game;
+
+        [SerializeField] 
+        private GameObject level;
+
         private void Awake()
         {
             RetrieveComponents();
         }
         
         #region In Play Mode
-        public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome)
+        public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome, int maxX, int maxY, int maxZ)
         {
-            GameObject go = CreateGame(plane, rotation, Constants.PLAYERTYPE, chromosome);
+            CreateGame(rotation, Constants.PLAYERTYPE, chromosome);
+            ConfigureGameSpace(plane, maxX, maxY, maxZ);
             EventManager.current.CurrentChromosomeInPlay(chromosome.ID);
-            return go;
+            return game;
         }    
     
-        private GameObject CreateGame(Vector3 plane, Quaternion orientation, BlockType playerType, Chromosome chromosome)
+        private void CreateGame(Quaternion orientation, BlockType playerType, Chromosome chromosome)
         {
             ResetGame(Utility.SafeDestroyInPlayMode);
 
@@ -39,14 +46,13 @@ namespace Generators
         
             _platformGenerator.PlacePlayer(orientation, playerType);
             
-            return ConfigureGameSpace(plane);
+            _coinGenerator.PlaceCoins(6);
         }
 
-        private GameObject ConfigureGameSpace(Vector3 plane)
+        private void ConfigureGameSpace(Vector3 plane, int maxX, int maxY, int maxZ)
         {
-            GameObject game = GameObject.Find("/GAME");
-            game.transform.position = plane;
-            return game;
+            game.transform.position = new Vector3(-maxX/2f, -maxY/2f, -maxZ/2f);
+            level.transform.position = plane;
         }
     
         #endregion
@@ -93,8 +99,13 @@ namespace Generators
             DestroyAgent(delFunc);
 
             DestroyGamePlacement();
-
+            
+            if (!_platformGenerator)
+                RetrieveComponents();
             _platformGenerator.DestoryLinksAndSurfaceNavMesh();
+            
+            game.transform.position = new Vector3(0, 0, 0);
+            level.transform.position = new Vector3(0, 0, 0);
 
         }
     

@@ -19,6 +19,9 @@ namespace Tests
         private int testElitism = 3;
         private int testIteration = 3;
         private int testK = 2;
+        private int testX = 2;
+        private int testY = 2;
+        private int testZ = 2;
         private GeneticOperators _geneticOperators;
 
         [SetUp]
@@ -27,7 +30,7 @@ namespace Tests
             _geneticOperators = new GeneticOperators(testSeed, testK);
             test = new BasicGeneticAlgorithm(
                 testPopSize, testChromosomeLen, testCrossoverProb,
-                testSeed, testElitism, testMutationProb, testIteration, testK);
+                testSeed, testElitism, testMutationProb, testIteration, testK, testX, testY, testZ);
         }
 
         [Test]

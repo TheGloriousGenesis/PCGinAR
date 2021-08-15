@@ -13,13 +13,13 @@ namespace Generators
         {
             var surface = Utility.GetGameMap()[BlockType.FREE_TO_WALK];
 
-            if (numberOfCoins < surface.Count)
+            if (numberOfCoins > surface.Count)
                 return;
             var placedPositions = Utility.GetKRandomElements(surface, numberOfCoins, new Random());
             
             foreach (var i in placedPositions)
             {
-                var coin = Instantiate(prefabs[BlockType.COIN], i + Vector3.up * 2, Quaternion.identity);
+                var coin = Instantiate(prefabs[BlockType.COIN], i + Vector3.up, Quaternion.identity);
                 coin.transform.parent = transform;
             }
 

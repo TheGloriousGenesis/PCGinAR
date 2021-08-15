@@ -15,7 +15,6 @@ using UnityEngine.AI;
 using Utilities;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
-
 #if UNITY_EDITOR
 
 #endif
@@ -24,13 +23,21 @@ namespace GeneticAlgorithms.Implementation
 {
     public class GaImplementation : MonoBehaviour
     {
+        [Header("Platform variables")]
+        [SerializeField]
+        private int MaxPlatformWidth = Constants.MAX_PLATFORM_DIMENSION_X;
+        [SerializeField]
+        private int MaxPlatformHeight = Constants.MAX_PLATFORM_DIMENSION_Y;
+        [SerializeField]
+        private int MaxPlatformDepth = Constants.MAX_PLATFORM_DIMENSION_Z;
+
         [Header("Core Genetic Algorithm Variables")] 
         [SerializeField]
         private int Seed = Constants.SEED;
         [SerializeField]
         private int PopulationSize = Constants.POPULATION_SIZE;
         [SerializeField]
-        private int ChromosomeLength = Constants.CHROMOSONE_LENGTH;
+        private int ChromosomeLength = Constants.CHROMOSOME_LENGTH;
         [SerializeField]
         private int Elitism = Constants.ELITISM;
         [SerializeField]
@@ -78,11 +85,15 @@ namespace GeneticAlgorithms.Implementation
             _random = new Random(Seed);
             
             _ga = new BasicGeneticAlgorithm(PopulationSize, ChromosomeLength, CrossoverProbability,
-                _random, Elitism, MutationProbability, NumberOfGenerations, K);
+                _random, Elitism, MutationProbability, NumberOfGenerations, K, MaxPlatformWidth, 
+                MaxPlatformHeight, MaxPlatformDepth);
         }
 
         public Chromosome Run()
         {
+            _ga.Variation = $"PS{PopulationSize}_CL{ChromosomeLength}_MP{MaxPlatformWidth}." +
+                            $"{MaxPlatformHeight}.{MaxPlatformDepth}_" +
+                            $"G{NumberOfGenerations}";
             List<Chromosome> finalResult = _ga.Run(FitnessFunction);
             return finalResult[1];
         }
@@ -90,8 +101,11 @@ namespace GeneticAlgorithms.Implementation
         public void RunInEdit()
         {
             Awake();
+            _ga.Variation = $"PS{PopulationSize}_CL{ChromosomeLength}_MP{MaxPlatformWidth}." +
+                            $"{MaxPlatformHeight}.{MaxPlatformDepth}_" +
+                            $"G{NumberOfGenerations}";
             List<Chromosome> finalResult = _ga.Run(FitnessFunction);
-            _gameService.CreateGameGA(BlockType.AGENT, finalResult[2]);
+            _gameService.CreateGameGA(BlockType.AGENT, finalResult[0]);
             _gameService.PostProcessingAdjustments(NumberOfCoins);
         }
 
@@ -121,36 +135,39 @@ namespace GeneticAlgorithms.Implementation
         private FitnessValues FitnessFunction(Chromosome chromosome)
         {
             Stopwatch timer = new Stopwatch();
+            FitnessValues fv = new FitnessValues();
+            
             float score = 0;
 
             timer.Start();
             _gameService.CreateGameGA(BlockType.AGENT, chromosome);
             timer.Stop();
 
-            score += AnalyseAStarPath();
-            
-            score += AnalyseMultiPaths();
-            score += CalculateVolumeUsed();
-            score += PercentageOfChromosomeUsed();
-            score += PercentageOfChromosomeThatIsNullSpace();
-            score += PercentageOfWalkableSurfaces();
-            float linear = CalculateLinearity();
+            fv.time = timer.Elapsed.TotalMilliseconds;
+            score += AnalyseAStarPath(fv);
+            score += AnalyseMultiPaths(fv);
+            score += PercentageOfWalkableSurfaces(fv);
+            score += PercentageOfNullSpace(fv);
+            // score += CalculateVolumeUsed();
+            // score += PercentageOfChromosomeUsed();
+            CalculateLinearity(fv);
 
             //todo change as max score has now changed
             // (x - min(x)) / (max(x) -min(x) --> https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
-            float max = 7f;
-            float min = -11f;
+            float max = 4f;
+            float min = -12.5f;
             score = (score - min)/(max - min);
 
             chromosome.Fitness = score;
 
             _gameService.ResetGame(Utility.SafeDestroyInEditMode);
 
-            return new FitnessValues() {time = timer.Elapsed.TotalMilliseconds,
-                fitness = score, linearity = linear};
+            fv.fitness = score;
+            
+            return fv;
         }
 
-        private float AnalyseAStarPath()
+        private float AnalyseAStarPath(FitnessValues fitnessValues)
         {
             NavMeshPath path = NavMeshLinksAutoPlacer.ContainsPath();
             float score = 0;
@@ -164,24 +181,17 @@ namespace GeneticAlgorithms.Implementation
                 score -= 10f;
             }
 
-            // todo: Have removed entropy calculate length in order to replace with ingame stats
-            // // Check entropy
-            // int numberOfTurns = path.corners.Length;
-            // //todo: double check this 
-            // // max number of turns is if a turn must be done on each block
-            // int maxNumberOfTurns = Utility.GamePlacement.Keys.Count;
-            // score += numberOfTurns/ (float) maxNumberOfTurns;
-
+            fitnessValues.pathLength = path.GetTotalDistance();
             return score;
         }
-        private float AnalyseMultiPaths()
+        private float AnalyseMultiPaths(FitnessValues fitnessValues)
         {
             // Check number of paths
             float score = 0;
             int numberOfPaths =  _pathFinding.FindPaths().Count;
             if (1 <= numberOfPaths && numberOfPaths <= 5)
             {
-                score += 2;
+                score -= 2;
             }
             else if (6 <= numberOfPaths && numberOfPaths <= 10)
             {
@@ -191,49 +201,44 @@ namespace GeneticAlgorithms.Implementation
             {
                 score += 0.5f;
             }
-        
+
+            fitnessValues.numberOfPaths = numberOfPaths;
             return score;
         }
-        private float PercentageOfChromosomeUsed()
+        private float PercentageOfWalkableSurfaces(FitnessValues fitnessValues)
         {
+            float score = 0.0f;
             int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
                                      Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
             
-            return numberBricksPlaced / (float) (Constants.CHROMOSONE_LENGTH * 3);
-        }
-        private float PercentageOfChromosomeThatIsNullSpace()
-        {
-            int numberOfIntentionalNullSpace = Utility.GetGameMap()[BlockType.NONE].Count;
+            float percentageOfWalkableSurface = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count / (float) numberBricksPlaced;
 
-            float used = numberOfIntentionalNullSpace / (float) (Constants.CHROMOSONE_LENGTH * 3);
-            return used;
-        }
-        private float CalculateVolumeUsed()
-        {
-            float score = 0;
-            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
-                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
-
-            float used = numberBricksPlaced / (float) Constants.TOTAL_VOLUMNE;
-            if (used >= 0.5)
+            if (percentageOfWalkableSurface >= 0.5)
             {
                 score += 1;
             }
             else
             {
-                score -= 1f;
+                score -= 0.5f;
             }
+
+            fitnessValues.walkableSurface = percentageOfWalkableSurface;
             return score;
         }
-        private float PercentageOfWalkableSurfaces()
+        private float PercentageOfNullSpace(FitnessValues fitnessValues)
         {
+            float score = 0.0f;
             int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
                                      Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
             
-            return Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count / (float) numberBricksPlaced;;
-        }
+            float used = 1 - numberBricksPlaced * 1f / Constants.TOTAL_VOLUME;
+            
+            fitnessValues.nullSpace = used;
 
-        private float CalculateLinearity()
+            score += numberBricksPlaced * 1f / Constants.TOTAL_VOLUME;
+            return score;
+        }
+        private void CalculateLinearity(FitnessValues fitnessValues)
         {
             Dictionary<float, int> tmp = new Dictionary<float, int>(new FloatEqualityComparer());
             List<Vector3> allBricks = Utility.GetGameMap()[BlockType.BASIC_BLOCK];
@@ -253,9 +258,9 @@ namespace GeneticAlgorithms.Implementation
 
             int diffValues = tmp.GroupBy(pair => pair.Value).Count();
 
-            return (diffValues * 1.0f) / allBricks.Count;
+            float linearity = (diffValues * 1.0f) / allBricks.Count;
+            fitnessValues.linearity = linearity;
         }
-
         private float[] CalculateNewWeights(Chromosome chromosome)
         {
             float[] weights = new float[Constants.NUMBER_OF_CHUNKS];
@@ -274,7 +279,30 @@ namespace GeneticAlgorithms.Implementation
 
             return weights;
         }
+        private float CalculateVolumeUsed()
+        {
+            float score = 0;
+            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
+                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
 
+            float used = numberBricksPlaced / (float) Constants.TOTAL_MOCK_VOLUME;
+            if (used >= 0.5)
+            {
+                score += 1;
+            }
+            else
+            {
+                score -= 1f;
+            }
+            return score;
+        }
+        private float PercentageOfChromosomeUsed()
+        {
+            int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
+                                     Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
+            
+            return numberBricksPlaced / (float) (Constants.CHROMOSOME_LENGTH * 3);
+        }
         #endregion
 
         #region InGame data for GA
@@ -290,9 +318,9 @@ namespace GeneticAlgorithms.Implementation
 
             GameData.SaveGameData(gameData);
 
-            if (!_ga.playedLevels.Contains(chromosome))
+            if (!_ga.goodPlayedLevels.Contains(chromosome))
             {
-                _ga.playedLevels.Add(chromosome);
+                _ga.goodPlayedLevels.Add(chromosome);
             }
             _ga.weightedRandomBag.UpdateWeights(currentWeights);
             
@@ -307,7 +335,7 @@ namespace GeneticAlgorithms.Implementation
             if (gameData.numberOfJumps < 4)
             {
                 
-                Constants.CHROMOSONE_LENGTH = 5;
+                Constants.CHROMOSOME_LENGTH = 5;
             }
             
             

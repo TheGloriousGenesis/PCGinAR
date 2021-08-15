@@ -20,13 +20,32 @@ namespace Utilities
                     logger.Log(message);
                     break;
                 case LogTarget.MapElitesOutput:
-                    logger.fileName = "MAPElitesImplResults.txt";
+                    logger.fileName = $"MAPElitesImplResults_{variation}.txt";
+                    logger.Log(message);
+                    break;
+                case LogTarget.Linearity:
+                    logger.fileName = $"Linearity_{variation}.txt";
+                    logger.Log(message);
+                    break;
+                case LogTarget.MultiPaths:
+                    logger.fileName = $"MultiPaths_{variation}.txt";
+                    logger.Log(message);
+                    break;
+                case LogTarget.WalkableSurfaces:
+                    logger.fileName = $"WalkableSurfaces_{variation}.txt";
+                    logger.Log(message);
+                    break;
+                case LogTarget.NullSpace:
+                    logger.fileName = $"NullSpace_{variation}.txt";
+                    logger.Log(message);
+                    break;
+                case LogTarget.AStarPath:
+                    logger.fileName = $"AStarPath_{variation}.txt";
                     logger.Log(message);
                     break;
                 default:
                     return;
             }
-    
         }
 
     }
@@ -67,6 +86,11 @@ namespace Utilities
     public enum LogTarget
     {
         BasicGeneticOutput,
-        MapElitesOutput
+        MapElitesOutput,
+        AStarPath,
+        MultiPaths,
+        WalkableSurfaces,
+        NullSpace,
+        Linearity
     }
 }

@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Remoting;
+﻿using System.Collections.Generic;
 using Generators;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Implementation;
-using PathFinding;
+using GeneticAlgorithms.Parameter;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using Utilities;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace UI
 {
@@ -22,12 +16,14 @@ namespace UI
     [RequireComponent(typeof(ARPlaneManager))]
     [RequireComponent(typeof(ARRaycastManager))]
     [RequireComponent(typeof(ARAnchorManager))]
+    [RequireComponent(typeof(ARSessionOrigin))]
     public class PlacementDragAndLock : MonoBehaviour
     {
         #region Game variables
         private GameObject placedObject;
         
         private GameObject placedPrefab;
+        public GameObject testSphere;
         
         [SerializeField] 
         private GaImplementation _gaImplementation;
@@ -52,43 +48,30 @@ namespace UI
         private bool isLocked = false;
         private bool isGenerated = false;
         private bool inGenerationMode = false;
-        
-        // know if we touching screen to drag object around
-        private bool onTouchHold = false;
-        
+
         #endregion
         
         #region AR variables
 
-        private ARRaycastManager arRaycastManager;
+        private ARRaycastManager m_ARRaycastManager;
 
         private ARPlaneManager m_ARPlaneManager;
         
         private ARAnchorManager m_ARAnchorManager;
+        
+        private ARSessionOrigin m_ARSessionOrigin;
 
         [SerializeField]
         private Camera arCamera;
 
         // know what objects we touching
         private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-        
-        [SerializeField]
-        private float defaultRotation = 180;
-        
-        private Vector2 touchPosition = default;
 
         private Pose currentPose;
 
         #endregion
 
-        private float initialDistance;
-        
-        private Vector3 initialScale;
-
         private List<ARAnchor> anchors = new List<ARAnchor>();
-
-        private bool initialized = false;
-        
         
         private void Awake()
         {
@@ -105,13 +88,13 @@ namespace UI
             }
             
 #if !UNITY_EDITOR
-            arRaycastManager = GetComponent<ARRaycastManager>();
+            m_ARRaycastManager = GetComponent<ARRaycastManager>();
             m_ARPlaneManager = GetComponent<ARPlaneManager>();
             m_ARAnchorManager = GetComponent<ARAnchorManager>();
-
+            m_ARSessionOrigin = GetComponent<ARSessionOrigin>();
             SetAllPlanesActive(false);
 #endif
-            EnhancedTouchSupport.Enable();
+            // EnhancedTouchSupport.Enable();
             
             if (lockButton != null)
             {
@@ -130,110 +113,58 @@ namespace UI
             if (currentGame == null)
                 return;
 
-            #if !UNITY_EDITOR
-            var activeTouches = Touch.activeTouches;
+#if !UNITY_EDITOR
+            if (Input.touchCount == 0)
+                return;
 
-            if(Input.touchCount > 0)
-            {
-                Touch touch = activeTouches[0];
+            var touch = Input.GetTouch(0);
             
-                bool isOverUI = touch.screenPosition.IsTouchingUI();
+            bool isOverUI = touch.position.IsTouchingUI();
 
-                if (isOverUI) return;
+            if (isOverUI) return;
+            
+            if (touch.phase != TouchPhase.Began)
+                return;
 
-                touchPosition = touch.screenPosition;
+            // Raycast against planes and feature points
+            const TrackableType trackableTypes =
+                TrackableType.FeaturePoint |
+                TrackableType.PlaneWithinPolygon;
 
-                if(touch.phase == TouchPhase.Began)
-                {
-                    Ray ray = arCamera.ScreenPointToRay(touch.screenPosition);
-                    RaycastHit hitObject;
-                    if(Physics.Raycast(ray, out hitObject))
-                    {
-                        Node placement = hitObject.transform.GetComponent<Node>();
-                        if(placement != null)
-                        {
-                            onTouchHold = isLocked ? false : true;
-                        }
-                        ARDebugManager.Instance.LogInfo($"onTouchHold: {onTouchHold}");
-
-                    }
-                }
-
-                if(touch.phase == TouchPhase.Ended)
-                {
-                    onTouchHold = false;
-                }
-            }
-            MoveGameObject();
-            // PinchAndZoom();
-#else
-            if(placedObject != null)
+            if (isLocked)
+                return;
+                // Perform the raycast
+            if (m_ARRaycastManager.Raycast(touch.position, hits, trackableTypes))
             {
-                Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-                Vector3 offset =  placedObject.transform.position - Camera.main.ScreenToWorldPoint(
-                    new Vector3(Input.mousePosition.x, Input.mousePosition.y,screenPoint.z));
-                Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-                Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-                placedObject.transform.position = curPosition;            
-            }
-            MoveGameObject();
-            #endif
-        }
+                // Raycast hits are sorted by distance, so the first one will be the closest hit.
+                var hit = hits[0];
 
-        private void MoveGameObject()
-        {
-#if !UNITY_EDITOR
-            if (!arRaycastManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon)) return;
-            var hitPose = hits[0].pose;
-            Debug.Log($"Trackable id: {hits[0].trackableId}");
-#else
-            var hitPose = new Pose();
-            hitPose.position = Vector3.zero;
-            hitPose.rotation = Quaternion.identity;
-
-#endif
-            if (placedObject == null && currentGame != null)
-            {
-                placedPrefab = gameService.CreateGameInPlay(hitPose.position, hitPose.rotation, 
-                    currentGame );
+                // Create a new anchor
+                // MoveGameObject();
                 
-                // hide game object until player touches screen
-                placedObject = placedPrefab;
-
-                // change generate button to end game set welcome off
-                generateButton.GetComponentInChildren<Text>().text = "End Game";
-                welcomePanel.SetActive(false);
-            } 
-            else if (placedObject == null && currentGame == null)
-            {
-                ARDebugManager.Instance.LogInfo($"Please press Generate button to create your level!");
+                var anchor = CreateAnchor(hit);
+                if (anchor)
+                {
+                    RemoveAllAnchors();
+                    // Remember the anchor so we can remove it later.
+                    anchors.Add(anchor);
+                }
+                else
+                {
+                    ARDebugManager.Instance.LogInfo("Error creating anchor");
+                }
             }
-            else
-            {
-                placedObject.transform.position = hitPose.position;
-            }
-#if !UNITY_EDITOR
-            if (!onTouchHold) return;
-
-            ARAnchor anchor = m_ARAnchorManager.AddAnchor(hitPose);
-            if (anchor == null) 
-                ARDebugManager.Instance.LogInfo($"Error creating reference point");
-            else 
-            {
-                anchors.Add(anchor);
-            }
-            ARDebugManager.Instance.LogInfo($"Number of anchors: {anchors.Count}");
-
-            // moves object around
-            ARDebugManager.Instance.LogInfo($"Object can be moved around");
-            placedObject.transform.position = hitPose.position;
-            if (defaultRotation == 0)
-            {
-                placedObject.transform.rotation = hitPose.rotation;
-            }
+#else
+            if (currentGame == null) 
+                return;
+            if (placedPrefab == null)
+                placedPrefab = gameService.CreateGameInPlay(new Vector3(), Quaternion.identity,
+                    currentGame, Constants.MAX_PLATFORM_DIMENSION_X, Constants.MAX_PLATFORM_DIMENSION_Y, Constants.MAX_PLATFORM_DIMENSION_Z );
+            
+            placedObject = placedPrefab;
 #endif
         }
-
+        
         #region UI methods
 
         private void Lock()
@@ -262,7 +193,7 @@ namespace UI
                 EventManager.current.GameEnd();
             }
 
-            gameService.ResetGame(Utility.SafeDestroyInEditMode);
+            gameService.ResetGame(Utility.SafeDestroyInPlayMode);
 
             EventManager.current.GAStart();
             Chromosome gameData = _gaImplementation.Run();
@@ -295,6 +226,90 @@ namespace UI
         {
             isGenerated = false;
             generateButton.GetComponentInChildren<Text>().text = "Next Level";
+        }
+        
+        ARAnchor CreateAnchor(in ARRaycastHit hit)
+        {
+            float ActualHeight = Vector3.Distance(hit.pose.position, new Vector3(hit.pose.position.x, 
+                arCamera.transform.position.y, hit.pose.position.z));
+ 
+            if (ActualHeight < 0.8f)
+            {
+                ARDebugManager.Instance.LogInfo("Plane Low");
+                m_ARSessionOrigin.transform.position = new Vector3(0, 0.5f, 0);
+            }
+            else
+            {
+                ARDebugManager.Instance.LogInfo("Plane High");
+                m_ARSessionOrigin.transform.position = new Vector3(0, Constants.MAX_PLATFORM_DIMENSION_Y/2f, 0);
+            }
+
+            m_ARSessionOrigin.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+
+            ARAnchor anchor = null;
+            // If we hit a plane, try to "attach" the anchor to the plane
+            if (hit.trackable is ARPlane plane)
+            {
+                var planeManager = GetComponent<ARPlaneManager>();
+                
+                if (planeManager)
+                {
+                    if (currentGame == null) 
+                        return null;
+                    if (placedPrefab == null) {
+                        placedObject = gameService.CreateGameInPlay(hit.pose.position, hit.pose.rotation, 
+                            currentGame, Constants.MAX_PLATFORM_DIMENSION_X, Constants.MAX_PLATFORM_DIMENSION_Y, 
+                            Constants.MAX_PLATFORM_DIMENSION_Z);
+                        placedPrefab = placedObject;
+                    }
+
+                    ARDebugManager.Instance.LogInfo("Creating anchor attachment.");
+                    
+                    var oldPrefab = m_ARAnchorManager.anchorPrefab;
+                    m_ARAnchorManager.anchorPrefab = placedObject;
+                    anchor = m_ARAnchorManager.AttachAnchor(plane, hit.pose);
+                    m_ARAnchorManager.anchorPrefab = oldPrefab;
+                    
+                    ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}:  Attached to plane {plane.trackableId}");
+                    generateButton.GetComponentInChildren<Text>().text = "End Game";
+                    welcomePanel.SetActive(false);
+                    return anchor;
+                }
+            }
+
+            // Otherwise, just create a regular anchor at the hit pose
+            ARDebugManager.Instance.LogInfo("Creating regular anchor.");
+            
+            // Note: the anchor can be anywhere in the scene hierarchy
+            if (placedPrefab == null)
+            {
+                placedObject = gameService.CreateGameInPlay(hit.pose.position, hit.pose.rotation, 
+                    currentGame, Constants.MAX_PLATFORM_DIMENSION_X, Constants.MAX_PLATFORM_DIMENSION_Y, 
+                    Constants.MAX_PLATFORM_DIMENSION_Z);
+                placedPrefab = placedObject;
+            }
+
+            var gameObject = placedObject;
+            
+            // Make sure the new GameObject has an ARAnchor component
+            anchor = gameObject.GetComponent<ARAnchor>();
+            if (anchor == null)
+            {
+                anchor = gameObject.AddComponent<ARAnchor>();
+            }
+            
+            ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}: Anchor (from {hit.hitType})");
+            return anchor;
+        }
+        
+        public void RemoveAllAnchors()
+        {
+            ARDebugManager.Instance.LogInfo($"Removing all anchors ({anchors.Count})");
+            foreach (var anchor in anchors)
+            {
+                Destroy(anchor.gameObject);
+            }
+            anchors.Clear();
         }
         
         private void OnEnable()

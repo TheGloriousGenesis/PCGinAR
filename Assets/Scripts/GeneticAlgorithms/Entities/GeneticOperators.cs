@@ -19,6 +19,34 @@ namespace GeneticAlgorithms.Entities
             _k = k;
         }
 
+        public Chromosome FitnessProportionateSelection(List<Chromosome> population, float sumOfFitness)
+        {
+            // deals with negative and positive values
+            float minimalFitness = 0.0f;
+            for (int i = 0; i < population.Count; ++i)
+            {
+                var score = population[i].Fitness;
+                if (score < minimalFitness)
+                    minimalFitness = score;
+            }
+
+            minimalFitness = Math.Abs(minimalFitness);
+            sumOfFitness += minimalFitness * population.Count;
+            
+            var val = _random.NextDouble() * sumOfFitness;
+
+            var value = 0f;
+
+            for (int i = 0; i < population.Count; ++i)
+            {
+                value += population[i].Fitness + minimalFitness + 0.02f;
+                if (value > val)
+                {
+                    return population[i];
+                }
+            }
+            return population[_random.Next(0,population.Count)];
+        }
         public List<Chromosome> SinglePointCrossover(Chromosome chromosome1, Chromosome chromosome2)
         {
             int randomPosition = _random.Next(0, chromosome1.Genes.Count);

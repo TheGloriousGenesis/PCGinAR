@@ -10,23 +10,29 @@ using Random = System.Random;
 
 namespace GeneticAlgorithms.Algorithms
 {
-    // TODO: Check that a given chromosone has unique genes that do not overlap in space (maybe use hashset)
+    // TODO: Check that a given chromosome has unique genes that do not overlap in space (maybe use hashset)
     public abstract class BaseAlgorithm
     {
         public readonly int ChromosomeLength;
+        public string Variation;
         
         protected readonly int PopulationSize;
         protected int Iteration; // same as number of generations
         protected readonly float CrossoverProbability;
         protected readonly float MutationProbability;
+        protected readonly float PlatformWidth;
+        protected readonly float PlatformHeight;
+        protected readonly float PlatformDepth;
         protected readonly Random RandomG;
         protected int Elitism;
         protected readonly GeneticOperators GeneticGeneticOperator;
+        protected float[] currentWeights;
+
         public WeightedRandomBag<int> weightedRandomBag;
-        protected float[] currentWeights = new float[Constants.NUMBER_OF_CHUNKS];
 
         protected BaseAlgorithm(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
-            int elitism, float mutationProbability, int iteration, int k)
+            int elitism, float mutationProbability, int iteration, int k,
+            int width, int height, int depth)
         {
             this.PopulationSize = populationSize;
             ChromosomeLength = chromosomeLength;
@@ -37,16 +43,20 @@ namespace GeneticAlgorithms.Algorithms
             Iteration = iteration;
             GeneticGeneticOperator = new GeneticOperators(RandomG, k);
             weightedRandomBag = new WeightedRandomBag<int>(randomG, Constants.NUMBER_OF_CHUNKS);
-            SetUpCurrentWeights();
+            SetUpCurrentWeights(Constants.NUMBER_OF_CHUNKS);
+            PlatformWidth = width;
+            PlatformHeight = height;
+            PlatformDepth = depth;
         }
 
         #region Core genetic infrastucture (DNA)
 
-        protected void SetUpCurrentWeights()
+        protected void SetUpCurrentWeights(int numberOfChunks)
         {
-            for (int i = 0; i < Constants.NUMBER_OF_CHUNKS; i++)
+            currentWeights = new float[numberOfChunks];
+            for (int i = 0; i < numberOfChunks; i++)
             {
-                currentWeights[0] = 1f / Constants.NUMBER_OF_CHUNKS;
+                currentWeights[0] = 1f / numberOfChunks;
             }
         }
         
@@ -84,10 +94,6 @@ namespace GeneticAlgorithms.Algorithms
         // Generates a 3 cubed structure as a single gene
         private Allele GenerateAllele()
         {
-            // Enumerable.Range(0, Constants.NUMBER_OF_CHUNKS).ToArray();
-            // var cubeNumbers = new List<Vector3> { BlockPosition.UP, BlockPosition.DOWN,
-            //     BlockPosition.LEFT, BlockPosition.RIGHT, BlockPosition.FRONT, BlockPosition.BACK};
-
             Vector3 centerBlock = GenerateCenterBlockPosition();
 
             int chunkID = weightedRandomBag.GetRandom();
@@ -102,9 +108,9 @@ namespace GeneticAlgorithms.Algorithms
 
         private Vector3 GenerateCenterBlockPosition()
         {
-            float[] xRange = Utility.Range(0f, Constants.MAX_PLATFORM_DIMENSION_X, Constants.BLOCK_SIZE);
-            float[] yRange = Utility.Range(0f, Constants.MAX_PLATFORM_DIMENSION_Y, Constants.BLOCK_SIZE);
-            float[] zRange = Utility.Range(0f, Constants.MAX_PLATFORM_DIMENSION_Z, Constants.BLOCK_SIZE);
+            float[] xRange = Utility.Range(0f, PlatformWidth, Constants.BLOCK_SIZE);
+            float[] yRange = Utility.Range(0f, PlatformHeight, Constants.BLOCK_SIZE);
+            float[] zRange = Utility.Range(0f, PlatformDepth, Constants.BLOCK_SIZE);
             //todo analyse the changes for this
             // good for condensing the size of the space
             var xPos = RandomG.Next(xRange.Length);

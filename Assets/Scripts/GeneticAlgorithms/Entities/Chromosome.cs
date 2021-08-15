@@ -9,7 +9,7 @@ namespace GeneticAlgorithms.Entities
     {
         private static int _mCounter;
         public int ID { get; set; }
-        public List<Gene> Genes { get; set; }
+        public List<Gene> Genes = new List<Gene>();
     
         public float Fitness { get; set; }
 
