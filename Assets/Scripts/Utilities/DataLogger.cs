@@ -23,27 +23,16 @@ namespace Utilities
                     logger.fileName = $"MAPElitesImplResults_{variation}.txt";
                     logger.Log(message);
                     break;
-                case LogTarget.FitnessComponent:
-                    logger.fileName = $"FitnessComponent_{variation}.txt";
+                case LogTarget.FI2POP:
+                    logger.fileName = $"FI2POPResults_{variation}.txt";
                     logger.Log(message);
                     break;
-                case LogTarget.MultiPaths:
-                    logger.fileName = $"MultiPaths_{variation}.txt";
-                    logger.Log(message);
-                    break;
-                case LogTarget.WalkableSurfaces:
-                    logger.fileName = $"WalkableSurfaces_{variation}.txt";
-                    logger.Log(message);
-                    break;
-                case LogTarget.NullSpace:
-                    logger.fileName = $"NullSpace_{variation}.txt";
-                    logger.Log(message);
-                    break;
-                case LogTarget.AStarPath:
-                    logger.fileName = $"AStarPath_{variation}.txt";
+                case LogTarget.WeightedChunks:
+                    logger.fileName = $"WeightedChunks_{variation}.txt";
                     logger.Log(message);
                     break;
                 default:
+                    Debug.Log("No path has been selected");
                     return;
             }
         }
@@ -67,19 +56,13 @@ namespace Utilities
         {
             lock (lockObj)
             {
-                using (var streamWriter = new StreamWriter(corePath + fileName, true))
-                {
-                    streamWriter.WriteLine(message);
-                    streamWriter.Close();
-                }
+                File.WriteAllText(corePath + fileName, message);
             }
         }
     
         public FileLogger(string corePath)
         {
-            // Debug.Log($"Corepath: {corePath}");
             this.corePath = corePath;
-            
         }
     }
         
@@ -87,10 +70,7 @@ namespace Utilities
     {
         BasicGeneticOutput,
         MapElitesOutput,
-        FitnessComponent,
-        AStarPath,
-        MultiPaths,
-        WalkableSurfaces,
-        NullSpace
+        FI2POP,
+        WeightedChunks
     }
 }

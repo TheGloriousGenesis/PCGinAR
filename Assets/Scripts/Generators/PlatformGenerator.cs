@@ -16,6 +16,7 @@ namespace Generators
     {
         public PrefabFactory prefabs;
         private NavMeshLinksAutoPlacer _linksAutoPlacer;
+        public static Vector3 center;
 
         private void Awake()
         {
@@ -68,12 +69,14 @@ namespace Generators
             fullSpace = fullSpace.Distinct().ToList();
             nullSpace = nullSpace.Distinct().ToList();
             
+            center = fullSpace.Aggregate(Vector3.zero, (acc, v) => acc + v) / fullSpace.Count;
+            
             foreach(Vector3 v in fullSpace)
             {
                 GameObject block1 = Instantiate(prefabs[BlockType.BASIC_BLOCK], v, orientation);
                 block1.transform.parent = transform;
             }
-
+            
             Utility.GetGameMap()[BlockType.BASIC_BLOCK] = fullSpace;
             Utility.GetGameMap()[BlockType.NONE] = nullSpace;
         }

@@ -10,6 +10,7 @@ namespace GeneticAlgorithms.Entities
     [Serializable]
     public class GeneticOperators
     {
+        
         private Random _random;
         private int _k;
     
@@ -21,6 +22,15 @@ namespace GeneticAlgorithms.Entities
 
         public Chromosome FitnessProportionateSelection(List<Chromosome> population, float sumOfFitness)
         {
+            
+            if (sumOfFitness == 0)
+            {
+                foreach (Chromosome c in population)
+                {
+                    sumOfFitness += c.Fitness;
+                }
+                
+            }
             // deals with negative and positive values
             float minimalFitness = 0.0f;
             for (int i = 0; i < population.Count; ++i)
@@ -105,17 +115,25 @@ namespace GeneticAlgorithms.Entities
             return selections;
         }
     
-        public Chromosome UniformMutation(Chromosome chromosome, double probability, Func<Gene> generateGene)
+        public Chromosome UniformMutation(Chromosome chromosome, double probability, Func<Gene> generateGene, int numberOfGenes)
         {
-            for(int i=0; i < chromosome.Genes.Count; i++)
+            for(int i=0; i < numberOfGenes; i++)
             {
                 // replaces a gene with random new gene.
                 if (!(_random.NextDouble() < probability)) continue;
             
-                chromosome.Genes[i] = generateGene();
+                chromosome.Genes[_random.Next(0, chromosome.Genes.Count)] = generateGene();
             }
 
             return chromosome;
         }
+    }
+
+    public enum OperatorSuccess
+    {
+        FitnessProportionateSelection,
+        SinglePointCrossover,
+        TournamentSelection,
+        UniformMutation
     }
 }

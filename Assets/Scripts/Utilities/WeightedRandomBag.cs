@@ -21,9 +21,8 @@ namespace Utilities
             this.rand = rand;
             for (int i = 0; i < sizeOfBag; i++)
             {
-                AddEntry(i, 1f/ sizeOfBag);
+                AddEntry(i, sizeOfBag);
             }
-        
         }
 
         public void AddEntry(int item, double weight) {
@@ -60,9 +59,10 @@ namespace Utilities
             accumulatedWeight -= entryToRemove.weight;
         }
 
-        public void UpdateWeights(float[] weightMap)
+        public double[] UpdateWeights(float[] weightMap)
         {
             accumulatedWeight = 0;
+            double[] newWeights = new double[entries.Count];
             for (int i = 0; i < entries.Count; i++)
             {
                 Entry tmp = entries[i];
@@ -70,7 +70,10 @@ namespace Utilities
                 accumulatedWeight += tmp.weight;
                 tmp.accumulatedWeight = accumulatedWeight;
                 entries[i] = tmp;
+                newWeights[i] = tmp.weight;
             }
+
+            return newWeights;
         }
         
         public int GetRandom() {

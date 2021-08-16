@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace GeneticAlgorithms.Entities
 {
     public class FitnessValues
     {
+        public NavMeshPathStatus pathStatus;
         public double time { get; set; }
         public float fitness { get; set; }
         public double linearity { get; set; }

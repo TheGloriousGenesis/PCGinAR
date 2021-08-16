@@ -24,9 +24,7 @@ namespace Behaviour.Player
         public PlayerControls controls;
         
         public Random rand = new Random(Constants.SEED);
-
-        private bool _goalReached = false;
-
+        
         void Awake()
         {
             rBody = GetComponent<Rigidbody>();
@@ -113,7 +111,6 @@ namespace Behaviour.Player
         private void OnCollisionEnter(Collision collision)
         {
             if (!collision.gameObject.CompareTag("Goal")) return;
-            _goalReached = true;
             AddReward(10.0f);
             Debug.Log($"Episode {CompletedEpisodes}, Reward: {GetCumulativeReward()}");
             EndEpisode();

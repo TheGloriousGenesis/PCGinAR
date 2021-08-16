@@ -23,8 +23,8 @@ namespace Generators
                 coin.transform.parent = transform;
             }
 
-            surface.RemoveAll(x => placedPositions.Contains(x));
-            Utility.GetGameMap()[BlockType.FREE_TO_WALK] = surface;
+            // surface.RemoveAll(x => placedPositions.Contains(x));
+            // Utility.GetGameMap()[BlockType.FREE_TO_WALK] = surface;
             Utility.GetGameMap()[BlockType.COIN] = placedPositions;
         }
     }

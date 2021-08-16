@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Behaviour.Entities;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
@@ -17,19 +18,16 @@ namespace Generators
         [SerializeField] 
         private GameObject game;
 
-        [SerializeField] 
-        private GameObject level;
-
         private void Awake()
         {
             RetrieveComponents();
         }
         
         #region In Play Mode
-        public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome, int maxX, int maxY, int maxZ)
+        public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome)
         {
             CreateGame(rotation, Constants.PLAYERTYPE, chromosome);
-            ConfigureGameSpace(plane, maxX, maxY, maxZ);
+            ConfigureGameSpace(plane);
             EventManager.current.CurrentChromosomeInPlay(chromosome.ID);
             return game;
         }    
@@ -49,12 +47,11 @@ namespace Generators
             _coinGenerator.PlaceCoins(6);
         }
 
-        private void ConfigureGameSpace(Vector3 plane, int maxX, int maxY, int maxZ)
+        private void ConfigureGameSpace(Vector3 plane)
         {
-            game.transform.position = new Vector3(-maxX/2f, -maxY/2f, -maxZ/2f);
-            level.transform.position = plane;
+            game.transform.position = plane;
         }
-    
+
         #endregion
     
         #region In GA Mode
@@ -104,9 +101,7 @@ namespace Generators
                 RetrieveComponents();
             _platformGenerator.DestoryLinksAndSurfaceNavMesh();
             
-            game.transform.position = new Vector3(0, 0, 0);
-            level.transform.position = new Vector3(0, 0, 0);
-
+            // game.transform.position = new Vector3(0, 0, 0);
         }
     
         private static void DestroyGamePlacement()

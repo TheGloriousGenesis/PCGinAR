@@ -112,7 +112,7 @@ namespace Utilities
         
         public static float[] Range(float min, float max, float step)
         {
-            float[] tmp = new float[(int) (max / step) + 1];
+            float[] tmp = new float[(int) ((max - min) / step) + 1];
             int count = 0;
             for (float i = min; i <= max; i += step)
             {
@@ -186,6 +186,54 @@ namespace Utilities
             }
 
             return calculatedLength;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetWeakestIndex(this List<Chromosome> chromosomes)
+        {
+            Chromosome weakest = chromosomes[0];
+            int index = 0;
+            // Get the weakest
+            for (int i = 1; i < chromosomes.Count; i++)
+            {
+                if (chromosomes[i].Fitness < weakest.Fitness)
+                {
+                    weakest = chromosomes[i];
+                    index = i;
+                }
+            }
+            return index;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Chromosome GetWeakest(this List<Chromosome> chromosomes)
+        {
+            Chromosome weakest = chromosomes[0];
+            // Get the weakest
+            for (int i = 1; i < chromosomes.Count; i++)
+            {
+                if (chromosomes[i].Fitness < weakest.Fitness)
+                {
+                    weakest = chromosomes[i];
+                }
+            }
+            return weakest;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Chromosome GetFittest(this List<Chromosome> chromosomes)
+        {
+            Chromosome fittest = chromosomes[0];
+            int index = 0;
+            // Get the fittest
+            for (int i = 1; i < chromosomes.Count; i++)
+            {
+                if (chromosomes[i].Fitness > fittest.Fitness)
+                {
+                    fittest = chromosomes[i];
+                    index = i;
+                }
+            }
+            return fittest;
         }
         
         #endregion

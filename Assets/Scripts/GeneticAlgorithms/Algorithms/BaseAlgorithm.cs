@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Behaviour.Entities;
+using System.Diagnostics;
+using System.Text;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
 using UnityEngine;
@@ -23,18 +23,25 @@ namespace GeneticAlgorithms.Algorithms
         protected readonly float PlatformWidth;
         protected readonly float PlatformHeight;
         protected readonly float PlatformDepth;
+        protected readonly int MaxNumberOfMutations;
         protected readonly Random RandomG;
         protected int Elitism;
         protected readonly GeneticOperators GeneticGeneticOperator;
+        protected Func<Chromosome, FitnessValues> FitnessFunction;
+
         protected float[] currentWeights;
+        protected float totalTime;
+
+        protected Stopwatch timer = new Stopwatch();
+        protected StringBuilder csv_ga = new StringBuilder();
+        protected StringBuilder csv_weights = new StringBuilder();
 
         public WeightedRandomBag<int> weightedRandomBag;
-
         protected BaseAlgorithm(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
-            int elitism, float mutationProbability, int iteration, int k,
-            int width, int height, int depth)
+            int elitism, float mutationProbability, int maxNumberOfMutations,  int iteration, int k,
+            int width, int height, int depth, Func<Chromosome, FitnessValues> fitnessFunction)
         {
-            this.PopulationSize = populationSize;
+            PopulationSize = populationSize;
             ChromosomeLength = chromosomeLength;
             CrossoverProbability = crossoverProbability;
             RandomG = randomG;
@@ -47,6 +54,8 @@ namespace GeneticAlgorithms.Algorithms
             PlatformWidth = width;
             PlatformHeight = height;
             PlatformDepth = depth;
+            FitnessFunction = fitnessFunction;
+            MaxNumberOfMutations = maxNumberOfMutations;
         }
 
         #region Core genetic infrastucture (DNA)
@@ -101,16 +110,11 @@ namespace GeneticAlgorithms.Algorithms
             return new Allele(centerBlock, chunkID);
         }
 
-        protected void UpdateWeights()
-        {
-            weightedRandomBag.UpdateWeights(currentWeights);
-        }
-
         private Vector3 GenerateCenterBlockPosition()
         {
-            float[] xRange = Utility.Range(0f, PlatformWidth, Constants.BLOCK_SIZE);
-            float[] yRange = Utility.Range(0f, PlatformHeight, Constants.BLOCK_SIZE);
-            float[] zRange = Utility.Range(0f, PlatformDepth, Constants.BLOCK_SIZE);
+            float[] xRange = Utility.Range(-PlatformWidth/2, PlatformWidth/2, Constants.BLOCK_SIZE);
+            float[] yRange = Utility.Range(-PlatformWidth/2, PlatformHeight/2, Constants.BLOCK_SIZE);
+            float[] zRange = Utility.Range(-PlatformWidth/2, PlatformDepth/2, Constants.BLOCK_SIZE);
             //todo analyse the changes for this
             // good for condensing the size of the space
             var xPos = RandomG.Next(xRange.Length);
@@ -120,7 +124,31 @@ namespace GeneticAlgorithms.Algorithms
         }
         #endregion
     
-        public abstract List<Chromosome> Run(Func<Chromosome, FitnessValues> fitness);
-        public abstract void SaveInfo();
+        public abstract List<Chromosome> Run();
+        public void AddDataToResults(string data)
+        {
+            csv_ga.AppendLine(data);
+        }
+
+        public void AddDataToResults_Weights(string data)
+        {
+            csv_weights.AppendLine(data);
+        }
+        
+        public void OutputTestResults(LogTarget logTarget)
+        {
+            DataLogger.Log(logTarget, Variation,csv_ga.ToString());
+        }
+        
+        public void OutputTestResults_Weights(LogTarget logTarget)
+        {
+            DataLogger.Log(logTarget, Variation,csv_weights.ToString());
+        }
+    }
+
+    public enum AlgorithmType
+    {
+        Basic,
+        FI2POP
     }
 }

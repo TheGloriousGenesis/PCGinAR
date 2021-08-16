@@ -23,14 +23,15 @@ namespace Tests
         private int testY = 2;
         private int testZ = 2;
         private GeneticOperators _geneticOperators;
+        private Func<Chromosome, FitnessValues> fitnessFunction;
 
         [SetUp]
         public void SetUp()
         {
             _geneticOperators = new GeneticOperators(testSeed, testK);
-            test = new BasicGeneticAlgorithm(
-                testPopSize, testChromosomeLen, testCrossoverProb,
-                testSeed, testElitism, testMutationProb, testIteration, testK, testX, testY, testZ);
+        //     test = new BasicGeneticAlgorithm(
+        //         testPopSize, testChromosomeLen, testCrossoverProb,
+        //         testSeed, testElitism, testMutationProb, testIteration, testK, testX, testY, testZ, fitnessFunction);
         }
 
         [Test]

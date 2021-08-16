@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Behaviour.Entities;
 using UnityEngine;
+using Utilities.DesignPatterns;
 
 namespace GeneticAlgorithms.Entities
 {
@@ -13,7 +14,7 @@ namespace GeneticAlgorithms.Entities
         //     [SerializeField]
         // public List<BlockCube> blockPositions = new List<BlockCube>();
 
-        public Vector3 position;
+        public SerializedVector3 position;
 
         public int chunkID;
         

@@ -10,7 +10,8 @@ namespace GeneticAlgorithms.Entities
         private static int _mCounter;
         public int ID { get; set; }
         public List<Gene> Genes = new List<Gene>();
-    
+        public bool delete;
+        public bool betterThanParent;
         public float Fitness { get; set; }
 
         public Chromosome(List<Gene> g)

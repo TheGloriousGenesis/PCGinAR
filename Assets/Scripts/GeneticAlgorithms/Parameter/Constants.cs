@@ -6,7 +6,7 @@ namespace GeneticAlgorithms.Parameter
     public static class Constants
     {
         public const float BLOCK_SIZE = 0.5f;
-        public const BlockType PLAYERTYPE = BlockType.AGENT;
+        public const BlockType PLAYERTYPE = BlockType.PLAYER;
 
         public const int MAX_PLATFORM_DIMENSION_X = 10;
         public const int MAX_PLATFORM_DIMENSION_Y = 2;
@@ -34,6 +34,8 @@ namespace GeneticAlgorithms.Parameter
 
         public const float CROSSOVER_PROBABILITY = 0.6f;
         public static readonly float MUTATION_PROBABILITY = 1f / CHROMOSOME_LENGTH;
+
+        public static int MAX_NUMBER_OF_MUTATIONS = 4;
         // public static readonly int NUMBER_OF_MUTATION = (int) Math.Ceiling(CHROMOSONE_LENGTH * 0.25);
 
         public const int SEED = 123;

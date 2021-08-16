@@ -60,6 +60,8 @@ namespace UI
         private ARAnchorManager m_ARAnchorManager;
         
         private ARSessionOrigin m_ARSessionOrigin;
+        
+        private Scaler m_scaler;                      // We'll use this to change the reference for scaling
 
         [SerializeField]
         private Camera arCamera;
@@ -94,6 +96,7 @@ namespace UI
             m_ARSessionOrigin = GetComponent<ARSessionOrigin>();
             SetAllPlanesActive(false);
 #endif
+            m_scaler = GetComponent<Scaler>();
             // EnhancedTouchSupport.Enable();
             
             if (lockButton != null)
@@ -112,7 +115,8 @@ namespace UI
         {
             if (currentGame == null)
                 return;
-
+            if (isLocked)
+                return;
 #if !UNITY_EDITOR
             if (Input.touchCount == 0)
                 return;
@@ -131,8 +135,6 @@ namespace UI
                 TrackableType.FeaturePoint |
                 TrackableType.PlaneWithinPolygon;
 
-            if (isLocked)
-                return;
                 // Perform the raycast
             if (m_ARRaycastManager.Raycast(touch.position, hits, trackableTypes))
             {
@@ -140,8 +142,6 @@ namespace UI
                 var hit = hits[0];
 
                 // Create a new anchor
-                // MoveGameObject();
-                
                 var anchor = CreateAnchor(hit);
                 if (anchor)
                 {
@@ -153,13 +153,21 @@ namespace UI
                 {
                     ARDebugManager.Instance.LogInfo("Error creating anchor");
                 }
+                if (m_scaler != null)
+                {
+                    m_scaler.referenceToScale.transform.position = hit.pose.position;
+                }
+                else
+                {
+                    Debug.Log("Error: Scaler has not being initialized");
+                }                
             }
 #else
             if (currentGame == null) 
                 return;
             if (placedPrefab == null)
-                placedPrefab = gameService.CreateGameInPlay(new Vector3(), Quaternion.identity,
-                    currentGame, Constants.MAX_PLATFORM_DIMENSION_X, Constants.MAX_PLATFORM_DIMENSION_Y, Constants.MAX_PLATFORM_DIMENSION_Z );
+                placedPrefab = gameService.CreateGameInPlay(new Vector3(1,2,3), Quaternion.identity,
+                    currentGame);
             
             placedObject = placedPrefab;
 #endif
@@ -169,7 +177,6 @@ namespace UI
 
         private void Lock()
         {
-            if (placedPrefab == null) return;
             isLocked = !isLocked;
             lockButton.GetComponentInChildren<Text>().text = isLocked ? "Locked" : "Unlocked";
 
@@ -196,7 +203,7 @@ namespace UI
             gameService.ResetGame(Utility.SafeDestroyInPlayMode);
 
             EventManager.current.GAStart();
-            Chromosome gameData = _gaImplementation.Run();
+            Chromosome gameData = _gaImplementation.RunGA();
             EventManager.current.GAEnd();
 
             currentGame = gameData;
@@ -210,6 +217,7 @@ namespace UI
             }
 #endif
             welcomePanel.SetActive(true);
+            // probs change this
             generateButton.GetComponentInChildren<Text>().text = "Ready?";
             welcomePanel.GetComponent<Text>().text = "Object ready. Please scan area to place level";
         }
@@ -233,72 +241,69 @@ namespace UI
             float ActualHeight = Vector3.Distance(hit.pose.position, new Vector3(hit.pose.position.x, 
                 arCamera.transform.position.y, hit.pose.position.z));
  
+            Debug.Log(ActualHeight);
             if (ActualHeight < 0.8f)
             {
                 ARDebugManager.Instance.LogInfo("Plane Low");
-                m_ARSessionOrigin.transform.position = new Vector3(0, 0.5f, 0);
             }
             else
             {
                 ARDebugManager.Instance.LogInfo("Plane High");
-                m_ARSessionOrigin.transform.position = new Vector3(0, Constants.MAX_PLATFORM_DIMENSION_Y/2f, 0);
             }
-
-            m_ARSessionOrigin.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+            m_ARSessionOrigin.transform.position = new Vector3(0, -Constants.MAX_PLATFORM_DIMENSION_Y, 0);
+            m_ARSessionOrigin.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
 
             ARAnchor anchor = null;
-            // If we hit a plane, try to "attach" the anchor to the plane
-            if (hit.trackable is ARPlane plane)
-            {
-                var planeManager = GetComponent<ARPlaneManager>();
-                
-                if (planeManager)
-                {
-                    if (currentGame == null) 
-                        return null;
-                    if (placedPrefab == null) {
-                        placedObject = gameService.CreateGameInPlay(hit.pose.position, hit.pose.rotation, 
-                            currentGame, Constants.MAX_PLATFORM_DIMENSION_X, Constants.MAX_PLATFORM_DIMENSION_Y, 
-                            Constants.MAX_PLATFORM_DIMENSION_Z);
-                        placedPrefab = placedObject;
-                    }
-
-                    ARDebugManager.Instance.LogInfo("Creating anchor attachment.");
-                    
-                    var oldPrefab = m_ARAnchorManager.anchorPrefab;
-                    m_ARAnchorManager.anchorPrefab = placedObject;
-                    anchor = m_ARAnchorManager.AttachAnchor(plane, hit.pose);
-                    m_ARAnchorManager.anchorPrefab = oldPrefab;
-                    
-                    ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}:  Attached to plane {plane.trackableId}");
-                    generateButton.GetComponentInChildren<Text>().text = "End Game";
-                    welcomePanel.SetActive(false);
-                    return anchor;
-                }
-            }
-
-            // Otherwise, just create a regular anchor at the hit pose
-            ARDebugManager.Instance.LogInfo("Creating regular anchor.");
-            
+            // // If we hit a plane, try to "attach" the anchor to the plane
+            // if (hit.trackable is ARPlane plane)
+            // {
+            //     var planeManager = GetComponent<ARPlaneManager>();
+            //     
+            //     if (planeManager)
+            //     {
+            //         if (currentGame == null) 
+            //             return null;
+            //         if (placedPrefab == null) {
+            //             placedObject = gameService.CreateGameInPlay(hit.pose.position, hit.pose.rotation, 
+            //                 currentGame);
+            //             placedPrefab = placedObject;
+            //         }
+            //
+            //         ARDebugManager.Instance.LogInfo("Creating anchor attachment.");
+            //         
+            //         var oldPrefab = m_ARAnchorManager.anchorPrefab;
+            //         m_ARAnchorManager.anchorPrefab = placedObject;
+            //         anchor = m_ARAnchorManager.AttachAnchor(plane, hit.pose);
+            //         m_ARAnchorManager.anchorPrefab = oldPrefab;
+            //         
+            //         ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}:  Attached to plane {plane.trackableId}");
+            //         generateButton.GetComponentInChildren<Text>().text = "End Game";
+            //         welcomePanel.SetActive(false);
+            //         return anchor;
+            //     }
+            // }
+            //
+            // // Otherwise, just create a regular anchor at the hit pose
+            // ARDebugManager.Instance.LogInfo("Creating regular anchor.");
+            //
             // Note: the anchor can be anywhere in the scene hierarchy
             if (placedPrefab == null)
             {
                 placedObject = gameService.CreateGameInPlay(hit.pose.position, hit.pose.rotation, 
-                    currentGame, Constants.MAX_PLATFORM_DIMENSION_X, Constants.MAX_PLATFORM_DIMENSION_Y, 
-                    Constants.MAX_PLATFORM_DIMENSION_Z);
+                    currentGame);
                 placedPrefab = placedObject;
             }
 
-            var gameObject = placedObject;
+            // var gameObject = placedObject;
             
-            // Make sure the new GameObject has an ARAnchor component
-            anchor = gameObject.GetComponent<ARAnchor>();
-            if (anchor == null)
-            {
-                anchor = gameObject.AddComponent<ARAnchor>();
-            }
-            
-            ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}: Anchor (from {hit.hitType})");
+            // // Make sure the new GameObject has an ARAnchor component
+            // anchor = gameObject.GetComponent<ARAnchor>();
+            // if (anchor == null)
+            // {
+            //     anchor = gameObject.AddComponent<ARAnchor>();
+            // }
+            //
+            // ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}: Anchor (from {hit.hitType})");
             return anchor;
         }
         
