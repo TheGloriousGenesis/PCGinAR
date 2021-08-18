@@ -186,7 +186,7 @@ namespace GeneticAlgorithms.Algorithms
             }
             timer.Stop();
             totalTime = timer.ElapsedMilliseconds;
-            Debug.Log($"Total time F12POP (ms): {totalTime}");
+            // Debug.Log($"Total time F12POP (ms): {totalTime}");
             OutputTestResults(LogTarget.FI2POP);
             return feasiblePopulation;
         }

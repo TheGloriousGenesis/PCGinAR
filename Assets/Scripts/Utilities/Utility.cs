@@ -237,24 +237,6 @@ namespace Utilities
         }
         
         #endregion
-
-        #region Data capturing
-        // public static void SaveToFile(Object obj, string path)
-        // {
-        //     var bf = new BinaryFormatter(); 
-        //     var file = File.Create(path);
-        //     bf.Serialize(file, obj);
-        //     file.Close();
-        //     Debug.Log($"{obj.name} data saved!");
-        // }
-        //
-        // public static Object LoadFromFile(string path, Object obj)
-        // {
-        //     var extractFromJson = File.ReadAllText(path);
-        //     return obj;
-        // }
-
-        #endregion
     }
 
     [Serializable]

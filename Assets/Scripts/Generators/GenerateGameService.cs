@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using Behaviour.Entities;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
 using UI;
 using UnityEngine;
 using Utilities;
+using Debug = UnityEngine.Debug;
 
 namespace Generators
 {
@@ -18,33 +19,47 @@ namespace Generators
         [SerializeField] 
         private GameObject game;
 
+        private Stopwatch stop = new Stopwatch();
+
         private void Awake()
         {
             RetrieveComponents();
         }
         
         #region In Play Mode
-        public GameObject CreateGameInPlay(Vector3 plane, Quaternion rotation, Chromosome chromosome)
+        public GameObject CreateGame(Vector3 plane, Quaternion rotation, Chromosome chromosome, BlockType player)
         {
-            CreateGame(rotation, Constants.PLAYERTYPE, chromosome);
+#if UNITY_EDITOR
+            if (_platformGenerator == null)
+                _platformGenerator = GetComponentInChildren<PlatformGenerator>();
+            if (_coinGenerator == null)
+                _coinGenerator = GetComponentInChildren<CoinGenerator>();
+#endif
+            CreateGame(rotation, player, chromosome);
+#if !UNITY_EDITOR
             ConfigureGameSpace(plane);
             EventManager.current.CurrentChromosomeInPlay(chromosome.ID);
+#endif
             return game;
         }    
     
         private void CreateGame(Quaternion orientation, BlockType playerType, Chromosome chromosome)
         {
+#if UNITY_EDITOR
+            ResetGame(Utility.SafeDestroyInEditMode);
+#else 
             ResetGame(Utility.SafeDestroyInPlayMode);
-
+#endif
             _platformGenerator.CreatePlatform(orientation, chromosome);
         
+            stop.Reset();
+            stop.Start();
             _platformGenerator.CreateLinks();
-        
+            stop.Stop();
+            Debug.Log($"LINK generartion time: {stop.Elapsed.Milliseconds}");
             _platformGenerator.PlaceGoal(orientation);
         
             _platformGenerator.PlacePlayer(orientation, playerType);
-            
-            _coinGenerator.PlaceCoins(6);
         }
 
         private void ConfigureGameSpace(Vector3 plane)
@@ -52,34 +67,6 @@ namespace Generators
             game.transform.position = plane;
         }
 
-        #endregion
-    
-        #region In GA Mode
-    
-        public GameObject CreateGameGA(BlockType playerType, Chromosome chromosome)
-        {
-            return CreateGameGA(Quaternion.identity, playerType, chromosome);
-        }
-
-        private GameObject CreateGameGA(Quaternion orientation, BlockType playerType, Chromosome chromosome)
-        {
-            if (_platformGenerator == null)
-                _platformGenerator = GetComponentInChildren<PlatformGenerator>();
-            if (_coinGenerator == null)
-                _coinGenerator = GetComponentInChildren<CoinGenerator>(); 
-
-            ResetGame(Utility.SafeDestroyInEditMode);
-
-            _platformGenerator.CreatePlatform(orientation, chromosome);
-
-            _platformGenerator.CreateLinks();
-
-            _platformGenerator.PlaceGoal(orientation);
-            _platformGenerator.PlacePlayer(orientation, playerType);
-        
-            return GameObject.Find("/GAME");
-        }
-        
         #endregion
 
         #region Delete methods
@@ -96,12 +83,11 @@ namespace Generators
             DestroyAgent(delFunc);
 
             DestroyGamePlacement();
-            
-            if (!_platformGenerator)
-                RetrieveComponents();
+
+#if UNITY_EDITOR
+            RetrieveComponents();
+#endif
             _platformGenerator.DestoryLinksAndSurfaceNavMesh();
-            
-            // game.transform.position = new Vector3(0, 0, 0);
         }
     
         private static void DestroyGamePlacement()

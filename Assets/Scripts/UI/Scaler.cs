@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
 namespace UI
@@ -12,10 +13,26 @@ namespace UI
  
         /* Next values must be the same min and max values of
      * the Slider to change the scale */
-        private float m_maxScaleValue = 10.0f;
-        private float m_minScaleValue = 0.0f;
+        private float m_maxScaleValue = 10f;
+        private float m_minScaleValue = 1.0f;
         private float m_defaultScaleValue = 5.0f;
- 
+
+        // public void OnEnable()
+        // {
+        //     EventManager.OnGameStart += ResetReference;
+        // }
+
+        // private void ResetReference()
+        // {
+        //     referenceToScale.transform.position = new Vector3();
+        //     referenceToScale.transform.rotation = new Quaternion();
+        // }
+
+        // public void OnDisable()
+        // {
+        //     EventManager.OnGameStart -= ResetReference;
+        // }
+
         void Awake()
         {
             m_SessionOrigin = GetComponent<ARSessionOrigin>();
@@ -24,8 +41,9 @@ namespace UI
         // Method called by a Slider
         public void OnValueChange(float value)
         {
+            // session ord
             Transform t = gameObject.transform;
- 
+            
             m_SessionOrigin.MakeContentAppearAt(
                 referenceToScale.transform,
                 referenceToScale.transform.position,

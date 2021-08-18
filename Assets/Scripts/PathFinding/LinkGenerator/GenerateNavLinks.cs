@@ -14,8 +14,9 @@ namespace PathFinding.LinkGenerator
     {
         public float linkWidth;
         public bool bidirectionalLinks;
-        
-        public NavMeshLink linkPrefab;
+        public NavMeshSurface surface;
+        public Transform linkPrefab;
+        public Transform onewayLinkPrefab;
 
         Vector3 closestPointFromAToB;
         Vector3 closestPointFromBToA;
@@ -35,6 +36,14 @@ namespace PathFinding.LinkGenerator
             // floors = GetComponentsInChildren<BoxCollider>().ToList();
             ConnectThemAll();
         }
+        
+        public void RefreshLinks()
+        {
+            surface.RemoveData();
+            surface.BuildNavMesh();
+            ClearLinks();
+            DoGenerateLinks();
+        }
 
         public void ClearLinks()
         {
@@ -44,7 +53,9 @@ namespace PathFinding.LinkGenerator
                 var obj = navMeshLinkList[i].gameObject;
                 if (obj != null) Destroy(obj);
             }
+            floors = new List<BoxCollider>();
         }
+        
         public void ConnectThemAll()
         {
             IfDistanceOkThenConnect(floors, floors);
@@ -85,7 +96,7 @@ namespace PathFinding.LinkGenerator
             var closestFromBToA = b.ClosestPoint(closestFromAToB);
             var distance = Vector3.Distance(closestFromAToB, closestFromBToA);
 
-            if (distance <= brickConnectThreshold && distance >= 1.4f)
+            if (distance <= brickConnectThreshold)
             {
                 return true;
             } else

@@ -9,20 +9,13 @@ public class ClickToMove : MonoBehaviour
     RaycastHit m_HitInfo = new RaycastHit();
     private GameObject target;
     private NavMeshPath path;
-    public float m_Range = 4f;
+    public float m_Range = 25f;
 
     void Start()
     {
         m_Agent = GetComponent<NavMeshAgent>();
         target = GameObject.FindGameObjectWithTag("Goal");
         path = new NavMeshPath();
-
-        HeadToPoint();
-    }
-
-    public void HeadToPoint()
-    {
-        
     }
 
     void Update()

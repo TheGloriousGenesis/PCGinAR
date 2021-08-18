@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using Behaviour.Entities;
 using Generators;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Implementation;
@@ -8,6 +10,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using Utilities;
+using Debug = UnityEngine.Debug;
 
 namespace UI
 {
@@ -32,6 +35,8 @@ namespace UI
         private GenerateGameService gameService;
 
         private Chromosome currentGame;
+        
+        protected Stopwatch timer = new Stopwatch();
         
         #endregion
 
@@ -77,17 +82,7 @@ namespace UI
         
         private void Awake()
         {
-            AndroidRuntimePermissions.Permission result =
-                AndroidRuntimePermissions.RequestPermission("android.permission.ACTIVITY_RECOGNITION");
-            if (result == AndroidRuntimePermissions.Permission.Granted)
-            {
-                ARDebugManager.Instance.LogInfo("We have permission to access the stepcounter");
-            }
-            else
-            {
-                Debug.Log("Permission state: " + result); // No permission
-                Application.Quit();
-            }
+
             
 #if !UNITY_EDITOR
             m_ARRaycastManager = GetComponent<ARRaycastManager>();
@@ -115,8 +110,6 @@ namespace UI
         {
             if (currentGame == null)
                 return;
-            if (isLocked)
-                return;
 #if !UNITY_EDITOR
             if (Input.touchCount == 0)
                 return;
@@ -138,21 +131,13 @@ namespace UI
                 // Perform the raycast
             if (m_ARRaycastManager.Raycast(touch.position, hits, trackableTypes))
             {
+
                 // Raycast hits are sorted by distance, so the first one will be the closest hit.
                 var hit = hits[0];
 
                 // Create a new anchor
-                var anchor = CreateAnchor(hit);
-                if (anchor)
-                {
-                    RemoveAllAnchors();
-                    // Remember the anchor so we can remove it later.
-                    anchors.Add(anchor);
-                }
-                else
-                {
-                    ARDebugManager.Instance.LogInfo("Error creating anchor");
-                }
+                CreateAnchor(hit);
+
                 if (m_scaler != null)
                 {
                     m_scaler.referenceToScale.transform.position = hit.pose.position;
@@ -160,14 +145,15 @@ namespace UI
                 else
                 {
                     Debug.Log("Error: Scaler has not being initialized");
-                }                
+                }  
+    
             }
 #else
             if (currentGame == null) 
                 return;
             if (placedPrefab == null)
-                placedPrefab = gameService.CreateGameInPlay(new Vector3(1,2,3), Quaternion.identity,
-                    currentGame);
+                placedPrefab = gameService.CreateGame(new Vector3(1,2,3), Quaternion.identity,
+                    currentGame, BlockType.PLAYER);
             
             placedObject = placedPrefab;
 #endif
@@ -199,11 +185,15 @@ namespace UI
             {
                 EventManager.current.GameEnd();
             }
-
+            
             gameService.ResetGame(Utility.SafeDestroyInPlayMode);
-
+            
             EventManager.current.GAStart();
+            timer.Reset();
+            timer.Start();
             Chromosome gameData = _gaImplementation.RunGA();
+            timer.Stop();
+            Debug.Log($"Run method takes : {timer.ElapsedMilliseconds}");
             EventManager.current.GAEnd();
 
             currentGame = gameData;
@@ -236,75 +226,24 @@ namespace UI
             generateButton.GetComponentInChildren<Text>().text = "Next Level";
         }
         
-        ARAnchor CreateAnchor(in ARRaycastHit hit)
+        void CreateAnchor(in ARRaycastHit hit)
         {
-            float ActualHeight = Vector3.Distance(hit.pose.position, new Vector3(hit.pose.position.x, 
-                arCamera.transform.position.y, hit.pose.position.z));
- 
-            Debug.Log(ActualHeight);
-            if (ActualHeight < 0.8f)
-            {
-                ARDebugManager.Instance.LogInfo("Plane Low");
-            }
-            else
-            {
-                ARDebugManager.Instance.LogInfo("Plane High");
-            }
-            m_ARSessionOrigin.transform.position = new Vector3(0, -Constants.MAX_PLATFORM_DIMENSION_Y, 0);
-            m_ARSessionOrigin.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
-
-            ARAnchor anchor = null;
-            // // If we hit a plane, try to "attach" the anchor to the plane
             // if (hit.trackable is ARPlane plane)
             // {
-            //     var planeManager = GetComponent<ARPlaneManager>();
-            //     
-            //     if (planeManager)
-            //     {
-            //         if (currentGame == null) 
-            //             return null;
-            //         if (placedPrefab == null) {
-            //             placedObject = gameService.CreateGameInPlay(hit.pose.position, hit.pose.rotation, 
-            //                 currentGame);
-            //             placedPrefab = placedObject;
-            //         }
-            //
-            //         ARDebugManager.Instance.LogInfo("Creating anchor attachment.");
-            //         
-            //         var oldPrefab = m_ARAnchorManager.anchorPrefab;
-            //         m_ARAnchorManager.anchorPrefab = placedObject;
-            //         anchor = m_ARAnchorManager.AttachAnchor(plane, hit.pose);
-            //         m_ARAnchorManager.anchorPrefab = oldPrefab;
-            //         
-            //         ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}:  Attached to plane {plane.trackableId}");
-            //         generateButton.GetComponentInChildren<Text>().text = "End Game";
-            //         welcomePanel.SetActive(false);
-            //         return anchor;
-            //     }
+            //     var transform1 = hit.trackable.transform;
+            //     var position = transform1.position;
+            //     Debug.Log($"plane position: {position}, " +
+            //               $"Area: {position.x * position.y}");
             // }
-            //
-            // // Otherwise, just create a regular anchor at the hit pose
-            // ARDebugManager.Instance.LogInfo("Creating regular anchor.");
-            //
             // Note: the anchor can be anywhere in the scene hierarchy
-            if (placedPrefab == null)
+            if (placedPrefab == null && !isLocked)
             {
-                placedObject = gameService.CreateGameInPlay(hit.pose.position, hit.pose.rotation, 
-                    currentGame);
-                placedPrefab = placedObject;
+                placedPrefab = gameService.CreateGame(hit.pose.position, hit.pose.rotation, 
+                    currentGame, BlockType.PLAYER);
+                placedObject = placedPrefab;
+                generateButton.GetComponentInChildren<Text>().text = "End Game";
+                Debug.Log("Placed prefab is created");
             }
-
-            // var gameObject = placedObject;
-            
-            // // Make sure the new GameObject has an ARAnchor component
-            // anchor = gameObject.GetComponent<ARAnchor>();
-            // if (anchor == null)
-            // {
-            //     anchor = gameObject.AddComponent<ARAnchor>();
-            // }
-            //
-            // ARDebugManager.Instance.LogInfo($"Anchor {anchor.trackableId}: Anchor (from {hit.hitType})");
-            return anchor;
         }
         
         public void RemoveAllAnchors()

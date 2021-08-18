@@ -31,6 +31,10 @@ namespace Utilities
                     logger.fileName = $"WeightedChunks_{variation}.txt";
                     logger.Log(message);
                     break;
+                case LogTarget.Time:
+                    logger.fileName = $"Time_{variation}.txt";
+                    logger.Log(message);
+                    break;
                 default:
                     Debug.Log("No path has been selected");
                     return;
@@ -71,6 +75,7 @@ namespace Utilities
         BasicGeneticOutput,
         MapElitesOutput,
         FI2POP,
-        WeightedChunks
+        WeightedChunks,
+        Time
     }
 }

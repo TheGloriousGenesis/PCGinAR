@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Random = System.Random;
 
 namespace Utilities
@@ -78,7 +79,7 @@ namespace Utilities
         
         public int GetRandom() {
             double r = rand.NextDouble() * accumulatedWeight;
-
+            // Debug.Log($"random number : {r}");
             foreach (Entry entry in entries) {
                 if (entry.accumulatedWeight >= r) {
                     return entry.item;

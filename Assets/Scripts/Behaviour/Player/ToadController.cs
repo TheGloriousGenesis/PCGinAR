@@ -160,7 +160,6 @@ namespace Behaviour.Player
             _gameData.numberOfJumps = numberOfJumps;
             _gameData.timeCompleted = timer.ElapsedMilliseconds;
             _gameData.goalReached = goalReached;
-            // #if !UNITY_EDITOR
             _gameData.numberOfPhysicalMovement = stepCount;
             // #else
             // _gameData.numberOfPhysicalMovement = (int) SimpleRNG.GetNormal(400, 60);
@@ -212,7 +211,6 @@ namespace Behaviour.Player
             if (isActiveCounter && (accelerometerValue > currentThreshold)) {
                 currentSample = 0;
                 isActiveCounter = false;
-                Debug.Log($"StepCounter, detect() true for threshold {currentThreshold}");
                 stepCount++;
                 return true;
             }

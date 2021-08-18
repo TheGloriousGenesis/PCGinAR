@@ -16,24 +16,31 @@ namespace Generators
     {
         public PrefabFactory prefabs;
         private NavMeshLinksAutoPlacer _linksAutoPlacer;
-        public static Vector3 center;
+        // private GenerateNavLinks _gen;
 
         private void Awake()
         {
             _linksAutoPlacer = GetComponent<NavMeshLinksAutoPlacer>();
-            // private GenerateNavLinks _gen;
+            // _gen = GetComponent<GenerateNavLinks>();
         }
 
         public void CreatePlatform(Quaternion orientation, Chromosome chromosome)
         {
+            if (transform.rotation != Quaternion.identity)
+            {
+                Debug.Log("Somehow rotating");
+            }
             PlacePlatform(orientation, chromosome);
             ObtainWalkableSurface();
         }
         
         public void CreateLinks()
         {
+            #if UNITY_EDITOR
+            Awake();
+            #endif
             _linksAutoPlacer.RefreshLinks();
-            // gen.DoGenerateLinks();
+            // _gen.RefreshLinks();
         }
 
         public void DestoryLinksAndSurfaceNavMesh()
@@ -68,8 +75,6 @@ namespace Generators
 
             fullSpace = fullSpace.Distinct().ToList();
             nullSpace = nullSpace.Distinct().ToList();
-            
-            center = fullSpace.Aggregate(Vector3.zero, (acc, v) => acc + v) / fullSpace.Count;
             
             foreach(Vector3 v in fullSpace)
             {

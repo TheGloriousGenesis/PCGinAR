@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Behaviour.Entities;
+using GeneticAlgorithms.Parameter;
 using PathFinding.Entities;
 using UnityEngine;
 using Utilities;
@@ -34,9 +35,12 @@ namespace PathFinding
 			FindAllWalkableNodes();
 			CreateAdjacencyMatrix();
 
+			Debug.Log($"Utility map populated: {Utility.GetGameMap().Count}");
+			// Debug.Log($"Utility map populated: {Utility.GetGameMap().Count}");
 			_player = _nodeMap[Utility.GetGameMap()[BlockType.AGENT][0]];
+			Debug.Log("Found the player");
 			_target = _nodeMap[Utility.GetGameMap()[BlockType.GOAL][0]];
-			
+			Debug.Log("Found the target");
 			if (_player == null || _target == null)
 			{
 				throw new Exception("No Player or target is found");
@@ -69,17 +73,16 @@ namespace PathFinding
 
 		private List<Node> GetNeighbours(Vector3 cell, List<Node> neighbours) {
 			neighbours.Clear();
-			for (var dx = -2; dx <= 2; dx++) {
-				for (var dy = -1; dy <= 1; dy++) {
-					for (var dz = -2; dz <= 2; dz++) {
+			for (var dx = -1f; dx <= 1f; dx = dx + Constants.BLOCK_SIZE) {
+				for (var dy = -0.5f; dy <= 0.5f; dy = dy + Constants.BLOCK_SIZE) {
+					for (var dz = -1f; dz <= 1f;dz = dz + Constants.BLOCK_SIZE) {
 						var coord = cell + new Vector3(dx, dy, dz);
-
 						if (!_nodeMap.ContainsKey(coord)) continue;
 						var tmp = _nodeMap[coord];
 
 						var notSelf = !(dx == 0 && dy == 0 && dz == 0);
 
-						var connectivity = Math.Abs(dx) + Math.Abs(dy) + Math.Abs(dz) <= 5;
+						var connectivity = Math.Abs(dx) + Math.Abs(dy) + Math.Abs(dz) <= 2.5;
 						if (notSelf && connectivity && tmp.walkable) {
 							neighbours.Add(_nodeMap[coord]);
 						}

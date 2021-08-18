@@ -143,6 +143,8 @@ namespace PathFinding.LinkGenerator
             var startPos = pos + normal * Vector3.forward * _agentRadius * 2;
             var endPos = startPos - Vector3.up * maxJumpHeight * Constants.BLOCK_SIZE;
 
+            // Debug.DrawRay(startPos, endPos, Color.green, 10);
+            // Debug.Log(startPos);
             // ignore trigger colliders during raycast from start of link to end of link 
             if (!Physics.Linecast(startPos, endPos, out var raycastHit, raycastLayerMask.value,
                 QueryTriggerInteraction.Ignore)) return;
@@ -172,7 +174,7 @@ namespace PathFinding.LinkGenerator
                 nmLink.UpdateLink();
 
                 spawnedTransform.SetParent(transform);
-            } else if (dis > 1.1f && (extremeDrop > maxJumpHeight))
+            } else if ((extremeDrop > maxJumpHeight))
             {
                 //SPAWN NAVMESH LINKS
                 var spawnedTransform = Instantiate(

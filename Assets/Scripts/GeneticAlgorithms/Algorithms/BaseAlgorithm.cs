@@ -13,29 +13,30 @@ namespace GeneticAlgorithms.Algorithms
     // TODO: Check that a given chromosome has unique genes that do not overlap in space (maybe use hashset)
     public abstract class BaseAlgorithm
     {
-        public readonly int ChromosomeLength;
+        public int ChromosomeLength;
         public string Variation;
         
         protected readonly int PopulationSize;
         protected int Iteration; // same as number of generations
         protected readonly float CrossoverProbability;
         protected readonly float MutationProbability;
-        protected readonly float PlatformWidth;
-        protected readonly float PlatformHeight;
+        protected internal float PlatformWidth;
+        public float PlatformHeight;
         protected readonly float PlatformDepth;
         protected readonly int MaxNumberOfMutations;
         protected readonly Random RandomG;
         protected int Elitism;
         protected readonly GeneticOperators GeneticGeneticOperator;
         protected Func<Chromosome, FitnessValues> FitnessFunction;
-
+        protected int K;
         protected float[] currentWeights;
         protected float totalTime;
 
         protected Stopwatch timer = new Stopwatch();
         protected StringBuilder csv_ga = new StringBuilder();
         protected StringBuilder csv_weights = new StringBuilder();
-
+        protected StringBuilder csv_time = new StringBuilder();
+        
         public WeightedRandomBag<int> weightedRandomBag;
         protected BaseAlgorithm(int populationSize, int chromosomeLength, float crossoverProbability, Random randomG, 
             int elitism, float mutationProbability, int maxNumberOfMutations,  int iteration, int k,
@@ -80,7 +81,7 @@ namespace GeneticAlgorithms.Algorithms
             return genotype;
         }
 
-        private Chromosome GenerateChromosome()
+        protected Chromosome GenerateChromosome()
         {
             // a genotype is a solution to the level. feed in number of blocks and restrictions to generate possible level
             List<Gene> genes = new List<Gene>();
@@ -135,6 +136,11 @@ namespace GeneticAlgorithms.Algorithms
             csv_weights.AppendLine(data);
         }
         
+        public void AddDataToResults_Time(string data)
+        {
+            csv_time.AppendLine(data);
+        }
+        
         public void OutputTestResults(LogTarget logTarget)
         {
             DataLogger.Log(logTarget, Variation,csv_ga.ToString());
@@ -143,6 +149,11 @@ namespace GeneticAlgorithms.Algorithms
         public void OutputTestResults_Weights(LogTarget logTarget)
         {
             DataLogger.Log(logTarget, Variation,csv_weights.ToString());
+        }
+        
+        public void OutputTestResults_Time(LogTarget logTarget)
+        {
+            DataLogger.Log(logTarget, Variation,csv_time.ToString());
         }
     }
 

@@ -24,31 +24,33 @@ namespace GeneticAlgorithms.Implementation
 {
     public class GaImplementation : MonoBehaviour
     {
-        [Header("Platform variables")] [SerializeField]
-        private int MaxPlatformWidth = Constants.MAX_PLATFORM_DIMENSION_X;
-
-        [SerializeField] private int MaxPlatformHeight = Constants.MAX_PLATFORM_DIMENSION_Y;
-        [SerializeField] private int MaxPlatformDepth = Constants.MAX_PLATFORM_DIMENSION_Z;
+        [Header("Platform variables")] 
+        [Range(3, 8)][SerializeField] private int MaxPlatformWidth = Constants.MAX_PLATFORM_DIMENSION_X;
+        [Range(3, 8)][SerializeField] private int MaxPlatformHeight = Constants.MAX_PLATFORM_DIMENSION_Y;
+        [Range(3, 8)][SerializeField] private int MaxPlatformDepth = Constants.MAX_PLATFORM_DIMENSION_Z;
 
         [Header("Core Genetic Algorithm Variables")] [SerializeField]
-        public AlgorithmType AlgorithmType;
+        public AlgorithmType AlgorithmType = AlgorithmType.Basic;
 
         [SerializeField] private int Seed = Constants.SEED;
-        [SerializeField] private int PopulationSize = Constants.POPULATION_SIZE;
-        [Range(5, 600)]
-        [SerializeField] private int ChromosomeLength = Constants.CHROMOSOME_LENGTH;
+        [Range(5, 300)][SerializeField] private int PopulationSize = Constants.POPULATION_SIZE;
+        [Range(5, 12)] [SerializeField] private int ChromosomeLength = Constants.CHROMOSOME_LENGTH;
         [SerializeField] private int Elitism = Constants.ELITISM;
         [SerializeField] private int NumberOfGenerations = Constants.NUMBER_OF_GENERATIONS;
 
-        [Header("Crossover Variables")] [SerializeField]
+        [Header("Crossover Variables")] 
+        [SerializeField]
         private float CrossoverProbability = Constants.CROSSOVER_PROBABILITY;
 
-        [Header("Mutation Variables")] [SerializeField]
+        [Header("Mutation Variables")] 
+        [SerializeField]
         private float MutationProbability = Constants.MUTATION_PROBABILITY;
-        [Range(0, 3)]
+
+        [Range(1, 4)] 
         public int MaxNumberOfMutations = Constants.MAX_NUMBER_OF_MUTATIONS;
 
-        [Header("Selection Variables")] [SerializeField]
+        [Header("Selection Variables")] 
+        [SerializeField]
         private int K = (int) Math.Ceiling(Constants.POPULATION_SIZE * 0.25);
 
         [Header("Post Processing Variables")] [SerializeField]
@@ -62,7 +64,7 @@ namespace GeneticAlgorithms.Implementation
 
         private string variation;
 
-        private List<GameData> lastThreePlays = new List<GameData>();
+        private List<GameData> lastPlays = new List<GameData>();
 
         #region Event subscriptions
 
@@ -93,56 +95,50 @@ namespace GeneticAlgorithms.Implementation
             variation = $"PS{PopulationSize}_CL{ChromosomeLength}_MP{MaxPlatformWidth}." +
                         $"{MaxPlatformHeight}.{MaxPlatformDepth}_" +
                         $"G{NumberOfGenerations}";
-        }
-
-        public Chromosome RunGA()
-        {
+            
             _ga.Variation = $"PS{PopulationSize}_CL{ChromosomeLength}_MP{MaxPlatformWidth}." +
                             $"{MaxPlatformHeight}.{MaxPlatformDepth}_" +
                             $"G{NumberOfGenerations}";
-            List<Chromosome> finalResult = _ga.Run();
-            return finalResult[1];
+            _fi2Pop.Variation = $"PS{PopulationSize}_CL{ChromosomeLength}_MP{MaxPlatformWidth}." +
+                                $"{MaxPlatformHeight}.{MaxPlatformDepth}_" +
+                                $"G{NumberOfGenerations}";
+            
+            Debug.Log(_ga.Variation);
         }
 
-        public void RunGAInEdit()
+        #region Run methods
+
+        public Chromosome RunGA()
         {
+#if UNITY_EDITOR
+            Awake();
+#endif
             List<Chromosome> finalResult;
             switch (AlgorithmType)
             {
                 case (AlgorithmType.Basic):
-                    Awake();
-                    _ga.Variation = $"PS{PopulationSize}_CL{ChromosomeLength}_MP{MaxPlatformWidth}." +
-                                    $"{MaxPlatformHeight}.{MaxPlatformDepth}_" +
-                                    $"G{NumberOfGenerations}";
                     finalResult = _ga.Run();
+                    Debug.Log($"current fitness: {finalResult[0].Fitness}");
                     GenerateLevel(finalResult[0]);
-                    break;
+                    _pathFinding.FindPaths();
+                    return finalResult[0];
                 case (AlgorithmType.FI2POP):
-                    Awake();
-                    _fi2Pop.Variation = $"PS{PopulationSize}_CL{ChromosomeLength}_MP{MaxPlatformWidth}." +
-                                        $"{MaxPlatformHeight}.{MaxPlatformDepth}_" +
-                                        $"G{NumberOfGenerations}";
                     finalResult = _fi2Pop.Run();
                     GenerateLevel(finalResult[0]);
-                    break;
+                    _pathFinding.FindPaths();
+                    return finalResult[0];
                 default:
                     Debug.Log("No Algorithm has been chosen");
-                    break;
+                    return null;
             }
-        }
-
-        private void RemoveInEdit()
-        {
-            if (!_gameService)
-                _gameService = GetComponent<GenerateGameService>();
-            if (!_pathFinding)
-                _pathFinding = GetComponent<PathFinding3D>();
-
-            ClearLevel();
         }
 
         private void ClearLevel()
         {
+#if UNITY_EDITOR
+                _gameService = GetComponent<GenerateGameService>();
+                _pathFinding = GetComponent<PathFinding3D>();
+#endif
             _gameService.ResetGame(Utility.SafeDestroyInEditMode);
             _ga = null;
             _pathFinding.ResetPathFinding();
@@ -152,9 +148,10 @@ namespace GeneticAlgorithms.Implementation
 
         private void GenerateLevel(Chromosome chromosome)
         {
-            _gameService.CreateGameGA(BlockType.AGENT, chromosome);
+            _gameService.CreateGame(new Vector3(), Quaternion.identity, chromosome, BlockType.AGENT);
             _gameService.PostProcessingAdjustments(NumberOfCoins);
         }
+        #endregion
 
         #region Fitness Analysis
 
@@ -162,26 +159,52 @@ namespace GeneticAlgorithms.Implementation
         {
             Stopwatch timer = new Stopwatch();
             FitnessValues fv = new FitnessValues();
+            Stopwatch stop = new Stopwatch();
 
             float score = 0;
-
-            timer.Start();
+            // timer.Reset();
+            // timer.Start();
             GenerateLevel(chromosome);
-            timer.Stop();
-
+            // timer.Stop();
+            // Debug.Log($"LevelGeneration time: {timer.Elapsed.TotalMilliseconds}");
             fv.time = timer.Elapsed.TotalMilliseconds;
+            
+            // stop.Start();
             score += AnalyseAStarPath(fv);
+            // stop.Stop();
+            // Debug.Log($"A start time: {stop.Elapsed.TotalMilliseconds}");
+
+            // stop.Reset();
+            // stop.Start();
             score += AnalyseMultiPaths(fv);
+            // stop.Stop();
+            // Debug.Log($"Multipath time: {stop.Elapsed.TotalMilliseconds}");
+
+            // stop.Reset();
+            // stop.Start();
             score += PercentageOfWalkableSurfaces(fv);
+            // stop.Stop();
+            // Debug.Log($"Fitness Evaluation time: {stop.Elapsed.TotalMilliseconds}");
+
+            // stop.Reset();
+            // stop.Start();
             score += PercentageOfNullSpace(fv);
+            // stop.Stop();
+            // Debug.Log($"Null space time: {stop.Elapsed.TotalMilliseconds}");
+
             // score += CalculateVolumeUsed();
             // score += PercentageOfChromosomeUsed();
+            // stop.Reset();
+            // stop.Start();
             CalculateLinearity(fv);
+            // stop.Stop();
+            // Debug.Log($"Linearity time: {stop.Elapsed.TotalMilliseconds}");
+
 
             //todo change as max score has now changed
             // (x - min(x)) / (max(x) -min(x) --> https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
-            float max = 5f;
-            float min = -20.5f;
+            float max = 7f;
+            float min = -25.5f;
             score = (score - min) / (max - min);
 
             chromosome.Fitness = score;
@@ -204,9 +227,8 @@ namespace GeneticAlgorithms.Implementation
             }
             else
             {
-                score -= 10f;
+                score -= 5f;
             }
-            
             float pathLength = path.GetTotalDistance();
 
             List<int> _longestDimension = new List<int>() {MaxPlatformDepth, MaxPlatformHeight, MaxPlatformWidth};
@@ -229,20 +251,22 @@ namespace GeneticAlgorithms.Implementation
 
             if (numberOfPaths == 0)
             {
-                score -= 10;
-            }
-
-            if (1 <= numberOfPaths && numberOfPaths <= 5)
+                score -= 20;
+            } else if (numberOfPaths == 1)
             {
-                score -= 2;
+                score +=  1;
             }
-            else if (6 <= numberOfPaths && numberOfPaths <= 10)
+            else if (numberOfPaths <= 5)
             {
-                score += 1;
+                score += 2;
             }
-            else if (11 <= numberOfPaths && numberOfPaths <= 20)
+            else if (numberOfPaths <= 10)
             {
-                score += 0.5f;
+                score += 3;
+            }
+            else if (numberOfPaths <= 20)
+            {
+                score -= 1f;
             }
 
             fitnessValues.numberOfPaths = numberOfPaths;
@@ -376,46 +400,63 @@ namespace GeneticAlgorithms.Implementation
 
         private void AddInGameData(GameData gameData)
         {
-            lastThreePlays.Add(gameData);
-            if (lastThreePlays.Count == 3)
+            lastPlays.Add(gameData);
+            if (lastPlays.Count == 2)
             {
                 List<Chromosome> playedSolutions =
-                    _ga._currentPopulation.FindAll(i => 
-                        lastThreePlays.Select(x => x.chromosomeID).Contains(i.ID));
-                List<GameData> goalNotReached = lastThreePlays.Where(x => x.goalReached == false).ToList();
-                if (goalNotReached.Count >= 2)
-                {
-                    // Remove chromosomes from current population;
-                    List<int> chromosomeIDs = goalNotReached.Select(x => x.chromosomeID).ToList();
-                    var chromosomes = playedSolutions.FindAll(x => chromosomeIDs.Contains(x.ID));
-                    // Increase weighting of linear chunks to make level easier
-                    double[] updatedWeights = _ga.weightedRandomBag.UpdateWeights(CalculateNewWeights(chromosomes, true));
-                    _ga.AddDataToResults_Weights(string.Join(",", updatedWeights.Select(w => w.ToString())));
-                    _ga._currentPopulation.RemoveAll(x => chromosomeIDs.Contains(x.ID));
-                }
-                else
-                {
-                    double[] updatedWeights = _ga.weightedRandomBag.UpdateWeights(CalculateNewWeights(playedSolutions, false));
-                    _ga.AddDataToResults_Weights(string.Join(",", updatedWeights.Select(w => w.ToString())));
-                }
-
+                    _ga._currentPopulation.FindAll(i =>
+                        lastPlays.Select(x => x.chromosomeID).Contains(i.ID));
+                GoalNotReached(playedSolutions);
+                
+                // List<GameData> numberOfInGameJumps = lastPlays.Where(x => x.numberOfJumps > MaxPlatformHeight).ToList();
+                // if (numberOfInGameJumps.Count == 2)
+                // {
+                //     _ga.PlatformHeight = Math.Abs(_ga.PlatformHeight - 3) < 0.01 || Math.Abs(_ga.PlatformHeight - 8) < 0.01 ? _ga.PlatformHeight : _ga.PlatformHeight - 1;
+                // }
 #if !UNITY_EDITOR
-                float max = lastThreePlays.Select(x => x.numberOfPhysicalMovement).Max();
-                float min = lastThreePlays.Select(x => x.numberOfPhysicalMovement).Min();
+                float max = lastPlays.Select(x => x.numberOfPhysicalMovement).Max();
+                float min = lastPlays.Select(x => x.numberOfPhysicalMovement).Min();
                 float median = (max - min) / 2;
                 if (median < 15)
                 {
                     _ga.weightedRandomBag.UpdateWeights(CalculateNewWeights(playedSolutions, true));
+                    _ga.PlatformWidth = Math.Abs(_ga.PlatformWidth - 3) < 0.01 || Math.Abs(_ga.PlatformWidth - 8) < 0.01 ? _ga.PlatformWidth : _ga.PlatformWidth + 1;
                 }
 #endif
-                lastThreePlays.Clear();
+                lastPlays.Clear();
             }
         }
+
+        private void GoalNotReached(List<Chromosome> playedSolutions)
+        {
+            List<GameData> goalNotReached = lastPlays.Where(x => x.goalReached == false).ToList();
+            if (goalNotReached.Count == 2)
+            {
+                // Remove chromosomes from current population;
+                List<int> chromosomeIDs = goalNotReached.Select(x => x.chromosomeID).ToList();
+                var chromosomes = playedSolutions.FindAll(x => chromosomeIDs.Contains(x.ID));
+                // Increase weighting of linear chunks to make level easier
+                double[] updatedWeights =
+                    _ga.weightedRandomBag.UpdateWeights(CalculateNewWeights(chromosomes, true));
+                _ga.AddDataToResults_Weights(string.Join(",", updatedWeights.Select(w => w.ToString())));
+                _ga._currentPopulation.RemoveAll(x => chromosomeIDs.Contains(x.ID));
+                
+                _ga.PlatformHeight = Math.Abs(_ga.PlatformHeight - 3) < 0.01 || Math.Abs(_ga.PlatformHeight - 8) < 0.01 ? _ga.PlatformHeight : _ga.PlatformHeight - 1;
+            }
+            else if (goalNotReached.Count == 0)
+            {
+                double[] updatedWeights =
+                    _ga.weightedRandomBag.UpdateWeights(CalculateNewWeights(playedSolutions, false));
+                _ga.AddDataToResults_Weights(string.Join(",", updatedWeights.Select(w => w.ToString())));
+            }
+        }
+
         #endregion
 
         private void OnApplicationQuit()
         {
             _ga.OutputTestResults_Weights(LogTarget.WeightedChunks);
+            _ga.OutputTestResults_Time(LogTarget.Time);
         }
 
 #if UNITY_EDITOR
@@ -432,7 +473,7 @@ namespace GeneticAlgorithms.Implementation
                 {
                     foreach (var targ in targets)
                     {
-                        ((GaImplementation) targ).RunGAInEdit();
+                        ((GaImplementation) targ).RunGA();
                     }
                 }
 
@@ -440,7 +481,7 @@ namespace GeneticAlgorithms.Implementation
                 {
                     foreach (var targ in targets)
                     {
-                        ((GaImplementation) targ).RemoveInEdit();
+                        ((GaImplementation) targ).ClearLevel();
                     }
                 }
             }
