@@ -216,7 +216,7 @@ namespace Behaviour.Player
             }
 
             ++currentSample;
-            ARDebugManager.Instance.LogInfo($"Current Steps = {stepCount}");
+            // ARDebugManager.Instance.LogInfo($"Current Steps = {stepCount}");
             return false;
         }
 

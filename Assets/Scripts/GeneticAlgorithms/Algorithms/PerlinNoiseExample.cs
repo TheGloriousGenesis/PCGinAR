@@ -19,7 +19,6 @@ public class PerlinNoiseExample : MonoBehaviour
     public int platformLength;
     public int platformHeight;
 
-    private Random rand = new Random();
     private float[,] perlinMap;
 
     // I wish to store objects and their orientation in space in an object 
