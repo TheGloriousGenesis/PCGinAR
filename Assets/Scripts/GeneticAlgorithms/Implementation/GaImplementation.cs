@@ -371,11 +371,11 @@ namespace GeneticAlgorithms.Implementation
             float score = 0.0f;
             int numberBricksPlaced = Utility.GetGameMap()[BlockType.FREE_TO_WALK].Count +
                                      Utility.GetGameMap()[BlockType.BASIC_BLOCK].Count;
-
+        
             float used = 1 - numberBricksPlaced * 1f / Constants.TOTAL_VOLUME;
-
+        
             fitnessValues.nullSpace = used;
-
+        
             score += numberBricksPlaced * 1f / Constants.TOTAL_VOLUME;
             return score;
         }

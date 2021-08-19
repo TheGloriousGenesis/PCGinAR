@@ -20,63 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a993c359-f12f-441b-95df-183d25883f86" name="Default Changelist" comment="Uncommited files forgotten">
-      <change afterPath="$PROJECT_DIR$/Assets/Materials.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/PlaneMaterial.mat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/PlaneMaterial.mat.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/Chromosome.psd.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDriven.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDriven.png.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle.backup" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle.backup.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/mainTemplate.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/mainTemplate.gradle.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallback.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallback.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackAsync.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackAsync.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackHelper.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackHelper.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/RuntimePermissions.aar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/RuntimePermissions.aar.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.Runtime.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.Runtime.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/CREDITS.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/CREDITS.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Editor/ARPPostProcessBuild.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Editor/ARPPostProcessBuild.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/README.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/AR/AR Plane Debug Visualizer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/AR/AR Plane Debug Visualizer.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ClickToMove.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ClickToMove.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generators/GenerateGameService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generators/GenerateGameService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Permission.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Permission.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities/WeightedRandomBag.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities/WeightedRandomBag.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/results/.ipynb_checkpoints/Visualisation-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/results/.ipynb_checkpoints/Visualisation-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR.psd" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR.psd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/results/Visualisation.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/results/Visualisation.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -434,7 +382,7 @@
       <workItem from="1629286578966" duration="12459000" />
       <workItem from="1629300782041" duration="11522000" />
       <workItem from="1629319011375" duration="4348000" />
-      <workItem from="1629324291225" duration="4341000" />
+      <workItem from="1629324291225" duration="8832000" />
     </task>
     <task id="LOCAL-00001" summary="Uncommited files forgotten">
       <created>1627913468488</created>
