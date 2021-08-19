@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Behaviour.Entities;
+using GeneticAlgorithms.Algorithms;
 using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Parameter;
 using UI;
@@ -52,11 +53,11 @@ namespace Generators
 #endif
             _platformGenerator.CreatePlatform(orientation, chromosome);
         
-            stop.Reset();
-            stop.Start();
+            // stop.Reset();
+            // stop.Start();
             _platformGenerator.CreateLinks();
-            stop.Stop();
-            Debug.Log($"LINK generartion time: {stop.Elapsed.Milliseconds}");
+            // stop.Stop();
+            // Debug.Log($"LINK generartion time: {stop.Elapsed.Milliseconds}");
             _platformGenerator.PlaceGoal(orientation);
         
             _platformGenerator.PlacePlayer(orientation, playerType);

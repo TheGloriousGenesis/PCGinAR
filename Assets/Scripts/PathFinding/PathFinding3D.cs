@@ -35,12 +35,8 @@ namespace PathFinding
 			FindAllWalkableNodes();
 			CreateAdjacencyMatrix();
 
-			Debug.Log($"Utility map populated: {Utility.GetGameMap().Count}");
-			// Debug.Log($"Utility map populated: {Utility.GetGameMap().Count}");
 			_player = _nodeMap[Utility.GetGameMap()[BlockType.AGENT][0]];
-			Debug.Log("Found the player");
 			_target = _nodeMap[Utility.GetGameMap()[BlockType.GOAL][0]];
-			Debug.Log("Found the target");
 			if (_player == null || _target == null)
 			{
 				throw new Exception("No Player or target is found");

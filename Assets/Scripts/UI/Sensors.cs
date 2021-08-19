@@ -24,18 +24,6 @@
 //
 //          private void Awake()
 //          {
-//              AndroidRuntimePermissions.Permission result =
-//                  AndroidRuntimePermissions.RequestPermission("android.permission.ACTIVITY_RECOGNITION");
-//              if (result == AndroidRuntimePermissions.Permission.Granted)
-//              {
-//                  Debug.Log("We have permission to access the stepcounter");
-//              }
-//              else
-//              {
-//                  Debug.Log("Permission state: " + result); // No permission
-//                  Application.Quit();
-//              }
-//
 //          }
 //
 //          void Start()

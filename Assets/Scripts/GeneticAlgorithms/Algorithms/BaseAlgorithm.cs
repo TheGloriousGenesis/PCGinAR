@@ -34,7 +34,7 @@ namespace GeneticAlgorithms.Algorithms
 
         protected Stopwatch timer = new Stopwatch();
         protected StringBuilder csv_ga = new StringBuilder();
-        protected StringBuilder csv_weights = new StringBuilder();
+        protected static StringBuilder csv_weights = new StringBuilder();
         protected StringBuilder csv_time = new StringBuilder();
         
         public WeightedRandomBag<int> weightedRandomBag;
@@ -131,7 +131,7 @@ namespace GeneticAlgorithms.Algorithms
             csv_ga.AppendLine(data);
         }
 
-        public void AddDataToResults_Weights(string data)
+        public static void AddDataToResults_Weights(string data)
         {
             csv_weights.AppendLine(data);
         }

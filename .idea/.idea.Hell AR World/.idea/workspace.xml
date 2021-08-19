@@ -20,55 +20,63 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a993c359-f12f-441b-95df-183d25883f86" name="Default Changelist" comment="Uncommited files forgotten">
-      <change afterPath="$PROJECT_DIR$/ProjectSettings/VersionControlSettings.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/PlaneMaterial.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/PlaneMaterial.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/results/Images/Chromosome.psd.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDriven.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDriven.png.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hell AR World/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ML-Agents/Examples/SharedAssets/Materials/Eye.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ML-Agents/Examples/SharedAssets/Materials/Eye.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ML-Agents/Examples/SharedAssets/Materials/Headband.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ML-Agents/Examples/SharedAssets/Materials/Headband.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockBrickMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockBrickMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockBrickPurpleMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockBrickPurpleMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockEmptyMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockEmptyMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockHardMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockHardMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockQuestionMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockQuestionMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockQuestionMat01.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockQuestionMat01.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockSnowCoverMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockSnowCoverMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockSwitchMat01.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockSwitchMat01.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockSwitchMat02.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Block/Mat/BlockSwitchMat02.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Coin/Mat/CoinMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Coin/Mat/CoinMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FireFlower/Mat/FireFlowerMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/FireFlower/Mat/FireFlowerMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleBrickMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleBrickMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleFlagGoldenMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleFlagGoldenMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleFlagMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleFlagMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleMetalMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goal/Mat/GoalPoleMetalMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goomba/Mat/KuriboBodyMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goomba/Mat/KuriboBodyMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Goomba/Mat/KuriboEyeMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Goomba/Mat/KuriboEyeMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/AssistItemHead.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/AssistItemHead.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/KinokoOneUpMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/KinokoOneUpMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/KinokoSuperMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/KinokoSuperMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/KinokoTreasureMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/KinokoTreasureMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/it23_mush_poison.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Mushroom/Mat/it23_mush_poison.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat00.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat00.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat01.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat01.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat02.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat02.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat03.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Toad/Mat/KinopioBodyMat03.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Rendering/UniversalRenderPipelineAsset_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Rendering/UniversalRenderPipelineAsset_Renderer.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene-DESKTOP-AKJKOLQ.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene-DESKTOP-AKJKOLQ.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene/NavMesh-GAME 1.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene/NavMesh-GAME 1.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene/NavMesh-GAME.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene/NavMesh-GAME.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene/NavMesh-Platform.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene/NavMesh-Platform.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ToadController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ToadController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/PerlinNoiseExample.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/PerlinNoiseExample.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Permission.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Permission.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/AndroidManifest.xml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle.backup" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle.backup.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/launcherTemplate.gradle.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/mainTemplate.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Android/mainTemplate.gradle.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallback.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallback.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackAsync.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackAsync.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/PermissionCallbackHelper.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/RuntimePermissions.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Android/RuntimePermissions.aar.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.Runtime.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.Runtime.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/AndroidRuntimePermissions.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/CREDITS.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/CREDITS.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Editor/ARPPostProcessBuild.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/Editor/ARPPostProcessBuild.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/AndroidRuntimePermissions/README.txt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/AR/AR Plane Debug Visualizer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/AR/AR Plane Debug Visualizer.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Samples/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ClickToMove.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/ClickToMove.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generators/GenerateGameService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generators/GenerateGameService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BaseAlgorithm.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Implementation/GaImplementation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Parameter/Constants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Permission.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Permission.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/PlacementDragAndLock.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities/WeightedRandomBag.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities/WeightedRandomBag.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/build_info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/results/.ipynb_checkpoints/Visualisation-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/results/.ipynb_checkpoints/Visualisation-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR.psd" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/results/Images/ExperienceDrivenGeneticAlgorithmInAR.psd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/results/Visualisation.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/results/Visualisation.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,13 +87,19 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Editor/BurstInspectorGUI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utilities/DesignPatterns/Singleton.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Editor/BurstReflection.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Editor/BurstDisassembler.Core.ARM64.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework@1.1.24/UnityEditor.TestRunner/TestRunner/Callbacks/EditModeRunnerCallback.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARSessionOrigin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.editorcoroutines@1.0.0/Editor/EditorCoroutineUtility.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@1.9.0-preview/Runtime/Inference/Utils/Multinomial.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/Samples~/Visualizers/InputControlVisualizer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arsubsystems@4.1.7/Runtime/SerializableGuid.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/bool4x4.gen.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/ONNX/ONNXLayout.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/ONNX/ONNXModelConverter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Editor/BurstAotCompiler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a8e33794c0064f2aa201ade069162226784c00/52/d43dff15/InspectorElement.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Utilities/DynamicBitfield.cs" root0="SKIP_HIGHLIGHTING" />
@@ -98,15 +112,18 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arsubsystems@4.1.7/Runtime/HelpUrls.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARRaycastHit.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Generators/PlatformGenerator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARTextureInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/Plugins/Burst/BurstBLAS.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/GameData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/Gene.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@1.9.0-preview/Runtime/Agent.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Entities/FitnessValues.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARMeshManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/uint2.gen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Runtime/BurstCompileAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Runtime/DiagnosticId.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/quaternion.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collab-proxy@1.5.7/Editor/Collaborate/Utilities/OpenLinksUtility.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Runtime/BurstString.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b6a0e6615ee04ea7ad535b38f9316104568788/ff/fcbbc79e/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Runtime/bee~/Burst.bee.cs" root0="SKIP_HIGHLIGHTING" />
@@ -115,13 +132,18 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.management@4.0.7/Tests/Editor/BuildTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/math.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Tests/Tests/TestMath2.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Permission.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARCameraFrameEventArgs.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Runtime/Intrinsics/Common.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@1.9.0-preview/Runtime/DiscreteActionMasker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@1.9.0-preview/Runtime/EnvironmentParameters.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Plugins/OnScreen/OnScreenButton.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework@1.1.24/UnityEngine.TestRunner/NUnitExtensions/Runner/PlaymodeWorkItemFactory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework@1.1.24/UnityEditor.TestRunner/RequirePlatformSupportAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Plugins/iOS/iOSPostProcessBuild.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/Tests/TestFixture/InputTestFixture.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Plugins/OnScreen/OnScreenStick.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/math_unity_conversion.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/Tests/TestFixture/InputTestRuntime.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Actions/InputActionAsset.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/Core/ModelLoader.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@0.10.0-preview.7/Runtime/AR/Interactables/GestureTransformationUtility.cs" root0="SKIP_HIGHLIGHTING" />
@@ -139,6 +161,8 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARRaycastManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARPlaneMeshVisualizer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Plugins/Users/InputUserChange.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/127e81e1cb3441cc97d26b1910daae7713b000/d4/bb17373e/SetupCoroutine.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/Samples~/SimpleDemo/SimpleController_UsingActionAsset.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Actions/Composites/ButtonWithTwoModifiers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics/Noise/cellular2D.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arcore@4.1.7/Tests/Editor/GradleValidationTests.cs" root0="SKIP_HIGHLIGHTING" />
@@ -147,43 +171,66 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/Core/Backends/BarracudaReferenceCompute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/Core/Backends/BarracudaCompute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.memoryprofiler@0.2.10-preview.1/Editor/UI/ZoomArea.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/Samples~/SimpleDemo/SimpleController_UsingPlayerInput.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Plugins/Android/AndroidSensors.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/Samples~/SimpleDemo/SimpleController_UsingActions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Tests/Runtime/BurstJobTester.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Unity.Mathematics.Editor/PostNormalizedVectorDrawer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/Core/Compiler/Passes/ExpandOpsPass.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arsubsystems@4.1.7/Runtime/SessionSubsystem/XRSessionSubsystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577ac7a62ef43179789031239ba87983e2400/1c/3a5965f7/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.management@4.0.7/Editor/XRSettingsManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/Core/Compiler/Passes/ValidatePasses.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.barracuda@1.3.2-preview/Barracuda/Runtime/Core/Compiler/Passes/FuseConstantsPass.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arcore@4.1.7/Editor/Gradle.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@0.10.0-preview.7/Runtime/Inputs/Simulation/SimulatedInputLayoutLoader.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/Samples~/RebindingUI/RebindActionUIEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Devices/ITextInputReceiver.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arcore@4.1.7/Editor/ARCoreBuildProcessor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Tests/Runtime/Shared/050-TestStructs.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arsubsystems@4.1.7/Runtime/HumanBodySubsystem/XRHumanBodyPose2DJoint.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.management@4.0.7/Editor/Metadata/XRPackageMetadataStore.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@10.5.0/Runtime/Debugging/Prefabs/Scripts/DebugUIHandlerIntField.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework@1.1.24/UnityEditor.TestRunner/TestRun/TestJobRunner.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Plugins/PlayerInput/PlayerInput.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/2019.4.15f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.ugui/Editor/UI/MenuOptions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Plugins/PlayerInput/PlayerInputEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Tests/EditMode/Tests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@0.10.0-preview.7/Runtime/Locomotion/SnapTurn/DeviceBasedSnapTurnProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arcore@4.1.7/Runtime/ARCoreSessionSubsystem.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@0.10.0-preview.7/Runtime/Locomotion/SnapTurn/SnapTurnProviderBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Editor/Debugger/InputDebuggerWindow.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Tests/Runtime/Shared/090-Vectors-BinaryOperators-Float4.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.legacyinputhelpers@2.1.7/Editor/TrackedPoseDriver/TrackedPoseDriverEditor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Controls/InputControlLayout.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Tests/Runtime/Shared/031-Pointers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/Sensors.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.memoryprofiler@0.2.10-preview.1/Editor/Database/View/Select.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.management@4.0.7/Samples~/Editor/SampleStandaloneLoaderUI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PlaneDetectionController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Controls/InputControlExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/EventManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.legacyinputhelpers@2.1.7/Runtime/CameraOffset.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.mathematics@1.2.1/Tests/Tests/Shared/TestPlane.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Tests/Runtime/Shared/010-NotSupported.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.memoryprofiler@0.2.10-preview.1/Editor/Database/View/ViewColumnNodeMergeTyped.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@1.9.0-preview/Tests/Editor/Communicator/GrpcExtensionsTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Devices/Commands/DisableDeviceCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARCameraManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Player/TestAccelerometer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARPlaneManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.memoryprofiler@0.2.10-preview.1/Editor/Database/Table/ExpandTable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARPlaneBoundaryChangedEventArgs.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ml-agents@1.9.0-preview/Editor/BrainParametersDrawer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/AnchorCreator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/MeshQueue.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Devices/Commands/QueryCanRunInBackground.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.3.4/Tests/Runtime/Shared/070-TestAtomics.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arkit@4.1.7/Editor/ObjectTracking/ARObjectImporter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@0.10.0-preview.7/Runtime/Interaction/Interactors/XRRayInteractor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/AREnvironmentProbeManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.1.0-preview.3/InputSystem/Editor/AssetEditor/ParameterListView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.searcher@4.3.2/Samples~/Editor/SearcherExampleHostWindow.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/PrefabFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Behaviour/Entities/BlockCube.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.arfoundation@4.1.7/Runtime/AR/ARTrackedImageManager.cs" root0="SKIP_HIGHLIGHTING" />
@@ -260,7 +307,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.17840983" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.17852522" />
     <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
@@ -384,6 +431,10 @@
       <workItem from="1629200445332" duration="1572000" />
       <workItem from="1629202270999" duration="28694000" />
       <workItem from="1629273266034" duration="6231000" />
+      <workItem from="1629286578966" duration="12459000" />
+      <workItem from="1629300782041" duration="11522000" />
+      <workItem from="1629319011375" duration="4348000" />
+      <workItem from="1629324291225" duration="4341000" />
     </task>
     <task id="LOCAL-00001" summary="Uncommited files forgotten">
       <created>1627913468488</created>
@@ -422,43 +473,43 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/PathFinding/LinkGenerator/NavMeshLinksAutoPlacer.cs</url>
-          <line>148</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\PathFinding\LinkGenerator\NavMeshLinksAutoPlacer.cs" initialLine="146" containingFunctionPresentation="method 'CheckPlacePos'">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs</url>
+          <line>157</line>
+          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Algorithms\BasicGeneticAlgorithm.cs" initialLine="143" containingFunctionPresentation="method 'ModifyFitnessFunction'">
             <startOffsets>
-              <option value="4862" />
+              <option value="6555" />
             </startOffsets>
             <endOffsets>
-              <option value="4994" />
+              <option value="6616" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="147" />
+          <option name="timeStamp" value="170" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs</url>
-          <line>39</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\PathFinding\PathFinding3D.cs" initialLine="37" containingFunctionPresentation="method 'FindPaths'">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs</url>
+          <line>198</line>
+          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Algorithms\BasicGeneticAlgorithm.cs" initialLine="185" containingFunctionPresentation="method 'Incentivise'">
             <startOffsets>
-              <option value="959" />
+              <option value="8010" />
             </startOffsets>
             <endOffsets>
-              <option value="1020" />
+              <option value="8051" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="148" />
+          <option name="timeStamp" value="172" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/PathFinding/PathFinding3D.cs</url>
-          <line>41</line>
-          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\PathFinding\PathFinding3D.cs" initialLine="38" containingFunctionPresentation="method 'FindPaths'">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/GeneticAlgorithms/Algorithms/BasicGeneticAlgorithm.cs</url>
+          <line>181</line>
+          <properties documentPath="C:\Users\bowro\OneDrive\QMUL\Disso\Hell AR World\Assets\Scripts\GeneticAlgorithms\Algorithms\BasicGeneticAlgorithm.cs" initialLine="167" containingFunctionPresentation="method 'Incentivise'">
             <startOffsets>
-              <option value="1058" />
+              <option value="7305" />
             </startOffsets>
             <endOffsets>
-              <option value="1118" />
+              <option value="7319" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="149" />
+          <option name="timeStamp" value="173" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

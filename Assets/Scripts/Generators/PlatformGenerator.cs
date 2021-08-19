@@ -26,10 +26,12 @@ namespace Generators
 
         public void CreatePlatform(Quaternion orientation, Chromosome chromosome)
         {
+#if UNITY_EDITOR
             if (transform.rotation != Quaternion.identity)
             {
                 Debug.Log("Somehow rotating");
             }
+#endif
             PlacePlatform(orientation, chromosome);
             ObtainWalkableSurface();
         }

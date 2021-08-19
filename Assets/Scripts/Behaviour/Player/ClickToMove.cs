@@ -23,7 +23,7 @@ public class ClickToMove : MonoBehaviour
         if (m_Agent.pathPending || m_Agent.remainingDistance > 0.1f)
             return;
 
-        // m_Agent.destination = m_Range * Random.insideUnitCircle;
+        m_Agent.destination = m_Range * Random.insideUnitCircle;
         
         if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
         {

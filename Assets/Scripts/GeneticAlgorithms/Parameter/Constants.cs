@@ -1,4 +1,5 @@
-﻿using Behaviour.Entities;
+﻿using System;
+using Behaviour.Entities;
 
 namespace GeneticAlgorithms.Parameter
 {
@@ -24,9 +25,9 @@ namespace GeneticAlgorithms.Parameter
                                            (MAX_PLATFORM_DIMENSION_Z + 2) *
                                            (MAX_PLATFORM_DIMENSION_Y + 2);
         // at least half the area should be covered in chromosomes
-        // public static int CHROMOSOME_LENGTH = (int) Math.Ceiling(TOTAL_MOCK_VOLUME *
-        //                                                          (1.0/3.0));
-        public static int CHROMOSOME_LENGTH = 10;
+        public static int CHROMOSOME_LENGTH = (int) Math.Ceiling(TOTAL_MOCK_VOLUME *
+                                                                 (1.0/3.0));
+        // public static int CHROMOSOME_LENGTH = 10;
         public const int POPULATION_SIZE = 20;
         
         public const int NUMBER_OF_GENERATIONS = 15;

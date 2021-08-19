@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using GeneticAlgorithms.Algorithms;
 using UnityEngine;
 using Random = System.Random;
 
@@ -16,13 +18,13 @@ namespace Utilities
         private List<Entry> entries = new List<Entry>();
         private double accumulatedWeight;
         private Random rand;
-
+        
         public WeightedRandomBag(Random rand, int sizeOfBag)
         {
             this.rand = rand;
             for (int i = 0; i < sizeOfBag; i++)
             {
-                AddEntry(i, sizeOfBag);
+                AddEntry(i, 1);
             }
         }
 
@@ -60,7 +62,7 @@ namespace Utilities
             accumulatedWeight -= entryToRemove.weight;
         }
 
-        public double[] UpdateWeights(float[] weightMap)
+        public void UpdateWeights(float[] weightMap)
         {
             accumulatedWeight = 0;
             double[] newWeights = new double[entries.Count];
@@ -74,7 +76,7 @@ namespace Utilities
                 newWeights[i] = tmp.weight;
             }
 
-            return newWeights;
+            BaseAlgorithm.AddDataToResults_Weights(string.Join(",", newWeights.Select(w => w.ToString())));
         }
         
         public int GetRandom() {

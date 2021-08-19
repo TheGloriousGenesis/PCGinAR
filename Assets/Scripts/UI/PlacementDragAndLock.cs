@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Behaviour.Entities;
 using Generators;
@@ -6,6 +7,7 @@ using GeneticAlgorithms.Entities;
 using GeneticAlgorithms.Implementation;
 using GeneticAlgorithms.Parameter;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -50,6 +52,9 @@ namespace UI
         [SerializeField]
         private Button generateButton;
 
+        [FormerlySerializedAs("exitbutton")] [SerializeField]
+        private Button exitButton;
+        
         private bool isLocked = false;
         private bool isGenerated = false;
         private bool inGenerationMode = false;
@@ -103,6 +108,11 @@ namespace UI
             {
                 generateButton.onClick.AddListener(Generate);
             }
+            
+            if (exitButton != null)
+            {
+                exitButton.onClick.AddListener(Exit);
+            }
         }
 
         // method concerns itself with selection and dragging of prefab
@@ -131,7 +141,7 @@ namespace UI
                 // Perform the raycast
             if (m_ARRaycastManager.Raycast(touch.position, hits, trackableTypes))
             {
-
+                ARDebugManager.Instance.LogInfo("Feature or plane has been touched");
                 // Raycast hits are sorted by distance, so the first one will be the closest hit.
                 var hit = hits[0];
 
@@ -144,7 +154,7 @@ namespace UI
                 }
                 else
                 {
-                    Debug.Log("Error: Scaler has not being initialized");
+                    ARDebugManager.Instance.LogWarning("Error: Scaler has not being initialized");
                 }  
     
             }
@@ -154,9 +164,22 @@ namespace UI
             if (placedPrefab == null)
                 placedPrefab = gameService.CreateGame(new Vector3(1,2,3), Quaternion.identity,
                     currentGame, BlockType.PLAYER);
-            
+            generateButton.GetComponentInChildren<Text>().text = "End Game";
+            welcomePanel.SetActive(false);
             placedObject = placedPrefab;
 #endif
+        }
+        
+        void CreateAnchor(in ARRaycastHit hit)
+        {
+            if (placedPrefab == null && !isLocked)
+            {
+                placedPrefab = gameService.CreateGame(hit.pose.position, hit.pose.rotation,
+                    currentGame, BlockType.PLAYER);
+                placedObject = placedPrefab;
+                generateButton.GetComponentInChildren<Text>().text = "End Game";
+                welcomePanel.SetActive(false);
+            }
         }
         
         #region UI methods
@@ -164,7 +187,7 @@ namespace UI
         private void Lock()
         {
             isLocked = !isLocked;
-            lockButton.GetComponentInChildren<Text>().text = isLocked ? "Locked" : "Unlocked";
+            lockButton.GetComponentInChildren<Text>().text = isLocked ? "Planes Disabled" : "Planes enabled";
 
 #if !UNITY_EDITOR
             SetAllPlanesActive(!isLocked);
@@ -174,6 +197,12 @@ namespace UI
 
         private void Generate()
         {
+            if (generateButton.GetComponentInChildren<Text>().text == "Ready?")
+            {
+                return;
+            }
+            welcomePanel.GetComponent<Text>().text = "Please wait while level loads (~10 secs)";
+            
             inGenerationMode = true;
             
             currentGame = null;
@@ -181,19 +210,29 @@ namespace UI
             placedPrefab = null;
             isGenerated = false;
             
+            
             if (generateButton.GetComponentInChildren<Text>().text == "End Game")
             {
                 EventManager.current.GameEnd();
+            }
+            else
+            {
+                generateButton.GetComponentInChildren<Text>().text = "Ended";
             }
             
             gameService.ResetGame(Utility.SafeDestroyInPlayMode);
             
             EventManager.current.GAStart();
-            timer.Reset();
-            timer.Start();
+            // timer.Reset();
+            // timer.Start();
             Chromosome gameData = _gaImplementation.RunGA();
-            timer.Stop();
-            Debug.Log($"Run method takes : {timer.ElapsedMilliseconds}");
+            if (gameData == null)
+            {
+                welcomePanel.GetComponent<Text>().text = "That's all folks!!";
+                Exit();
+            }
+            // timer.Stop();
+            // Debug.Log($"Run method takes : {timer.ElapsedMilliseconds}");
             EventManager.current.GAEnd();
 
             currentGame = gameData;
@@ -206,12 +245,23 @@ namespace UI
                 SetAllPlanesActive(true);
             }
 #endif
-            welcomePanel.SetActive(true);
-            // probs change this
             generateButton.GetComponentInChildren<Text>().text = "Ready?";
-            welcomePanel.GetComponent<Text>().text = "Object ready. Please scan area to place level";
+            welcomePanel.GetComponent<Text>().text = "Please scan floor to place level on a plane or sparkly points";
         }
 
+        private void Exit()
+        {
+            EventManager.current.GameEnd();
+            welcomePanel.SetActive(true);
+            welcomePanel.GetComponent<Text>().text = "Thank you for playing";
+            StartCoroutine(CloseAfterTime(5));
+        }
+        
+        private IEnumerator CloseAfterTime(float t)
+         {
+             yield return new WaitForSeconds(t);
+             Application.Quit();
+         }
         private void SetAllPlanesActive(bool value)
         {
             m_ARPlaneManager.enabled = value;
@@ -225,37 +275,7 @@ namespace UI
             isGenerated = false;
             generateButton.GetComponentInChildren<Text>().text = "Next Level";
         }
-        
-        void CreateAnchor(in ARRaycastHit hit)
-        {
-            // if (hit.trackable is ARPlane plane)
-            // {
-            //     var transform1 = hit.trackable.transform;
-            //     var position = transform1.position;
-            //     Debug.Log($"plane position: {position}, " +
-            //               $"Area: {position.x * position.y}");
-            // }
-            // Note: the anchor can be anywhere in the scene hierarchy
-            if (placedPrefab == null && !isLocked)
-            {
-                placedPrefab = gameService.CreateGame(hit.pose.position, hit.pose.rotation, 
-                    currentGame, BlockType.PLAYER);
-                placedObject = placedPrefab;
-                generateButton.GetComponentInChildren<Text>().text = "End Game";
-                Debug.Log("Placed prefab is created");
-            }
-        }
-        
-        public void RemoveAllAnchors()
-        {
-            ARDebugManager.Instance.LogInfo($"Removing all anchors ({anchors.Count})");
-            foreach (var anchor in anchors)
-            {
-                Destroy(anchor.gameObject);
-            }
-            anchors.Clear();
-        }
-        
+
         private void OnEnable()
         {
             EventManager.OnGameEnd += ResetGenerateButton;
